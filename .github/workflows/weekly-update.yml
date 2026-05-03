@@ -1,0 +1,48 @@
+name: Weekly Dashboard Update
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'   # Every Monday 09:00 UTC
+  workflow_dispatch:        # Manual trigger from GitHub UI
+
+jobs:
+  update:
+    name: Regenerate dashboard if source changed
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout dashboard repo
+        uses: actions/checkout@v4
+
+      - name: Checkout FlowTrader source
+        uses: actions/checkout@v4
+        with:
+          repository: FlomaticAuto/flowtrader
+          path: flowtrader-source
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Update dashboard
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FLOWTRADER_SOURCE_PATH: flowtrader-source
+        run: python scripts/update_dashboard.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add index.html .dashboard-hash
+          git diff --staged --quiet && echo "No changes to commit" || (
+            git commit -m "chore: auto-update dashboard $(date -u +%Y-%m-%d)"
+            git push
+          )

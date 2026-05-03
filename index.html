@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowTrader — System Design Dashboard</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --border:    #30363d;
+      --accent:    #00e676;
+      --accent2:   #00b8d4;
+      --accent3:   #ff6d00;
+      --accent4:   #aa00ff;
+      --warn:      #ffd600;
+      --danger:    #ff1744;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --card-bg:   #1c2128;
+      --radius:    10px;
+      --shadow:    0 4px 24px rgba(0,0,0,0.5);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 12px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    pre {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      overflow-x: auto;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* ── Layout ───────────────────────────────────────────────────────── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+
+    /* ── Hero ─────────────────────────────────────────────────────────── */
+    .hero {
+      padding: 60px 0 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,230,118,0.1);
+      border: 1px solid rgba(0,230,118,0.35);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: #fff;
+      line-height: 1.1;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p.tagline {
+      margin-top: 12px;
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid;
+    }
+    .pill-green  { color: var(--accent);  border-color: rgba(0,230,118,0.4);  background: rgba(0,230,118,0.08); }
+    .pill-blue   { color: var(--accent2); border-color: rgba(0,184,212,0.4);  background: rgba(0,184,212,0.08); }
+    .pill-orange { color: var(--accent3); border-color: rgba(255,109,0,0.4);  background: rgba(255,109,0,0.08); }
+    .pill-purple { color: var(--accent4); border-color: rgba(170,0,255,0.4);  background: rgba(170,0,255,0.08); }
+    .pill-yellow { color: var(--warn);    border-color: rgba(255,214,0,0.4);  background: rgba(255,214,0,0.08); }
+
+    /* ── Section headers ─────────────────────────────────────────────── */
+    .section { margin-bottom: 56px; }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .si-green  { background: rgba(0,230,118,0.12); }
+    .si-blue   { background: rgba(0,184,212,0.12); }
+    .si-orange { background: rgba(255,109,0,0.12); }
+    .si-purple { background: rgba(170,0,255,0.12); }
+    .si-yellow { background: rgba(255,214,0,0.12); }
+    .si-red    { background: rgba(255,23,68,0.12); }
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .section-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── Cards ────────────────────────────────────────────────────────── */
+    .cards { display: grid; gap: 18px; }
+    .cards-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .cards-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+    }
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .card-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .card .file-path {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: monospace;
+      margin-top: 3px;
+    }
+    .card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+    .card ul { padding-left: 18px; }
+    .card ul li {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .card ul li strong { color: var(--text); }
+
+    /* ── Agent cards (larger) ────────────────────────────────────────── */
+    .agent-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .agent-card-top {
+      padding: 22px 24px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .agent-card-top .row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .agent-card-top h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .agent-card-top .sub { font-size: 12px; color: var(--muted); font-family: monospace; }
+    .agent-card-body { padding: 18px 24px; }
+    .agent-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .agent-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
+    .method-list { list-style: none; padding: 0; margin-bottom: 14px; }
+    .method-list li {
+      font-size: 12px;
+      font-family: monospace;
+      color: var(--accent2);
+      line-height: 1.9;
+    }
+    .method-list li span { color: var(--muted); }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .tag {
+      font-size: 11px;
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    .tag-green  { background: rgba(0,230,118,0.12); color: var(--accent); }
+    .tag-blue   { background: rgba(0,184,212,0.12); color: var(--accent2); }
+    .tag-orange { background: rgba(255,109,0,0.12); color: var(--accent3); }
+    .tag-purple { background: rgba(170,0,255,0.12); color: var(--accent4); }
+    .tag-yellow { background: rgba(255,214,0,0.12); color: var(--warn); }
+
+    /* ── Architecture diagram (SVG inline) ──────────────────────────── */
+    .arch-wrap {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+    }
+    .arch-wrap svg { display: block; max-width: 100%; height: auto; }
+
+    /* ── Flow diagram ─────────────────────────────────────────────────── */
+    .flow-steps {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      overflow-x: auto;
+      padding: 8px 0;
+    }
+    .flow-step {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .flow-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      min-width: 140px;
+      text-align: center;
+    }
+    .flow-box .step-num {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+    .flow-box .step-name { font-size: 13px; font-weight: 600; color: #fff; }
+    .flow-box .step-detail { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .flow-arrow {
+      padding: 0 10px;
+      font-size: 18px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* ── Signal score table ───────────────────────────────────────────── */
+    .signal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .signal-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .signal-pts {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      min-width: 42px;
+      text-align: center;
+    }
+    .pts-2 { color: var(--accent); }
+    .pts-1 { color: var(--accent2); }
+    .signal-text strong { display: block; font-size: 13px; color: #fff; margin-bottom: 2px; }
+    .signal-text span { font-size: 12px; color: var(--muted); }
+
+    /* ── Rules list ───────────────────────────────────────────────────── */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 14px;
+    }
+    .rule-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .rule-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,23,68,0.15);
+      border: 1px solid rgba(255,23,68,0.4);
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .rule-body strong { display: block; color: #fff; font-size: 13px; margin-bottom: 3px; }
+    .rule-body span { font-size: 12px; color: var(--muted); }
+
+    /* ── Schedule table ───────────────────────────────────────────────── */
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .schedule-table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--border);
+    }
+    .schedule-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(48,54,61,0.6);
+      vertical-align: top;
+    }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .schedule-table td:first-child { font-family: monospace; color: var(--accent2); }
+    .schedule-table td:nth-child(2) { color: #fff; font-weight: 600; }
+    .schedule-table td:nth-child(3) { color: var(--muted); }
+    .schedule-table td:last-child { color: var(--accent); font-family: monospace; font-size: 12px; }
+
+    /* ── Data flow diagram ────────────────────────────────────────────── */
+    .dataflow {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr 40px 1fr;
+      align-items: center;
+      gap: 0;
+    }
+    .dataflow-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .dataflow-box h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dataflow-box ul { list-style: none; padding: 0; }
+    .dataflow-box ul li {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dataflow-arrow {
+      text-align: center;
+      font-size: 22px;
+      color: var(--muted);
+    }
+
+    /* ── Watchlist ────────────────────────────────────────────────────── */
+    .watchlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .wl-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .wl-item .ticker {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      font-family: monospace;
+    }
+    .wl-item .wl-name {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .nav-brand {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      padding: 14px 20px 14px 0;
+      margin-right: 10px;
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .nav a {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 14px 14px;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      display: block;
+    }
+    .nav a:hover { color: #fff; border-bottom-color: var(--accent); text-decoration: none; }
+
+    /* ── Footer ───────────────────────────────────────────────────────── */
+    .footer {
+      margin-top: 80px;
+      padding: 24px 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Misc helpers ─────────────────────────────────────────────────── */
+    .kv-list { list-style: none; padding: 0; }
+    .kv-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(48,54,61,0.5);
+      font-size: 13px;
+    }
+    .kv-list li:last-child { border-bottom: none; }
+    .kv-list li .k { color: var(--muted); }
+    .kv-list li .v { color: #fff; font-family: monospace; font-size: 12px; }
+    .highlight-box {
+      background: rgba(0,230,118,0.06);
+      border: 1px solid rgba(0,230,118,0.25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .warn-box {
+      background: rgba(255,214,0,0.06);
+      border: 1px solid rgba(255,214,0,0.25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 700px) {
+      .two-col { grid-template-columns: 1fr; }
+      .dataflow { grid-template-columns: 1fr; gap: 10px; }
+      .dataflow-arrow { transform: rotate(90deg); }
+      .hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">⚡ FlowTrader v1</div>
+    <a href="#overview">Overview</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#agents">Agents</a>
+    <a href="#data-flow">Data Flow</a>
+    <a href="#signals">Signals</a>
+    <a href="#rules">Rules</a>
+    <a href="#exits">Exits</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#journal">Journal</a>
+    <a href="#watchlist">Watchlist</a>
+    <a href="#config">Config</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- ── Hero ──────────────────────────────────────────────────────────── -->
+  <div class="hero" id="overview">
+    <div class="hero-badge">📈 System Design Dashboard</div>
+    <h1>Flow<span>Trader</span> v1</h1>
+    <p class="tagline">A Claude-powered mean reversion trading bot. Disciplined. Capital-preserving. Runs autonomously on GitHub Actions — paper trading by default.</p>
+    <div class="hero-pills">
+      <span class="pill pill-green">🔁 Mean Reversion Strategy</span>
+      <span class="pill pill-blue">🤖 Claude claude-sonnet-4-6</span>
+      <span class="pill pill-orange">📊 Alpaca Markets</span>
+      <span class="pill pill-purple">🌐 GitHub Actions CI/CD</span>
+      <span class="pill pill-yellow">🛡️ Paper Trading Default</span>
+    </div>
+  </div>
+
+  <!-- ── System Overview Cards ──────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon si-blue">🗺️</div>
+      <div>
+        <div class="section-title">System Overview</div>
+        <div class="section-sub">What FlowTrader is and how it works at a glance</div>
+      </div>
+    </div>
+    <div class="cards cards-3">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-green">🎯</div>
+          <div><h3>Strategy</h3><div class="file-path">CLAUDE.md</div></div>
+        </div>
+        <p>Mean reversion — buys when an asset is statistically oversold relative to its short-term average, exits when price returns to the mean.</p>
+        <ul>
+          <li><strong>Indicators:</strong> Bollinger Bands, RSI, VWAP, ADX</li>
+          <li><strong>Signal gate:</strong> 3 of 6 signals must fire</li>
+          <li><strong>Target exit:</strong> 20-day moving average</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-orange">🌍</div>
+          <div><h3>Universe</h3><div class="file-path">config.yaml</div></div>
+        </div>
+        <p>Trades US equities and ETFs via Alpaca. Crypto support via CCXT (Binance) is in the config but not the primary focus.</p>
+        <ul>
+          <li><strong>Equities:</strong> NVDA, AAPL, MSFT, QQQ, SPY, AMD, GLD</li>
+          <li><strong>Crypto:</strong> BTC/USDT, ETH/USDT, SOL/USDT</li>
+          <li><strong>Broker:</strong> Alpaca (paper &amp; live)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-purple">⚙️</div>
+          <div><h3>Execution Mode</h3><div class="file-path">.env / secrets</div></div>
+        </div>
+        <p>Paper trading is the default and requires explicit dual-flag override to go live. Capital safety is the top priority.</p>
+        <ul>
+          <li><strong>Default:</strong> Paper trading on Alpaca sandbox</li>
+          <li><strong>Live gate:</strong> Two env flags must both be set</li>
+          <li><strong>Notifications:</strong> Telegram alerts on every trade</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Architecture ────────────────────────────────────────────────────── -->
+  <section class="section" id="architecture">
+    <div class="section-header">
+      <div class="section-icon si-blue">🏗️</div>
+      <div>
+        <div class="section-title">System Architecture</div>
+        <div class="section-sub">Component map — how every module relates to the others</div>
+      </div>
+    </div>
+    <div class="arch-wrap">
+      <svg viewBox="0 0 1060 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:600px">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#30363d"/>
+          </marker>
+          <marker id="arr-g" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#00e676"/>
+          </marker>
+          <marker id="arr-b" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#00b8d4"/>
+          </marker>
+          <marker id="arr-o" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#ff6d00"/>
+          </marker>
+          <marker id="arr-p" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#aa00ff"/>
+          </marker>
+        </defs>
+
+        <!-- ── GitHub Actions (top bar) ──────────────────────────────── -->
+        <rect x="30" y="20" width="1000" height="70" rx="10" fill="#1c2128" stroke="#30363d" stroke-width="1.5"/>
+        <text x="50" y="43" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">GITHUB ACTIONS</text>
+        <rect x="50" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="130" y="69" font-size="11" fill="#00e676" font-family="monospace" text-anchor="middle">Trading (every 30 min)</text>
+        <rect x="220" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="300" y="69" font-size="11" fill="#00e676" font-family="monospace" text-anchor="middle">Analyst (17:30 EST daily)</text>
+        <rect x="390" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="470" y="69" font-size="11" fill="#00b8d4" font-family="monospace" text-anchor="middle">Weekly Review (Sun)</text>
+        <rect x="560" y="50" width="200" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="660" y="69" font-size="11" fill="#ffd600" font-family="monospace" text-anchor="middle">Manual: workflow_dispatch</text>
+        <!-- Arrows down from crons -->
+        <line x1="130" y1="78" x2="130" y2="140" stroke="#00e676" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+        <line x1="300" y1="78" x2="300" y2="140" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+        <line x1="470" y1="78" x2="470" y2="140" stroke="#00b8d4" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-b)"/>
+
+        <!-- ── main.py ──────────────────────────────────────────────── -->
+        <rect x="30" y="140" width="380" height="70" rx="10" fill="#161b22" stroke="#00e676" stroke-width="1.5"/>
+        <text x="50" y="164" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">ENTRY POINT</text>
+        <text x="50" y="185" font-size="14" fill="#fff" font-family="monospace" font-weight="700">main.py</text>
+        <text x="200" y="185" font-size="11" fill="#8b949e" font-family="monospace">Orchestrates all modes</text>
+        <text x="50" y="200" font-size="11" fill="#00e676" font-family="monospace">full | weekly-review | analyst-in | analyst-out | analyst-full | test</text>
+
+        <!-- ── Analyst entry ──────────────────────────────────────────── -->
+        <rect x="430" y="140" width="260" height="70" rx="10" fill="#161b22" stroke="#aa00ff" stroke-width="1.5"/>
+        <text x="450" y="164" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">ANALYST DISPATCHER</text>
+        <text x="450" y="185" font-size="13" fill="#fff" font-family="monospace" font-weight="700">run_analyst_full()</text>
+        <text x="450" y="200" font-size="11" fill="#aa00ff" font-family="monospace">calls InStrategyAnalyst + OutStrategyAnalyst</text>
+
+        <!-- ── Data Fetcher ───────────────────────────────────────────── -->
+        <rect x="30" y="270" width="200" height="80" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
+        <text x="50" y="292" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DATA LAYER</text>
+        <text x="50" y="311" font-size="13" fill="#fff" font-family="monospace" font-weight="700">MarketDataFetcher</text>
+        <text x="50" y="328" font-size="11" fill="#8b949e">data/fetcher.py</text>
+        <text x="50" y="343" font-size="11" fill="#00b8d4">Alpaca + Alpha Vantage</text>
+
+        <!-- ── Decision Agent ────────────────────────────────────────── -->
+        <rect x="250" y="270" width="200" height="80" rx="10" fill="#1c2128" stroke="#00e676" stroke-width="1.5"/>
+        <text x="270" y="292" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DECISION AGENT</text>
+        <text x="270" y="311" font-size="13" fill="#fff" font-family="monospace" font-weight="700">TradingDecisionAgent</text>
+        <text x="270" y="328" font-size="11" fill="#8b949e">agents/decision.py</text>
+        <text x="270" y="343" font-size="11" fill="#00e676">Claude claude-sonnet-4-6 via Anthropic API</text>
+
+        <!-- ── Order Executor ────────────────────────────────────────── -->
+        <rect x="470" y="270" width="200" height="80" rx="10" fill="#1c2128" stroke="#ff6d00" stroke-width="1.5"/>
+        <text x="490" y="292" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">EXECUTION</text>
+        <text x="490" y="311" font-size="13" fill="#fff" font-family="monospace" font-weight="700">OrderExecutor</text>
+        <text x="490" y="328" font-size="11" fill="#8b949e">agents/executor.py</text>
+        <text x="490" y="343" font-size="11" fill="#ff6d00">Alpaca Trading API</text>
+
+        <!-- ── Trade Journal ─────────────────────────────────────────── -->
+        <rect x="700" y="270" width="200" height="80" rx="10" fill="#1c2128" stroke="#ffd600" stroke-width="1.5"/>
+        <text x="720" y="292" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">JOURNAL</text>
+        <text x="720" y="311" font-size="13" fill="#fff" font-family="monospace" font-weight="700">TradeJournal</text>
+        <text x="720" y="328" font-size="11" fill="#8b949e">journal/logger.py</text>
+        <text x="720" y="343" font-size="11" fill="#ffd600">journal/trades.jsonl</text>
+
+        <!-- ── Analyst In ────────────────────────────────────────────── -->
+        <rect x="430" y="400" width="185" height="80" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
+        <text x="450" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">IN-STRATEGY ANALYST</text>
+        <text x="450" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">InStrategyAnalyst</text>
+        <text x="450" y="456" font-size="11" fill="#8b949e">agents/analyst_in.py</text>
+        <text x="450" y="471" font-size="11" fill="#aa00ff">Param tuning suggestions</text>
+
+        <!-- ── Analyst Out ───────────────────────────────────────────── -->
+        <rect x="635" y="400" width="185" height="80" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
+        <text x="655" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">OUT-STRATEGY ANALYST</text>
+        <text x="655" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">OutStrategyAnalyst</text>
+        <text x="655" y="456" font-size="11" fill="#8b949e">agents/analyst_out.py</text>
+        <text x="655" y="471" font-size="11" fill="#aa00ff">Macro + strategic insights</text>
+
+        <!-- ── Suggestion Store ──────────────────────────────────────── -->
+        <rect x="530" y="500" width="190" height="50" rx="10" fill="#1c2128" stroke="#30363d" stroke-width="1.5"/>
+        <text x="550" y="520" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">PERSISTENCE</text>
+        <text x="550" y="538" font-size="12" fill="#8b949e" font-family="monospace">SuggestionStore (JSONL)</text>
+
+        <!-- ── Dashboard ─────────────────────────────────────────────── -->
+        <rect x="840" y="400" width="175" height="80" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
+        <text x="860" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DASHBOARD</text>
+        <text x="860" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">dashboard.py</text>
+        <text x="860" y="456" font-size="11" fill="#8b949e">Streamlit, 4 tabs</text>
+        <text x="860" y="471" font-size="11" fill="#00b8d4">Market/Account/Journal/Analyst</text>
+
+        <!-- ── Arrows: main.py → Data Fetcher ─── -->
+        <line x1="130" y1="210" x2="130" y2="270" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- main.py → Decision Agent -->
+        <line x1="220" y1="210" x2="350" y2="270" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- main.py → Order Executor -->
+        <line x1="280" y1="210" x2="490" y2="270" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- main.py → Trade Journal -->
+        <line x1="340" y1="210" x2="760" y2="270" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- ── Arrows: Data Fetcher → Decision Agent ─── -->
+        <line x1="230" y1="310" x2="250" y2="310" stroke="#00b8d4" stroke-width="1.5" marker-end="url(#arr-b)"/>
+        <!-- Decision Agent → Order Executor -->
+        <line x1="450" y1="310" x2="470" y2="310" stroke="#00e676" stroke-width="1.5" marker-end="url(#arr-g)"/>
+        <!-- Order Executor → Trade Journal -->
+        <line x1="670" y1="310" x2="700" y2="310" stroke="#ff6d00" stroke-width="1.5" marker-end="url(#arr-o)"/>
+
+        <!-- Analyst dispatcher → Analyst In -->
+        <line x1="490" y1="210" x2="510" y2="400" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+        <!-- Analyst dispatcher → Analyst Out -->
+        <line x1="560" y1="210" x2="690" y2="400" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+
+        <!-- Trade Journal → Analyst In (reads) -->
+        <line x1="760" y1="350" x2="600" y2="400" stroke="#ffd600" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+        <!-- Trade Journal → Analyst Out (reads) -->
+        <line x1="800" y1="350" x2="720" y2="400" stroke="#ffd600" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+
+        <!-- Analyst In → Suggestion Store -->
+        <line x1="522" y1="480" x2="620" y2="500" stroke="#aa00ff" stroke-width="1.2" marker-end="url(#arr-p)"/>
+        <!-- Analyst Out → Suggestion Store -->
+        <line x1="680" y1="480" x2="670" y2="500" stroke="#aa00ff" stroke-width="1.2" marker-end="url(#arr-p)"/>
+
+        <!-- Dashboard → Suggestion Store (reads) -->
+        <line x1="890" y1="480" x2="730" y2="520" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
+        <!-- Dashboard reads Trade Journal -->
+        <line x1="900" y1="400" x2="900" y2="350" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <line x1="900" y1="350" x2="800" y2="350" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
+
+        <!-- Legend -->
+        <text x="840" y="192" font-size="10" fill="#8b949e" font-family="monospace">Legend:</text>
+        <line x1="840" y1="205" x2="870" y2="205" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
+        <text x="876" y="209" font-size="10" fill="#8b949e" font-family="monospace">calls</text>
+        <line x1="840" y1="220" x2="870" y2="220" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+        <text x="876" y="224" font-size="10" fill="#8b949e" font-family="monospace">async / reads</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ── Agent Cards ─────────────────────────────────────────────────────── -->
+  <section class="section" id="agents">
+    <div class="section-header">
+      <div class="section-icon si-green">🤖</div>
+      <div>
+        <div class="section-title">Agents</div>
+        <div class="section-sub">Six distinct agents handle research, decision, execution, and improvement</div>
+      </div>
+    </div>
+
+    <!-- Trading Loop Agents -->
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">— Trading Loop Agents (run every 30 min during market hours) —</div>
+    <div class="cards cards-2" style="margin-bottom:28px">
+
+      <!-- TradingDecisionAgent -->
+      <div class="agent-card">
+        <div class="agent-card-top">
+          <div class="row">
+            <div class="card-icon si-green" style="font-size:22px">🧠</div>
+            <div>
+              <h3>TradingDecisionAgent</h3>
+              <div class="sub">agents/decision.py · claude-sonnet-4-6</div>
+            </div>
+          </div>
+        </div>
+        <div class="agent-card-body">
+          <div class="agent-label">Purpose</div>
+          <p class="agent-desc">The brain of the system. Receives a full market snapshot (prices, indicators, news sentiment, account status) and uses the Claude claude-sonnet-4-6 model to output a structured JSON trade decision. The system prompt is loaded from <code>CLAUDE.md</code>, which encodes all hard rules and signal scoring definitions.</p>
+          <div class="agent-label">Key Methods</div>
+          <ul class="method-list">
+            <li>analyze_market(market_snapshot, account_snapshot) <span>→ dict</span></li>
+            <li>analyze_single_symbol(symbol_data, account) <span>→ dict</span></li>
+            <li>run_weekly_review(entries) <span>→ str</span></li>
+          </ul>
+          <div class="agent-label">Output Format</div>
+          <div class="tag-row">
+            <span class="tag tag-green">BUY / SELL / HOLD / SKIP</span>
+            <span class="tag tag-blue">signal_score 0-6</span>
+            <span class="tag tag-orange">entry + stop_loss + take_profit</span>
+            <span class="tag tag-purple">reasoning + journal_entry</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OrderExecutor -->
+      <div class="agent-card">
+        <div class="agent-card-top">
+          <div class="row">
+            <div class="card-icon si-orange" style="font-size:22px">⚡</div>
+            <div>
+              <h3>OrderExecutor</h3>
+              <div class="sub">agents/executor.py · Alpaca Trading API</div>
+            </div>
+          </div>
+        </div>
+        <div class="agent-card-body">
+          <div class="agent-label">Purpose</div>
+          <p class="agent-desc">Validates every trade decision against hard guardrails before submitting to Alpaca. Acts as a final safety layer — even if Claude returns a BUY, the executor will reject if any guardrail fails. Defaults to paper trading; live requires two env flags.</p>
+          <div class="agent-label">Key Methods</div>
+          <ul class="method-list">
+            <li>validate_order(symbol, side, qty, entry, stop, acct_val, positions, day_pl) <span>→ (bool, str)</span></li>
+            <li>place_order(decision, account) <span>→ dict</span></li>
+          </ul>
+          <div class="agent-label">Guardrails Enforced</div>
+          <div class="tag-row">
+            <span class="tag tag-green">Max 3 positions</span>
+            <span class="tag tag-blue">2% daily loss limit</span>
+            <span class="tag tag-orange">1% max position size</span>
+            <span class="tag tag-purple">Stop loss required</span>
+            <span class="tag tag-yellow">Paper default</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Analyst Agents -->
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">— Analyst Agents (run once daily at 17:30 EST) —</div>
+    <div class="cards cards-2" style="margin-bottom:28px">
+
+      <!-- InStrategyAnalyst -->
+      <div class="agent-card">
+        <div class="agent-card-top">
+          <div class="row">
+            <div class="card-icon si-purple" style="font-size:22px">🔬</div>
+            <div>
+              <h3>InStrategyAnalyst</h3>
+              <div class="sub">agents/analyst_in.py · claude-sonnet-4-6</div>
+            </div>
+          </div>
+        </div>
+        <div class="agent-card-body">
+          <div class="agent-label">Purpose</div>
+          <p class="agent-desc">Reviews the trade journal (last N days) and produces suggestions for tuning the <em>existing</em> mean reversion strategy. Does NOT suggest new strategies. Expert in Bollinger Band, RSI, VWAP, ADX, and ATR parameter calibration. Produces suggestions with current vs proposed rules and a proposed CLAUDE.md diff.</p>
+          <div class="agent-label">Key Methods</div>
+          <ul class="method-list">
+            <li>run(days=30) <span>→ list[str]  # suggestion IDs created</span></li>
+            <li>_build_prompt(entries, claude_md) <span>→ str</span></li>
+            <li>_call_claude(prompt) <span>→ str | None</span></li>
+            <li>_parse_suggestions(raw) <span>→ list[dict]</span></li>
+          </ul>
+          <div class="agent-label">Suggestion Categories</div>
+          <div class="tag-row">
+            <span class="tag tag-purple">rsi_threshold</span>
+            <span class="tag tag-purple">bollinger_params</span>
+            <span class="tag tag-purple">adx_filter</span>
+            <span class="tag tag-purple">atr_stop_multiplier</span>
+            <span class="tag tag-purple">signal_score_threshold</span>
+            <span class="tag tag-purple">vwap_deviation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OutStrategyAnalyst -->
+      <div class="agent-card">
+        <div class="agent-card-top">
+          <div class="row">
+            <div class="card-icon si-purple" style="font-size:22px">🌍</div>
+            <div>
+              <h3>OutStrategyAnalyst</h3>
+              <div class="sub">agents/analyst_out.py · claude-sonnet-4-6 + yfinance</div>
+            </div>
+          </div>
+        </div>
+        <div class="agent-card-body">
+          <div class="agent-label">Purpose</div>
+          <p class="agent-desc">A senior market strategist who zooms out. Reads the journal <em>plus</em> live macro context — VIX, SPY trend, 5-sector ETF performance — and asks: does this strategy fit the current market regime? Suggests watchlist changes, new strategies to layer in, and when to pause.</p>
+          <div class="agent-label">Key Methods</div>
+          <ul class="method-list">
+            <li>run(days=30) <span>→ list[str]  # suggestion IDs created</span></li>
+            <li>_fetch_macro_context() <span>→ dict  # VIX, SPY, sectors</span></li>
+            <li>_build_prompt(entries, claude_md, macro) <span>→ str</span></li>
+            <li>_call_claude(prompt) <span>→ str | None</span></li>
+          </ul>
+          <div class="agent-label">Macro Data Sources (yfinance)</div>
+          <div class="tag-row">
+            <span class="tag tag-blue">^VIX (fear gauge)</span>
+            <span class="tag tag-blue">SPY 30d MA20</span>
+            <span class="tag tag-blue">XLK Technology</span>
+            <span class="tag tag-blue">XLE Energy</span>
+            <span class="tag tag-blue">XLF Financials</span>
+            <span class="tag tag-blue">XLV Healthcare</span>
+            <span class="tag tag-blue">XLI Industrials</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Support Agents -->
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">— Support Agents —</div>
+    <div class="cards cards-2">
+
+      <!-- MarketDataFetcher -->
+      <div class="agent-card">
+        <div class="agent-card-top">
+          <div class="row">
+            <div class="card-icon si-blue" style="font-size:22px">📡</div>
+            <div>
+              <h3>MarketDataFetcher</h3>
+              <div class="sub">data/fetcher.py · Alpaca + Alpha Vantage</div>
+            </div>
+          </div>
+        </div>
+        <div class="agent-card-body">
+          <div class="agent-label">Purpose</div>
+          <p class="agent-desc">Pulls everything Claude needs for a trade decision into a single clean JSON snapshot. Fetches price history, computes all technical indicators (RSI, Bollinger Bands, VWAP, ADX, ATR), pulls news sentiment from Alpha Vantage, and assembles a ranked watchlist by signal score.</p>
+          <div class="agent-label">Key Methods</div>
+          <ul class="method-list">
+            <li>get_account_snapshot() <span>→ dict  # balance, positions, P&amp;L</span></li>
+            <li>build_market_snapshot(watchlist) <span>→ dict  # ranked by score</span></li>
+            <li>get_symbol_indicators(symbol) <span>→ dict</span></li>
+            <li>get_news_sentiment(symbol) <span>→ float  # -1 to +1</span></li>
+          </ul>
+          <div class="agent-label">Computed Indicators</div>
+          <div class="tag-row">
+            <span class="tag tag-blue">RSI-14</span>
+            <span class="tag tag-blue">BB(20, 2σ)</span>
+            <span class="tag tag-blue">VWAP deviation</span>
+            <span class="tag tag-blue">ADX-14</span>
+            <span class="tag tag-blue">ATR-14</span>
+            <span class="tag tag-blue">MA20 / MA50</span>
+            <span class="tag tag-blue">News sentiment</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TradeJournal -->
+      <div class="agent-card">
+        <div class="agent-card-top">
+          <div class="row">
+            <div class="card-icon si-yellow" style="font-size:22px">📓</div>
+            <div>
+              <h3>TradeJournal + SuggestionStore</h3>
+              <div class="sub">journal/logger.py · journal/suggestion_store.py</div>
+            </div>
+          </div>
+        </div>
+        <div class="agent-card-body">
+          <div class="agent-label">Purpose</div>
+          <p class="agent-desc"><strong>TradeJournal</strong> writes every trading cycle — trade or skip — to an append-only JSONL file. Every entry includes full indicator context, Claude's reasoning, and execution result. <strong>SuggestionStore</strong> persists analyst suggestions with lifecycle management: pending → approved/archived/cancelled.</p>
+          <div class="agent-label">TradeJournal Methods</div>
+          <ul class="method-list">
+            <li>log_decision(decision, execution, snapshot, account) <span>→ dict</span></li>
+            <li>get_entries(days=7) <span>→ list[dict]</span></li>
+            <li>generate_performance_summary(days=7) <span>→ dict</span></li>
+          </ul>
+          <div class="agent-label">Files Written</div>
+          <div class="tag-row">
+            <span class="tag tag-yellow">journal/trades.jsonl</span>
+            <span class="tag tag-yellow">journal/suggestions_in.jsonl</span>
+            <span class="tag tag-yellow">journal/suggestions_out.jsonl</span>
+            <span class="tag tag-yellow">journal/weekly_summary.md</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Data Flow ───────────────────────────────────────────────────────── -->
+  <section class="section" id="data-flow">
+    <div class="section-header">
+      <div class="section-icon si-blue">🔄</div>
+      <div>
+        <div class="section-title">Trading Cycle Data Flow</div>
+        <div class="section-sub">Every 30 minutes during market hours — from data fetch to journal entry</div>
+      </div>
+    </div>
+    <div class="arch-wrap" style="margin-bottom:24px">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-box">
+            <div class="step-num" style="color:var(--accent2)">Step 1</div>
+            <div class="step-name">Fetch Account</div>
+            <div class="step-detail">Portfolio value, buying power, open positions, day P&amp;L</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box">
+            <div class="step-num" style="color:var(--danger)">Step 2</div>
+            <div class="step-name">Loss Limit Check</div>
+            <div class="step-detail">Abort if day P&amp;L ≤ −2% of portfolio</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box">
+            <div class="step-num" style="color:var(--accent2)">Step 3</div>
+            <div class="step-name">Build Snapshot</div>
+            <div class="step-detail">Scan watchlist, compute indicators, score each symbol</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box">
+            <div class="step-num" style="color:var(--accent)">Step 4</div>
+            <div class="step-name">Claude Decision</div>
+            <div class="step-detail">Send snapshot to Claude claude-sonnet-4-6, receive JSON decision</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box">
+            <div class="step-num" style="color:var(--accent3)">Step 5</div>
+            <div class="step-name">Execute Order</div>
+            <div class="step-detail">Validate guardrails, place order on Alpaca if BUY/SELL</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box">
+            <div class="step-num" style="color:var(--warn)">Step 6</div>
+            <div class="step-name">Journal Entry</div>
+            <div class="step-detail">Log full decision + execution to trades.jsonl</div>
+          </div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box">
+            <div class="step-num" style="color:var(--accent2)">Step 7</div>
+            <div class="step-name">Notify</div>
+            <div class="step-detail">Telegram alert if TELEGRAM_BOT_TOKEN is set</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div style="margin-bottom:14px;font-size:13px;font-weight:700;color:var(--accent4);">Daily Analyst Flow (17:30 EST)</div>
+        <div class="arch-wrap" style="padding:18px">
+          <div class="flow-steps">
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">1</div><div class="step-name">Load Journal</div><div class="step-detail">Last 30 days of trades.jsonl</div></div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">2</div><div class="step-name">Run Analysts</div><div class="step-detail">InStrategy + OutStrategy in sequence</div></div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">3</div><div class="step-name">Store Suggestions</div><div class="step-detail">Upsert pending by category</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="margin-bottom:14px;font-size:13px;font-weight:700;color:var(--accent2);">Analyst Interface Flow (Dashboard)</div>
+        <div class="arch-wrap" style="padding:18px">
+          <div class="flow-steps">
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">1</div><div class="step-name">View Suggestions</div><div class="step-detail">Filter by status/type</div></div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">2</div><div class="step-name">Review &amp; Act</div><div class="step-detail">Approve / Archive / Cancel</div></div></div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">3</div><div class="step-name">CLAUDE.md Patch</div><div class="step-detail">Approved suggests update the rules file</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Signal Scoring ─────────────────────────────────────────────────── -->
+  <section class="section" id="signals">
+    <div class="section-header">
+      <div class="section-icon si-green">📊</div>
+      <div>
+        <div class="section-title">Signal Scoring System</div>
+        <div class="section-sub">A trade requires at least 3 points out of a possible 6 to enter</div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-bottom:20px">
+      <strong style="color:var(--accent)">Minimum entry threshold: 3 points.</strong> This gates out weak setups and ensures multiple confirming indicators agree before capital is deployed. The threshold is itself a tunable parameter — the InStrategyAnalyst may recommend raising it to 4 during volatile regimes.
+    </div>
+
+    <div class="signal-grid">
+      <div class="signal-item">
+        <div class="signal-pts pts-2">+2</div>
+        <div class="signal-text"><strong>RSI &lt; 32</strong><span>Strong oversold — highest-weight signal</span></div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-pts pts-1">+1</div>
+        <div class="signal-text"><strong>RSI &lt; 40</strong><span>Mild oversold — early stress indicator</span></div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-pts pts-1">+1</div>
+        <div class="signal-text"><strong>Below Lower Bollinger Band</strong><span>Price outside 2σ — statistically oversold</span></div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-pts pts-1">+1</div>
+        <div class="signal-text"><strong>Below VWAP by &gt; 1%</strong><span>Divergence from intraday volume-weighted price</span></div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-pts pts-1">+1</div>
+        <div class="signal-text"><strong>Positive News Sentiment</strong><span>Alpha Vantage sentiment score &gt; 0</span></div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-pts pts-1">+1</div>
+        <div class="signal-text"><strong>ADX &lt; 20 (Ranging)</strong><span>Market regime confirmed non-trending</span></div>
+      </div>
+    </div>
+
+    <div class="warn-box" style="margin-top:20px">
+      <strong style="color:var(--warn)">Trend Filter (HARD BLOCK):</strong> If ADX &gt; 25, mean reversion signals are <em>entirely skipped</em> — the trend filter overrides all signal scoring. Mean reversion in a trending market is the primary cause of strategy losses.
+    </div>
+  </section>
+
+  <!-- ── Hard Rules ─────────────────────────────────────────────────────── -->
+  <section class="section" id="rules">
+    <div class="section-header">
+      <div class="section-icon si-red">🛡️</div>
+      <div>
+        <div class="section-title">Hard Rules — Never Violate</div>
+        <div class="section-sub">Encoded in CLAUDE.md and enforced by OrderExecutor. These cannot be overridden by Claude's reasoning.</div>
+      </div>
+    </div>
+    <div class="rules-grid">
+      <div class="rule-item">
+        <div class="rule-num">1</div>
+        <div class="rule-body"><strong>Position Size ≤ 1%</strong><span>Never risk more than 1% of account value per trade. Position sizing is calculated at order time.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">2</div>
+        <div class="rule-body"><strong>Daily Loss Limit: −2%</strong><span>If day P&amp;L hits −2% of portfolio, stop all trading. The bot shuts down until the next trading day.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">3</div>
+        <div class="rule-body"><strong>Max 3 Open Positions</strong><span>Never hold more than 3 simultaneous positions. Enforced by OrderExecutor before order submission.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">4</div>
+        <div class="rule-body"><strong>Stop Loss Always Set</strong><span>Every order must include a stop loss at order time. No order without a stop — ever.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">5</div>
+        <div class="rule-body"><strong>Time Gate: No new entries after 14:55 EST</strong><span>No overnight holds on equities. All positions closed before market close.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">6</div>
+        <div class="rule-body"><strong>Trend Filter: ADX &gt; 25 → Skip</strong><span>If ADX &gt; 25 on any symbol, do NOT take mean reversion signals on that symbol.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">7</div>
+        <div class="rule-body"><strong>Signal Threshold: 3 of 6</strong><span>Require at least 3 signal points before entering. Single-indicator setups are noise, not edge.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">8</div>
+        <div class="rule-body"><strong>No Leverage — Spot Only</strong><span>Never trade on margin. Cash-funded positions only. Leverage multiplies losses in mean reversion drawdowns.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">9</div>
+        <div class="rule-body"><strong>News Filter: Skip Earnings ±48h</strong><span>If a symbol has earnings announced within 48 hours, skip it. Earnings crush mean reversion edge.</span></div>
+      </div>
+      <div class="rule-item">
+        <div class="rule-num">10</div>
+        <div class="rule-body"><strong>Paper First — Always</strong><span>Default is paper trading. Two env flags must both be explicitly set to enable live trading.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Exit Rules ──────────────────────────────────────────────────────── -->
+  <section class="section" id="exits">
+    <div class="section-header">
+      <div class="section-icon si-orange">🚪</div>
+      <div>
+        <div class="section-title">Exit Rules</div>
+        <div class="section-sub">How and when positions are closed — partial, hard stop, time stop</div>
+      </div>
+    </div>
+    <div class="cards cards-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-green">🎯</div>
+          <div><h3>Take Profit (Mean Reversion Target)</h3></div>
+        </div>
+        <p>Exit target is the 20-day simple moving average — "the mean" the strategy is reverting to.</p>
+        <ul>
+          <li><strong>Partial exit at mean:</strong> Take 50% of the position off when price hits MA20</li>
+          <li><strong>Trail remainder:</strong> Move stop to 0.25x ATR trailing stop on remaining 50%</li>
+          <li><strong>Goal:</strong> Lock in the core gain while letting the winner run slightly</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-red">⛔</div>
+          <div><h3>Stop Loss Rules</h3></div>
+        </div>
+        <p>Two stop loss mechanisms protect capital:</p>
+        <ul>
+          <li><strong>Hard stop:</strong> Set at <code>entry − 0.5 × ATR</code> at order time — never moved down</li>
+          <li><strong>Time stop:</strong> Exit any position open for more than 3 days regardless of P&amp;L</li>
+          <li><strong>ATR calibration:</strong> Stop width is proportional to the symbol's recent volatility</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Schedule ────────────────────────────────────────────────────────── -->
+  <section class="section" id="schedule">
+    <div class="section-header">
+      <div class="section-icon si-yellow">⏱️</div>
+      <div>
+        <div class="section-title">Schedule</div>
+        <div class="section-sub">GitHub Actions cron jobs — all times in EST (UTC-4 during EDT)</div>
+      </div>
+    </div>
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Cron (UTC)</th>
+          <th>EST Time</th>
+          <th>Description</th>
+          <th>Mode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>30 13 * * 1-5</td>
+          <td>09:30 EST</td>
+          <td>Market open — first scan (after 15 min buffer)</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>0 14 * * 1-5</td>
+          <td>10:00 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>30 14 * * 1-5</td>
+          <td>10:30 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>0 15 * * 1-5</td>
+          <td>11:00 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>30 15 * * 1-5</td>
+          <td>11:30 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>0 16 * * 1-5</td>
+          <td>12:00 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>30 16 * * 1-5</td>
+          <td>12:30 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>0 17 * * 1-5</td>
+          <td>13:00 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>30 17 * * 1-5</td>
+          <td>13:30 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>0 18 * * 1-5</td>
+          <td>14:00 EST</td>
+          <td>Regular scan</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>30 18 * * 1-5</td>
+          <td>14:30 EST</td>
+          <td>Last scan before 14:55 time gate</td>
+          <td>full</td>
+        </tr>
+        <tr>
+          <td>30 21 * * 1-5</td>
+          <td>17:30 EST</td>
+          <td><strong>Daily analyst review</strong> — InStrategy + OutStrategy analysts run on last 30 days</td>
+          <td>analyst-full</td>
+        </tr>
+        <tr>
+          <td>0 12 * * 0</td>
+          <td>Sunday 08:00</td>
+          <td><strong>Weekly self-review</strong> — Claude reviews 7-day journal, writes performance summary</td>
+          <td>weekly-review</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box" style="margin-top:18px">
+      <strong>Journal persistence:</strong> GitHub Actions caches the <code>journal/</code> directory between runs. Each trading run restores the prior cache and saves an updated one, so journal entries accumulate across runs even though Actions environments are ephemeral.
+    </div>
+  </section>
+
+  <!-- ── Journal System ─────────────────────────────────────────────────── -->
+  <section class="section" id="journal">
+    <div class="section-header">
+      <div class="section-icon si-yellow">📝</div>
+      <div>
+        <div class="section-title">Journal System</div>
+        <div class="section-sub">Persistent JSONL logging — every cycle produces an entry, trade or not</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="card" style="margin-bottom:14px">
+          <h3 style="margin-bottom:12px;color:#fff">trades.jsonl — Trade Journal</h3>
+          <p>Append-only. One JSON record per trading cycle. Never overwritten.</p>
+          <ul class="kv-list">
+            <li><span class="k">timestamp</span><span class="v">ISO 8601 EST</span></li>
+            <li><span class="k">action</span><span class="v">BUY / SELL / HOLD / SKIP</span></li>
+            <li><span class="k">symbol</span><span class="v">e.g. "NVDA"</span></li>
+            <li><span class="k">signal_score</span><span class="v">0–6 integer</span></li>
+            <li><span class="k">signals_fired</span><span class="v">["RSI&lt;32", "BelowBB", ...]</span></li>
+            <li><span class="k">entry_price / stop_loss / take_profit</span><span class="v">floats</span></li>
+            <li><span class="k">execution_status</span><span class="v">SUBMITTED / REJECTED / SKIPPED</span></li>
+            <li><span class="k">reasoning</span><span class="v">Claude's plain-language explanation</span></li>
+            <li><span class="k">account_value / day_pl</span><span class="v">at time of decision</span></li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px">
+          <h3 style="margin-bottom:12px;color:#fff">suggestions_in / suggestions_out.jsonl</h3>
+          <p>One record per suggestion. Upserted by category — pending suggestions are updated in-place; actioned ones are kept forever.</p>
+          <ul class="kv-list">
+            <li><span class="k">id</span><span class="v">in-YYYYMMDD-NNN or out-...</span></li>
+            <li><span class="k">category</span><span class="v">rsi_threshold, adx_filter, ...</span></li>
+            <li><span class="k">status</span><span class="v">pending / approved / archived / cancelled</span></li>
+            <li><span class="k">title</span><span class="v">short description</span></li>
+            <li><span class="k">analysis</span><span class="v">full reasoning text</span></li>
+            <li><span class="k">current_rule / proposed_rule</span><span class="v">before/after strings</span></li>
+            <li><span class="k">proposed_claude_md_diff</span><span class="v">exact CLAUDE.md patch</span></li>
+            <li><span class="k">confidence</span><span class="v">HIGH / MEDIUM / LOW</span></li>
+            <li><span class="k">actioned_at</span><span class="v">ISO timestamp when actioned</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Watchlist ──────────────────────────────────────────────────────── -->
+  <section class="section" id="watchlist">
+    <div class="section-header">
+      <div class="section-icon si-orange">📋</div>
+      <div>
+        <div class="section-title">Watchlist</div>
+        <div class="section-sub">Scanned every 30 minutes — each symbol scored independently</div>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase">US Equities &amp; ETFs</div>
+    <div class="watchlist-grid" style="margin-bottom:24px">
+      <div class="wl-item"><div class="ticker">NVDA</div><div class="wl-name">NVIDIA — High vol, good MR</div></div>
+      <div class="wl-item"><div class="ticker">AAPL</div><div class="wl-name">Apple — Liquid, tight spreads</div></div>
+      <div class="wl-item"><div class="ticker">MSFT</div><div class="wl-name">Microsoft — Stable MR</div></div>
+      <div class="wl-item"><div class="ticker">QQQ</div><div class="wl-name">Nasdaq ETF — Regime reading</div></div>
+      <div class="wl-item"><div class="ticker">SPY</div><div class="wl-name">S&amp;P 500 ETF — Benchmark</div></div>
+      <div class="wl-item"><div class="ticker">AMD</div><div class="wl-name">AMD — NVDA pair play</div></div>
+      <div class="wl-item"><div class="ticker">GLD</div><div class="wl-name">Gold ETF — Non-correlated</div></div>
+    </div>
+    <div style="margin-bottom:14px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase">Crypto (CCXT / Binance)</div>
+    <div class="watchlist-grid">
+      <div class="wl-item"><div class="ticker" style="color:var(--warn)">BTC/USDT</div><div class="wl-name">Bitcoin — Deepest liquidity</div></div>
+      <div class="wl-item"><div class="ticker" style="color:var(--warn)">ETH/USDT</div><div class="wl-name">Ethereum — 2nd most liquid</div></div>
+      <div class="wl-item"><div class="ticker" style="color:var(--warn)">SOL/USDT</div><div class="wl-name">Solana — High volatility MR</div></div>
+    </div>
+  </section>
+
+  <!-- ── Config ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="config">
+    <div class="section-header">
+      <div class="section-icon si-blue">⚙️</div>
+      <div>
+        <div class="section-title">Configuration Reference</div>
+        <div class="section-sub">config.yaml defaults — all tunable without code changes</div>
+      </div>
+    </div>
+    <div class="cards cards-3">
+      <div class="card">
+        <h3 style="margin-bottom:12px;color:#fff">Risk Parameters</h3>
+        <ul class="kv-list">
+          <li><span class="k">max_position_pct</span><span class="v">0.01 (1%)</span></li>
+          <li><span class="k">max_daily_loss_pct</span><span class="v">0.02 (2%)</span></li>
+          <li><span class="k">max_open_positions</span><span class="v">3</span></li>
+          <li><span class="k">min_signal_score</span><span class="v">3 (of 6)</span></li>
+          <li><span class="k">reward_to_risk_min</span><span class="v">1.5</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px;color:#fff">Strategy Settings</h3>
+        <ul class="kv-list">
+          <li><span class="k">rsi_period</span><span class="v">14</span></li>
+          <li><span class="k">rsi_oversold</span><span class="v">32</span></li>
+          <li><span class="k">bollinger_period</span><span class="v">20</span></li>
+          <li><span class="k">bollinger_std</span><span class="v">2.0 σ</span></li>
+          <li><span class="k">adx_trend_threshold</span><span class="v">25 (skip MR)</span></li>
+          <li><span class="k">adx_range_threshold</span><span class="v">20 (+1 signal)</span></li>
+          <li><span class="k">vwap_deviation_pct</span><span class="v">1.0%</span></li>
+          <li><span class="k">atr_stop_multiplier</span><span class="v">0.5×</span></li>
+          <li><span class="k">atr_trail_multiplier</span><span class="v">0.25×</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px;color:#fff">Schedule Settings</h3>
+        <ul class="kv-list">
+          <li><span class="k">market_open_buffer</span><span class="v">15 min</span></li>
+          <li><span class="k">market_close_cutoff</span><span class="v">5 min before</span></li>
+          <li><span class="k">research_interval</span><span class="v">30 min</span></li>
+          <li><span class="k">crypto_24_7</span><span class="v">true</span></li>
+        </ul>
+        <h3 style="margin:14px 0 10px;color:#fff">Dependencies</h3>
+        <div class="tag-row">
+          <span class="tag tag-green">anthropic ≥ 0.34</span>
+          <span class="tag tag-blue">alpaca-py ≥ 0.28</span>
+          <span class="tag tag-orange">streamlit ≥ 1.35</span>
+          <span class="tag tag-purple">yfinance ≥ 0.2</span>
+          <span class="tag tag-yellow">plotly ≥ 5</span>
+          <span class="tag tag-blue">pandas ≥ 2.0</span>
+          <span class="tag tag-green">ccxt ≥ 4.3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Environment Variables -->
+    <div style="margin-top:28px">
+      <div style="margin-bottom:14px;font-size:14px;font-weight:700;color:#fff">Required Environment Variables</div>
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Used By</th>
+            <th>Description</th>
+            <th>Required?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ANTHROPIC_API_KEY</td>
+            <td>All Claude agents</td>
+            <td>Anthropic API key for TradingDecisionAgent + analysts</td>
+            <td><span class="tag tag-green" style="font-size:11px">Required</span></td>
+          </tr>
+          <tr>
+            <td>ALPACA_API_KEY</td>
+            <td>Data + Executor</td>
+            <td>Alpaca API key for data and trading</td>
+            <td><span class="tag tag-green" style="font-size:11px">Required</span></td>
+          </tr>
+          <tr>
+            <td>ALPACA_SECRET_KEY</td>
+            <td>Data + Executor</td>
+            <td>Alpaca secret key</td>
+            <td><span class="tag tag-green" style="font-size:11px">Required</span></td>
+          </tr>
+          <tr>
+            <td>ALPHAVANTAGE_API_KEY</td>
+            <td>MarketDataFetcher</td>
+            <td>Alpha Vantage for news sentiment</td>
+            <td><span class="tag tag-yellow" style="font-size:11px">Optional</span></td>
+          </tr>
+          <tr>
+            <td>PAPER_TRADING</td>
+            <td>Executor</td>
+            <td>Set to "false" + LIVE_TRADING_CONFIRMED="true" for live</td>
+            <td><span class="tag tag-yellow" style="font-size:11px">Defaults true</span></td>
+          </tr>
+          <tr>
+            <td>TELEGRAM_BOT_TOKEN</td>
+            <td>main.py</td>
+            <td>Telegram bot token for trade notifications</td>
+            <td><span class="tag tag-yellow" style="font-size:11px">Optional</span></td>
+          </tr>
+          <tr>
+            <td>TELEGRAM_CHAT_ID</td>
+            <td>main.py</td>
+            <td>Telegram chat ID to receive alerts</td>
+            <td><span class="tag tag-yellow" style="font-size:11px">Optional</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Streamlit Dashboard ─────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon si-blue">🖥️</div>
+      <div>
+        <div class="section-title">Streamlit Dashboard (dashboard.py)</div>
+        <div class="section-sub">4-tab monitoring interface — run with <code>streamlit run dashboard.py</code></div>
+      </div>
+    </div>
+    <div class="cards cards-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-blue">📈</div>
+          <div><h3>Tab 1: Market Overview</h3></div>
+        </div>
+        <ul>
+          <li>Live market snapshot across the full watchlist</li>
+          <li>Signal scores and indicator values per symbol</li>
+          <li>Best setups highlighted at top</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-green">💰</div>
+          <div><h3>Tab 2: Account Status</h3></div>
+        </div>
+        <ul>
+          <li>Portfolio value, buying power, cash</li>
+          <li>Open positions with unrealized P&amp;L</li>
+          <li>Day P&amp;L and daily loss limit progress</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-yellow">📓</div>
+          <div><h3>Tab 3: Trade Journal</h3></div>
+        </div>
+        <ul>
+          <li>Full trade log with signal details</li>
+          <li>Win rate, average R-multiple, P&amp;L charts</li>
+          <li>Filterable by date and action type</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon si-purple">🧠</div>
+          <div><h3>Tab 4: Analyst Suggestions</h3></div>
+        </div>
+        <ul>
+          <li>In-strategy and out-strategy suggestion cards</li>
+          <li>Filter by status (pending/approved/archived)</li>
+          <li>One-click approve / archive / cancel actions</li>
+          <li>Run Now buttons to trigger analysts manually</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<div class="footer">
+  <div style="color:var(--accent);font-weight:700;margin-bottom:6px">⚡ FlowTrader v1 — System Design Dashboard</div>
+  <div>Claude-powered mean reversion bot · Alpaca Markets · GitHub Actions · Paper trading by default</div>
+  <div style="margin-top:8px">
+    <a href="https://github.com/FlomaticAuto/flowtrader" target="_blank">GitHub Repository</a>
+    &nbsp;·&nbsp;
+    <span>Generated 2026-05-03</span>
+  </div>
+</div>
+
+<script>
+  // Smooth nav highlight
+  const sections = document.querySelectorAll('[id]');
+  const navLinks = document.querySelectorAll('.nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.style.color = '');
+        const active = document.querySelector(`.nav a[href="#${entry.target.id}"]`);
+        if (active) active.style.color = 'var(--accent)';
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

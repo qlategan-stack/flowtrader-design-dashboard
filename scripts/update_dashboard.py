@@ -45,7 +45,10 @@ Rules:
 values, watchlist symbols, environment variables, signal scoring logic, strategy parameters, etc.
 - Do not add new sections unless a genuinely new major component exists in the source
 - Do not remove sections unless a component was completely removed
-- Return ONLY the complete updated HTML — no explanation, no markdown fences, no preamble"""
+- Return ONLY the complete updated HTML — no explanation, no markdown fences, no preamble
+- CRITICAL: Your response must begin with the exact characters `<!DOCTYPE html>` — \
+nothing before it, not even a single space or newline. Any text before `<!DOCTYPE html>` \
+will corrupt the page."""
 
 
 def read_source_files(source_path: Path) -> dict[str, str]:

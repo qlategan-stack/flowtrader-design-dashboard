@@ -1,3 +1,14 @@
+Looking at the differences between the current dashboard and the source code, I need to update:
+
+1. **Agents section**: The source uses `ResearchAnalyst` (not `InStrategyAnalyst`/`OutStrategyAnalyst`) based on `main.py`. The workflow uses `research-analyst` mode, not `analyst-full`. The analyst agents in the dashboard don't match what's in main.py.
+2. **Schedule**: The workflow shows a Sunday 18:00 EDT research analyst run (`0 22 * * 0`), not a daily 17:30 EST analyst run. No `analyst-full` cron — only `weekly-review` (Sun 08:00) and `research-analyst` (Sun 18:00).
+3. **Main.py modes**: `full | weekly-review | research-analyst | test` (no `analyst-in`, `analyst-out`, `analyst-full`).
+4. **Architecture**: The analyst dispatcher and InStrategy/OutStrategy boxes don't match source.
+5. **Executor guardrails**: Position size check is 10% (not 1%) in source.
+6. **Workflow dispatch options**: `full, test, weekly-review, research-analyst`.
+7. **Journal files**: No `suggestions_in/out.jsonl` or `SuggestionStore` in source.
+8. **Dashboard**: No `analyst-full` mode, no suggestion store tabs mentioned in source.
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -632,7 +643,7 @@
       </div>
     </div>
     <div class="arch-wrap">
-      <svg viewBox="0 0 1060 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:600px">
+      <svg viewBox="0 0 1060 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:600px">
         <defs>
           <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
             <polygon points="0 0, 8 3, 0 6" fill="#30363d"/>

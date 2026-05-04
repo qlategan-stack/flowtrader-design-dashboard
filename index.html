@@ -632,7 +632,7 @@
       </div>
     </div>
     <div class="arch-wrap">
-      <svg viewBox="0 0 1060 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:600px">
+      <svg viewBox="0 0 1100 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:700px">
         <defs>
           <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
             <polygon points="0 0, 8 3, 0 6" fill="#30363d"/>
@@ -649,36 +649,49 @@
           <marker id="arr-p" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
             <polygon points="0 0, 8 3, 0 6" fill="#aa00ff"/>
           </marker>
+          <marker id="arr-y" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#ffd600"/>
+          </marker>
         </defs>
 
         <!-- ── GitHub Actions (top bar) ──────────────────────────────── -->
-        <rect x="30" y="20" width="1000" height="70" rx="10" fill="#1c2128" stroke="#30363d" stroke-width="1.5"/>
+        <rect x="30" y="20" width="1040" height="70" rx="10" fill="#1c2128" stroke="#30363d" stroke-width="1.5"/>
         <text x="50" y="43" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">GITHUB ACTIONS</text>
-        <rect x="50" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="130" y="69" font-size="11" fill="#00e676" font-family="monospace" text-anchor="middle">Trading (every 30 min)</text>
-        <rect x="220" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="300" y="69" font-size="11" fill="#aa00ff" font-family="monospace" text-anchor="middle">Research (Sunday 18:00)</text>
-        <rect x="390" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="470" y="69" font-size="11" fill="#00b8d4" font-family="monospace" text-anchor="middle">Weekly Review (Sun)</text>
-        <rect x="560" y="50" width="200" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="660" y="69" font-size="11" fill="#ffd600" font-family="monospace" text-anchor="middle">Manual: workflow_dispatch</text>
+        <rect x="50" y="50" width="155" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="128" y="69" font-size="11" fill="#00e676" font-family="monospace" text-anchor="middle">Trading (every 30 min)</text>
+        <rect x="215" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="295" y="69" font-size="11" fill="#aa00ff" font-family="monospace" text-anchor="middle">Research (Sun 18:00)</text>
+        <rect x="385" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="465" y="69" font-size="11" fill="#00b8d4" font-family="monospace" text-anchor="middle">Weekly Review (Sun)</text>
+        <rect x="555" y="50" width="175" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="642" y="69" font-size="11" fill="#ffd600" font-family="monospace" text-anchor="middle">Daily Analyst (17:30)</text>
+        <rect x="740" y="50" width="190" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="835" y="69" font-size="11" fill="#8b949e" font-family="monospace" text-anchor="middle">Manual: workflow_dispatch</text>
+
         <!-- Arrows down from crons -->
-        <line x1="130" y1="78" x2="130" y2="140" stroke="#00e676" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
-        <line x1="300" y1="78" x2="300" y2="140" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
-        <line x1="470" y1="78" x2="470" y2="140" stroke="#00b8d4" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-b)"/>
+        <line x1="128" y1="78" x2="128" y2="140" stroke="#00e676" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+        <line x1="295" y1="78" x2="295" y2="140" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+        <line x1="465" y1="78" x2="465" y2="140" stroke="#00b8d4" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-b)"/>
+        <line x1="642" y1="78" x2="642" y2="140" stroke="#ffd600" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-y)"/>
 
         <!-- ── main.py ──────────────────────────────────────────────── -->
         <rect x="30" y="140" width="380" height="70" rx="10" fill="#161b22" stroke="#00e676" stroke-width="1.5"/>
         <text x="50" y="164" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">ENTRY POINT</text>
         <text x="50" y="185" font-size="14" fill="#fff" font-family="monospace" font-weight="700">main.py</text>
-        <text x="200" y="185" font-size="11" fill="#8b949e" font-family="monospace">Orchestrates all modes</text>
-        <text x="50" y="200" font-size="11" fill="#00e676" font-family="monospace">full | weekly-review | research-analyst | test</text>
+        <text x="195" y="185" font-size="11" fill="#8b949e" font-family="monospace">Orchestrates all modes</text>
+        <text x="50" y="200" font-size="11" fill="#00e676" font-family="monospace">full | weekly-review | research-analyst | analyst-full | test</text>
 
         <!-- ── Research Analyst entry ──────────────────────────────────── -->
         <rect x="430" y="140" width="260" height="70" rx="10" fill="#161b22" stroke="#aa00ff" stroke-width="1.5"/>
         <text x="450" y="164" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">RESEARCH ANALYST</text>
         <text x="450" y="185" font-size="13" fill="#fff" font-family="monospace" font-weight="700">ResearchAnalyst</text>
         <text x="450" y="200" font-size="11" fill="#aa00ff" font-family="monospace">agents/researcher.py · Sunday evenings</text>
+
+        <!-- ── Analyst Agents ──────────────────────────────────────────── -->
+        <rect x="710" y="140" width="250" height="70" rx="10" fill="#161b22" stroke="#ffd600" stroke-width="1.5"/>
+        <text x="730" y="164" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DAILY ANALYSTS</text>
+        <text x="730" y="185" font-size="13" fill="#fff" font-family="monospace" font-weight="700">InStrategyAnalyst / OutStrategyAnalyst</text>
+        <text x="730" y="200" font-size="11" fill="#ffd600" font-family="monospace">agents/analyst_in.py · analyst_out.py</text>
 
         <!-- ── Data Fetcher ───────────────────────────────────────────── -->
         <rect x="30" y="270" width="200" height="80" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
@@ -692,7 +705,7 @@
         <text x="270" y="292" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DECISION AGENT</text>
         <text x="270" y="311" font-size="13" fill="#fff" font-family="monospace" font-weight="700">TradingDecisionAgent</text>
         <text x="270" y="328" font-size="11" fill="#8b949e">agents/decision.py</text>
-        <text x="270" y="343" font-size="11" fill="#00e676">Claude claude-sonnet-4-6 via Anthropic API</text>
+        <text x="270" y="343" font-size="11" fill="#00e676">claude-sonnet-4-6</text>
 
         <!-- ── Order Executor ────────────────────────────────────────── -->
         <rect x="470" y="270" width="200" height="80" rx="10" fill="#1c2128" stroke="#ff6d00" stroke-width="1.5"/>
@@ -709,23 +722,25 @@
         <text x="720" y="343" font-size="11" fill="#ffd600">journal/trades.jsonl</text>
 
         <!-- ── Weekly Memo output ─────────────────────────────────────── -->
-        <rect x="490" y="400" width="230" height="80" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
-        <text x="510" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">MEMO OUTPUT</text>
-        <text x="510" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">weekly_research_memo.json</text>
-        <text x="510" y="456" font-size="11" fill="#8b949e">journal/ directory</text>
-        <text x="510" y="471" font-size="11" fill="#aa00ff">Regime · Opportunities · Watchlist · Sectors</text>
+        <rect x="430" y="410" width="260" height="80" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
+        <text x="450" y="432" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">MEMO OUTPUT</text>
+        <text x="450" y="451" font-size="12" fill="#fff" font-family="monospace" font-weight="700">weekly_research_memo.json</text>
+        <text x="450" y="466" font-size="11" fill="#8b949e">journal/ directory</text>
+        <text x="450" y="481" font-size="11" fill="#aa00ff">Regime · Opportunities · Watchlist · Sectors</text>
 
-        <!-- ── Research Memo persistence ─────────────────────────────── -->
-        <rect x="530" y="500" width="190" height="50" rx="10" fill="#1c2128" stroke="#30363d" stroke-width="1.5"/>
-        <text x="550" y="520" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">PERSISTENCE</text>
-        <text x="550" y="538" font-size="12" fill="#8b949e" font-family="monospace">weekly_research_memo.json + .md</text>
+        <!-- ── Analyst Suggestions ─────────────────────────────────────── -->
+        <rect x="720" y="410" width="230" height="80" rx="10" fill="#1c2128" stroke="#ffd600" stroke-width="1.5"/>
+        <text x="740" y="432" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">ANALYST OUTPUT</text>
+        <text x="740" y="451" font-size="12" fill="#fff" font-family="monospace" font-weight="700">suggestions_in.jsonl</text>
+        <text x="740" y="466" font-size="11" fill="#8b949e">suggestions_out.jsonl</text>
+        <text x="740" y="481" font-size="11" fill="#ffd600">journal/ directory</text>
 
         <!-- ── Dashboard ─────────────────────────────────────────────── -->
-        <rect x="840" y="400" width="175" height="80" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
-        <text x="860" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DASHBOARD</text>
-        <text x="860" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">dashboard.py</text>
-        <text x="860" y="456" font-size="11" fill="#8b949e">Streamlit, 4 tabs</text>
-        <text x="860" y="471" font-size="11" fill="#00b8d4">Market/Account/Journal/Research</text>
+        <rect x="30" y="410" width="200" height="80" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
+        <text x="50" y="432" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DASHBOARD</text>
+        <text x="50" y="451" font-size="13" fill="#fff" font-family="monospace" font-weight="700">dashboard.py</text>
+        <text x="50" y="466" font-size="11" fill="#8b949e">Streamlit, 4 tabs</text>
+        <text x="50" y="481" font-size="11" fill="#00b8d4">Market/Account/Journal/Research</text>
 
         <!-- ── Arrows: main.py → Data Fetcher ─── -->
         <line x1="130" y1="210" x2="130" y2="270" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
@@ -744,23 +759,25 @@
         <line x1="670" y1="310" x2="700" y2="310" stroke="#ff6d00" stroke-width="1.5" marker-end="url(#arr-o)"/>
 
         <!-- Research Analyst → Weekly Memo -->
-        <line x1="560" y1="210" x2="605" y2="400" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+        <line x1="560" y1="210" x2="560" y2="410" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
 
-        <!-- Weekly Memo → Memo persistence -->
-        <line x1="605" y1="480" x2="625" y2="500" stroke="#aa00ff" stroke-width="1.2" marker-end="url(#arr-p)"/>
+        <!-- Daily Analysts → Suggestions -->
+        <line x1="835" y1="210" x2="835" y2="410" stroke="#ffd600" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-y)"/>
 
-        <!-- Dashboard → Memo persistence (reads) -->
-        <line x1="890" y1="480" x2="730" y2="520" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
         <!-- Dashboard reads Trade Journal -->
-        <line x1="900" y1="400" x2="900" y2="350" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3"/>
-        <line x1="900" y1="350" x2="800" y2="350" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
+        <line x1="130" y1="410" x2="130" y2="370" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <line x1="130" y1="370" x2="700" y2="370" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <line x1="700" y1="370" x2="700" y2="350" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
+
+        <!-- Dashboard reads Research Memo -->
+        <line x1="230" y1="450" x2="430" y2="450" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
 
         <!-- Legend -->
-        <text x="840" y="192" font-size="10" fill="#8b949e" font-family="monospace">Legend:</text>
-        <line x1="840" y1="205" x2="870" y2="205" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
-        <text x="876" y="209" font-size="10" fill="#8b949e" font-family="monospace">calls</text>
-        <line x1="840" y1="220" x2="870" y2="220" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
-        <text x="876" y="224" font-size="10" fill="#8b949e" font-family="monospace">async / reads</text>
+        <text x="30" y="530" font-size="10" fill="#8b949e" font-family="monospace">Legend:</text>
+        <line x1="90" y1="527" x2="120" y2="527" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
+        <text x="126" y="531" font-size="10" fill="#8b949e" font-family="monospace">calls</text>
+        <line x1="175" y1="527" x2="205" y2="527" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+        <text x="211" y="531" font-size="10" fill="#8b949e" font-family="monospace">async/reads</text>
       </svg>
     </div>
   </section>
@@ -771,7 +788,7 @@
       <div class="section-icon si-green">🤖</div>
       <div>
         <div class="section-title">Agents</div>
-        <div class="section-sub">Four distinct agents handle data, decision, execution, and weekly research</div>
+        <div class="section-sub">Five distinct agents handle data, decision, execution, weekly research, and daily analysis</div>
       </div>
     </div>
 
@@ -792,12 +809,14 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">The brain of the system. Receives a full market snapshot (prices, indicators, news sentiment, account status) and uses the Claude claude-sonnet-4-6 model to output a structured JSON trade decision. The system prompt is loaded from <code>CLAUDE.md</code>, which encodes all hard rules and signal scoring definitions.</p>
+          <p class="agent-desc">The brain of the system. Receives a full market snapshot (prices, indicators, news sentiment, account status) and uses the Claude claude-sonnet-4-6 model to output a structured JSON trade decision. The system prompt is loaded from <code>CLAUDE.md</code>, which encodes all hard rules and signal scoring definitions. Also loads the weekly research memo from <code>journal/weekly_research_memo.json</code> and injects a research context into every prompt — including regime, confidence, flagged opportunities, earnings avoidances, and key risk warnings.</p>
           <div class="agent-label">Key Methods</div>
           <ul class="method-list">
             <li>analyze_market(market_snapshot, account_snapshot) <span>→ dict</span></li>
             <li>analyze_single_symbol(symbol_data, account) <span>→ dict</span></li>
             <li>run_weekly_review(entries) <span>→ str</span></li>
+            <li>_load_research_memo() <span>→ dict  # reads journal/weekly_research_memo.json</span></li>
+            <li>_build_research_context() <span>→ str  # injected into every prompt</span></li>
           </ul>
           <div class="agent-label">Output Format</div>
           <div class="tag-row">
@@ -826,14 +845,17 @@
           <div class="agent-label">Key Methods</div>
           <ul class="method-list">
             <li>validate_order(symbol, side, qty, entry, stop, acct_val, positions, day_pl) <span>→ (bool, str)</span></li>
+            <li>calculate_quantity(account_value, entry_price, stop_loss, risk_pct=0.01) <span>→ int</span></li>
             <li>place_order(decision, account) <span>→ dict</span></li>
           </ul>
           <div class="agent-label">Guardrails Enforced</div>
           <div class="tag-row">
             <span class="tag tag-green">Max 3 positions</span>
             <span class="tag tag-blue">2% daily loss limit</span>
-            <span class="tag tag-orange">1% max position size</span>
+            <span class="tag tag-orange">10% max position size</span>
+            <span class="tag tag-orange">Min $100 order value</span>
             <span class="tag tag-purple">Stop loss required</span>
+            <span class="tag tag-purple">Stop ≤ 5% from entry</span>
             <span class="tag tag-yellow">Paper default</span>
           </div>
         </div>
@@ -866,8 +888,10 @@
             <li>get_sector_performance() <span>→ list  # 11 sectors ranked</span></li>
             <li>get_broader_universe_scan() <span>→ list  # top 10 candidates</span></li>
             <li>get_earnings_calendar() <span>→ list  # 7-day lookahead</span></li>
+            <li>get_market_news_summary() <span>→ list  # Alpaca news headlines</span></li>
             <li>generate_weekly_memo(...) <span>→ dict  # Claude's structured memo</span></li>
             <li>save_memo(memo) <span>→ (json_path, md_path)</span></li>
+            <li>load_current_memo() <span>→ Optional[dict]  # checks expiry</span></li>
           </ul>
           <div class="agent-label">Broader Scan Universe (30 symbols)</div>
           <div class="tag-row">
@@ -900,9 +924,9 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Output Structure</div>
-          <p class="agent-desc">The memo is a structured JSON file written every Sunday. The dashboard's Research tab reads it and renders each section. It expires after 7 days and shows a warning if stale.</p>
+          <p class="agent-desc">The memo is a structured JSON file written every Sunday. The dashboard's Research tab reads it and renders each section. It expires after 7 days and shows a warning if stale. The TradingDecisionAgent also reads it at runtime and injects a research context block into every Claude prompt.</p>
           <ul class="kv-list">
-            <li><span class="k">market_regime</span><span class="v">TRENDING / RANGING / UNKNOWN</span></li>
+            <li><span class="k">market_regime</span><span class="v">TRENDING / RANGING / UNKNOWN (or rich dict)</span></li>
             <li><span class="k">confidence_score</span><span class="v">1–10 integer</span></li>
             <li><span class="k">confidence_reason</span><span class="v">one-line rationale</span></li>
             <li><span class="k">top_opportunities</span><span class="v">list of {symbol, reason, signal_strength}</span></li>
@@ -910,11 +934,70 @@
             <li><span class="k">sector_focus</span><span class="v">{favour, avoid}</span></li>
             <li><span class="k">risk_warnings</span><span class="v">list of {severity, warning}</span></li>
             <li><span class="k">generated_at / valid_until</span><span class="v">ISO timestamps</span></li>
+            <li><span class="k">raw_analysis</span><span class="v">full Claude response text</span></li>
           </ul>
           <div class="agent-label" style="margin-top:10px">Notification</div>
           <div class="tag-row">
             <span class="tag tag-green">Telegram summary on completion</span>
             <span class="tag tag-yellow">Markdown copy at weekly_research_memo.md</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Daily Analysts -->
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">— Daily Analyst Agents (run weekdays at 17:30 EST) —</div>
+    <div class="cards cards-2" style="margin-bottom:28px">
+
+      <!-- InStrategyAnalyst -->
+      <div class="agent-card">
+        <div class="agent-card-top">
+          <div class="row">
+            <div class="card-icon si-yellow" style="font-size:22px">📈</div>
+            <div>
+              <h3>InStrategyAnalyst</h3>
+              <div class="sub">agents/analyst_in.py · daily at 17:30 EST</div>
+            </div>
+          </div>
+        </div>
+        <div class="agent-card-body">
+          <div class="agent-label">Purpose</div>
+          <p class="agent-desc">Daily end-of-day analyst that reviews recent trade journal entries and proposes improvements within the existing mean reversion strategy — parameter tuning, signal threshold adjustments, symbol-level observations. Writes suggestions to <code>journal/suggestions_in.jsonl</code>.</p>
+          <div class="agent-label">Key Methods</div>
+          <ul class="method-list">
+            <li>run(days=30) <span>→ list[str]  # suggestion IDs written</span></li>
+          </ul>
+          <div class="agent-label">Output</div>
+          <div class="tag-row">
+            <span class="tag tag-yellow">journal/suggestions_in.jsonl</span>
+            <span class="tag tag-green">Telegram notification on completion</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OutStrategyAnalyst -->
+      <div class="agent-card">
+        <div class="agent-card-top">
+          <div class="row">
+            <div class="card-icon si-orange" style="font-size:22px">🔭</div>
+            <div>
+              <h3>OutStrategyAnalyst</h3>
+              <div class="sub">agents/analyst_out.py · daily at 17:30 EST</div>
+            </div>
+          </div>
+        </div>
+        <div class="agent-card-body">
+          <div class="agent-label">Purpose</div>
+          <p class="agent-desc">Complementary daily analyst that looks beyond the current strategy — identifies new potential strategies, market opportunities, or structural improvements that may warrant adding a second strategy layer or expanding the trading universe. Writes suggestions to <code>journal/suggestions_out.jsonl</code>.</p>
+          <div class="agent-label">Key Methods</div>
+          <ul class="method-list">
+            <li>run(days=30) <span>→ list[str]  # suggestion IDs written</span></li>
+          </ul>
+          <div class="agent-label">Output</div>
+          <div class="tag-row">
+            <span class="tag tag-orange">journal/suggestions_out.jsonl</span>
+            <span class="tag tag-green">Telegram notification on completion</span>
           </div>
         </div>
       </div>
@@ -938,674 +1021,4 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">Pulls everything Claude needs for a trade decision into a single clean JSON snapshot. Fetches price history, computes all technical indicators (RSI, Bollinger Bands, VWAP, ADX, ATR), pulls news sentiment from Alpha Vantage, and assembles a ranked watchlist by signal score.</p>
-          <div class="agent-label">Key Methods</div>
-          <ul class="method-list">
-            <li>get_account_snapshot() <span>→ dict  # balance, positions, P&amp;L</span></li>
-            <li>build_market_snapshot(watchlist) <span>→ dict  # ranked by score</span></li>
-            <li>get_symbol_indicators(symbol) <span>→ dict</span></li>
-            <li>get_news_sentiment(symbol) <span>→ float  # -1 to +1</span></li>
-          </ul>
-          <div class="agent-label">Computed Indicators</div>
-          <div class="tag-row">
-            <span class="tag tag-blue">RSI-14</span>
-            <span class="tag tag-blue">BB(20, 2σ)</span>
-            <span class="tag tag-blue">VWAP deviation</span>
-            <span class="tag tag-blue">ADX-14</span>
-            <span class="tag tag-blue">ATR-14</span>
-            <span class="tag tag-blue">MA20 / MA50</span>
-            <span class="tag tag-blue">News sentiment</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- TradeJournal -->
-      <div class="agent-card">
-        <div class="agent-card-top">
-          <div class="row">
-            <div class="card-icon si-yellow" style="font-size:22px">📓</div>
-            <div>
-              <h3>TradeJournal</h3>
-              <div class="sub">journal/logger.py</div>
-            </div>
-          </div>
-        </div>
-        <div class="agent-card-body">
-          <div class="agent-label">Purpose</div>
-          <p class="agent-desc">Writes every trading cycle — trade or skip — to an append-only JSONL file. Every entry includes full indicator context, Claude's reasoning, and execution result. Also generates weekly performance summaries for the weekly review mode.</p>
-          <div class="agent-label">Key Methods</div>
-          <ul class="method-list">
-            <li>log_decision(decision, execution, snapshot, account) <span>→ dict</span></li>
-            <li>get_entries(days=7) <span>→ list[dict]</span></li>
-            <li>generate_performance_summary(days=7) <span>→ dict</span></li>
-            <li>write_weekly_summary(review_text, performance) <span>→ Path</span></li>
-          </ul>
-          <div class="agent-label">Files Written</div>
-          <div class="tag-row">
-            <span class="tag tag-yellow">journal/trades.jsonl</span>
-            <span class="tag tag-yellow">journal/weekly_summary.md</span>
-            <span class="tag tag-yellow">journal/weekly_research_memo.json</span>
-            <span class="tag tag-yellow">journal/bot.log</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ── Data Flow ───────────────────────────────────────────────────────── -->
-  <section class="section" id="data-flow">
-    <div class="section-header">
-      <div class="section-icon si-blue">🔄</div>
-      <div>
-        <div class="section-title">Trading Cycle Data Flow</div>
-        <div class="section-sub">Every 30 minutes during market hours — from data fetch to journal entry</div>
-      </div>
-    </div>
-    <div class="arch-wrap" style="margin-bottom:24px">
-      <div class="flow-steps">
-        <div class="flow-step">
-          <div class="flow-box">
-            <div class="step-num" style="color:var(--accent2)">Step 1</div>
-            <div class="step-name">Fetch Account</div>
-            <div class="step-detail">Portfolio value, buying power, open positions, day P&amp;L</div>
-          </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box">
-            <div class="step-num" style="color:var(--danger)">Step 2</div>
-            <div class="step-name">Loss Limit Check</div>
-            <div class="step-detail">Abort if day P&amp;L ≤ −2% of portfolio</div>
-          </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box">
-            <div class="step-num" style="color:var(--accent2)">Step 3</div>
-            <div class="step-name">Build Snapshot</div>
-            <div class="step-detail">Scan watchlist, compute indicators, score each symbol</div>
-          </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box">
-            <div class="step-num" style="color:var(--accent)">Step 4</div>
-            <div class="step-name">Claude Decision</div>
-            <div class="step-detail">Send snapshot to Claude claude-sonnet-4-6, receive JSON decision</div>
-          </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box">
-            <div class="step-num" style="color:var(--accent3)">Step 5</div>
-            <div class="step-name">Execute Order</div>
-            <div class="step-detail">Validate guardrails, place order on Alpaca if BUY/SELL</div>
-          </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box">
-            <div class="step-num" style="color:var(--warn)">Step 6</div>
-            <div class="step-name">Journal Entry</div>
-            <div class="step-detail">Log full decision + execution to trades.jsonl</div>
-          </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box">
-            <div class="step-num" style="color:var(--accent2)">Step 7</div>
-            <div class="step-name">Notify</div>
-            <div class="step-detail">Telegram alert if TELEGRAM_BOT_TOKEN is set</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="two-col">
-      <div>
-        <div style="margin-bottom:14px;font-size:13px;font-weight:700;color:var(--accent4);">Weekly Research Flow (Sunday evening)</div>
-        <div class="arch-wrap" style="padding:18px">
-          <div class="flow-steps">
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">1</div><div class="step-name">Macro Fetch</div><div class="step-detail">VIX, 11 sectors, earnings, news</div></div></div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">2</div><div class="step-name">Broad Scan</div><div class="step-detail">30-symbol RSI scan for candidates</div></div></div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">3</div><div class="step-name">Claude Memo</div><div class="step-detail">JSON memo + Telegram summary</div></div></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style="margin-bottom:14px;font-size:13px;font-weight:700;color:var(--accent2);">Weekly Review Flow (Sunday 08:00 EST)</div>
-        <div class="arch-wrap" style="padding:18px">
-          <div class="flow-steps">
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">1</div><div class="step-name">Load Journal</div><div class="step-detail">Last 7 days of trades.jsonl</div></div></div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">2</div><div class="step-name">Claude Review</div><div class="step-detail">Win rate, R-multiple, signal patterns</div></div></div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">3</div><div class="step-name">Write Summary</div><div class="step-detail">Saved to journal/weekly_summary.md</div></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Signal Scoring ─────────────────────────────────────────────────── -->
-  <section class="section" id="signals">
-    <div class="section-header">
-      <div class="section-icon si-green">📊</div>
-      <div>
-        <div class="section-title">Signal Scoring System</div>
-        <div class="section-sub">A trade requires at least 3 points out of a possible 6 to enter</div>
-      </div>
-    </div>
-
-    <div class="highlight-box" style="margin-bottom:20px">
-      <strong style="color:var(--accent)">Minimum entry threshold: 3 points.</strong> This gates out weak setups and ensures multiple confirming indicators agree before capital is deployed. The threshold is tunable — the weekly research memo may recommend tightening it during high-volatility regimes.
-    </div>
-
-    <div class="signal-grid">
-      <div class="signal-item">
-        <div class="signal-pts pts-2">+2</div>
-        <div class="signal-text"><strong>RSI &lt; 32</strong><span>Strong oversold — highest-weight signal</span></div>
-      </div>
-      <div class="signal-item">
-        <div class="signal-pts pts-1">+1</div>
-        <div class="signal-text"><strong>RSI &lt; 40</strong><span>Mild oversold — early stress indicator</span></div>
-      </div>
-      <div class="signal-item">
-        <div class="signal-pts pts-1">+1</div>
-        <div class="signal-text"><strong>Below Lower Bollinger Band</strong><span>Price outside 2σ — statistically oversold</span></div>
-      </div>
-      <div class="signal-item">
-        <div class="signal-pts pts-1">+1</div>
-        <div class="signal-text"><strong>Below VWAP by &gt; 1%</strong><span>Divergence from intraday volume-weighted price</span></div>
-      </div>
-      <div class="signal-item">
-        <div class="signal-pts pts-1">+1</div>
-        <div class="signal-text"><strong>Positive News Sentiment</strong><span>Alpha Vantage sentiment score &gt; 0</span></div>
-      </div>
-      <div class="signal-item">
-        <div class="signal-pts pts-1">+1</div>
-        <div class="signal-text"><strong>ADX &lt; 20 (Ranging)</strong><span>Market regime confirmed non-trending</span></div>
-      </div>
-    </div>
-
-    <div class="warn-box" style="margin-top:20px">
-      <strong style="color:var(--warn)">Trend Filter (HARD BLOCK):</strong> If ADX &gt; 25, mean reversion signals are <em>entirely skipped</em> — the trend filter overrides all signal scoring. Mean reversion in a trending market is the primary cause of strategy losses.
-    </div>
-  </section>
-
-  <!-- ── Hard Rules ─────────────────────────────────────────────────────── -->
-  <section class="section" id="rules">
-    <div class="section-header">
-      <div class="section-icon si-red">🛡️</div>
-      <div>
-        <div class="section-title">Hard Rules — Never Violate</div>
-        <div class="section-sub">Encoded in CLAUDE.md and enforced by OrderExecutor. These cannot be overridden by Claude's reasoning.</div>
-      </div>
-    </div>
-    <div class="rules-grid">
-      <div class="rule-item">
-        <div class="rule-num">1</div>
-        <div class="rule-body"><strong>Position Size ≤ 1%</strong><span>Never risk more than 1% of account value per trade. Position sizing is calculated at order time.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">2</div>
-        <div class="rule-body"><strong>Daily Loss Limit: −2%</strong><span>If day P&amp;L hits −2% of portfolio, stop all trading. The bot shuts down until the next trading day.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">3</div>
-        <div class="rule-body"><strong>Max 3 Open Positions</strong><span>Never hold more than 3 simultaneous positions. Enforced by OrderExecutor before order submission.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">4</div>
-        <div class="rule-body"><strong>Stop Loss Always Set</strong><span>Every order must include a stop loss at order time. No order without a stop — ever.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">5</div>
-        <div class="rule-body"><strong>Time Gate: No new entries after 14:55 EST</strong><span>No overnight holds on equities. All positions closed before market close.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">6</div>
-        <div class="rule-body"><strong>Trend Filter: ADX &gt; 25 → Skip</strong><span>If ADX &gt; 25 on any symbol, do NOT take mean reversion signals on that symbol.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">7</div>
-        <div class="rule-body"><strong>Signal Threshold: 3 of 6</strong><span>Require at least 3 signal points before entering. Single-indicator setups are noise, not edge.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">8</div>
-        <div class="rule-body"><strong>No Leverage — Spot Only</strong><span>Never trade on margin. Cash-funded positions only. Leverage multiplies losses in mean reversion drawdowns.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">9</div>
-        <div class="rule-body"><strong>News Filter: Skip Earnings ±48h</strong><span>If a symbol has earnings announced within 48 hours, skip it. Earnings crush mean reversion edge.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">10</div>
-        <div class="rule-body"><strong>Paper First — Always</strong><span>Default is paper trading. Two env flags must both be explicitly set to enable live trading.</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Exit Rules ──────────────────────────────────────────────────────── -->
-  <section class="section" id="exits">
-    <div class="section-header">
-      <div class="section-icon si-orange">🚪</div>
-      <div>
-        <div class="section-title">Exit Rules</div>
-        <div class="section-sub">How and when positions are closed — partial, hard stop, time stop</div>
-      </div>
-    </div>
-    <div class="cards cards-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-green">🎯</div>
-          <div><h3>Take Profit (Mean Reversion Target)</h3></div>
-        </div>
-        <p>Exit target is the 20-day simple moving average — "the mean" the strategy is reverting to.</p>
-        <ul>
-          <li><strong>Partial exit at mean:</strong> Take 50% of the position off when price hits MA20</li>
-          <li><strong>Trail remainder:</strong> Move stop to 0.25x ATR trailing stop on remaining 50%</li>
-          <li><strong>Goal:</strong> Lock in the core gain while letting the winner run slightly</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-red">⛔</div>
-          <div><h3>Stop Loss Rules</h3></div>
-        </div>
-        <p>Two stop loss mechanisms protect capital:</p>
-        <ul>
-          <li><strong>Hard stop:</strong> Set at <code>entry − 0.5 × ATR</code> at order time — never moved down</li>
-          <li><strong>Time stop:</strong> Exit any position open for more than 3 days regardless of P&amp;L</li>
-          <li><strong>ATR calibration:</strong> Stop width is proportional to the symbol's recent volatility</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Schedule ────────────────────────────────────────────────────────── -->
-  <section class="section" id="schedule">
-    <div class="section-header">
-      <div class="section-icon si-yellow">⏱️</div>
-      <div>
-        <div class="section-title">Schedule</div>
-        <div class="section-sub">GitHub Actions cron jobs — all times in EST (UTC-4 during EDT)</div>
-      </div>
-    </div>
-    <table class="schedule-table">
-      <thead>
-        <tr>
-          <th>Cron (UTC)</th>
-          <th>EST Time</th>
-          <th>Description</th>
-          <th>Mode</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>30 13 * * 1-5</td>
-          <td>09:30 EST</td>
-          <td>Market open — first scan (after 15 min buffer)</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 14 * * 1-5</td>
-          <td>10:00 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 14 * * 1-5</td>
-          <td>10:30 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 15 * * 1-5</td>
-          <td>11:00 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 15 * * 1-5</td>
-          <td>11:30 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 16 * * 1-5</td>
-          <td>12:00 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 16 * * 1-5</td>
-          <td>12:30 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 17 * * 1-5</td>
-          <td>13:00 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 17 * * 1-5</td>
-          <td>13:30 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 18 * * 1-5</td>
-          <td>14:00 EST</td>
-          <td>Regular scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 18 * * 1-5</td>
-          <td>14:30 EST</td>
-          <td>Last scan before 14:55 time gate</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 12 * * 0</td>
-          <td>Sunday 08:00</td>
-          <td><strong>Weekly self-review</strong> — Claude reviews 7-day journal, writes performance summary</td>
-          <td>weekly-review</td>
-        </tr>
-        <tr>
-          <td>0 22 * * 0</td>
-          <td>Sunday 18:00</td>
-          <td><strong>Research Analyst</strong> — VIX, 11 sectors, 30-symbol scan, earnings calendar, weekly memo</td>
-          <td>research-analyst</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="highlight-box" style="margin-top:18px">
-      <strong>Journal persistence:</strong> GitHub Actions caches the <code>journal/</code> directory between runs. Each trading run restores the prior cache and saves an updated one, so journal entries accumulate across runs even though Actions environments are ephemeral.
-    </div>
-  </section>
-
-  <!-- ── Journal System ─────────────────────────────────────────────────── -->
-  <section class="section" id="journal">
-    <div class="section-header">
-      <div class="section-icon si-yellow">📝</div>
-      <div>
-        <div class="section-title">Journal System</div>
-        <div class="section-sub">Persistent JSONL logging — every cycle produces an entry, trade or not</div>
-      </div>
-    </div>
-    <div class="two-col">
-      <div>
-        <div class="card" style="margin-bottom:14px">
-          <h3 style="margin-bottom:12px;color:#fff">trades.jsonl — Trade Journal</h3>
-          <p>Append-only. One JSON record per trading cycle. Never overwritten.</p>
-          <ul class="kv-list">
-            <li><span class="k">timestamp</span><span class="v">ISO 8601 EST</span></li>
-            <li><span class="k">action</span><span class="v">BUY / SELL / HOLD / SKIP</span></li>
-            <li><span class="k">symbol</span><span class="v">e.g. "NVDA"</span></li>
-            <li><span class="k">signal_score</span><span class="v">0–6 integer</span></li>
-            <li><span class="k">signals_fired</span><span class="v">["RSI&lt;32", "BelowBB", ...]</span></li>
-            <li><span class="k">entry_price / stop_loss / take_profit</span><span class="v">floats</span></li>
-            <li><span class="k">execution_status</span><span class="v">SUBMITTED / REJECTED / SKIPPED</span></li>
-            <li><span class="k">reasoning</span><span class="v">Claude's plain-language explanation</span></li>
-            <li><span class="k">account_value / day_pl</span><span class="v">at time of decision</span></li>
-          </ul>
-        </div>
-      </div>
-      <div>
-        <div class="card" style="margin-bottom:14px">
-          <h3 style="margin-bottom:12px;color:#fff">weekly_research_memo.json</h3>
-          <p>Written every Sunday by the ResearchAnalyst. Read by the dashboard's Research tab on every load. Expires after 7 days.</p>
-          <ul class="kv-list">
-            <li><span class="k">market_regime</span><span class="v">TRENDING / RANGING / UNKNOWN</span></li>
-            <li><span class="k">confidence_score</span><span class="v">1–10 integer</span></li>
-            <li><span class="k">confidence_reason</span><span class="v">one-line rationale</span></li>
-            <li><span class="k">top_opportunities</span><span class="v">list — {symbol, reason, signal_strength}</span></li>
-            <li><span class="k">watchlist_changes</span><span class="v">{add, remove, avoid_earnings}</span></li>
-            <li><span class="k">sector_focus</span><span class="v">{favour, avoid}</span></li>
-            <li><span class="k">risk_warnings</span><span class="v">list — {severity, warning}</span></li>
-            <li><span class="k">generated_at / valid_until</span><span class="v">ISO 8601 EST timestamps</span></li>
-            <li><span class="k">raw_analysis</span><span class="v">full Claude response text</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Watchlist ──────────────────────────────────────────────────────── -->
-  <section class="section" id="watchlist">
-    <div class="section-header">
-      <div class="section-icon si-orange">📋</div>
-      <div>
-        <div class="section-title">Watchlist</div>
-        <div class="section-sub">Scanned every 30 minutes — each symbol scored independently</div>
-      </div>
-    </div>
-    <div style="margin-bottom:14px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase">US Equities &amp; ETFs</div>
-    <div class="watchlist-grid" style="margin-bottom:24px">
-      <div class="wl-item"><div class="ticker">NVDA</div><div class="wl-name">NVIDIA — High vol, good MR</div></div>
-      <div class="wl-item"><div class="ticker">AAPL</div><div class="wl-name">Apple — Liquid, tight spreads</div></div>
-      <div class="wl-item"><div class="ticker">MSFT</div><div class="wl-name">Microsoft — Stable MR</div></div>
-      <div class="wl-item"><div class="ticker">QQQ</div><div class="wl-name">Nasdaq ETF — Regime reading</div></div>
-      <div class="wl-item"><div class="ticker">SPY</div><div class="wl-name">S&amp;P 500 ETF — Benchmark</div></div>
-      <div class="wl-item"><div class="ticker">AMD</div><div class="wl-name">AMD — NVDA pair play</div></div>
-      <div class="wl-item"><div class="ticker">GLD</div><div class="wl-name">Gold ETF — Non-correlated</div></div>
-    </div>
-    <div style="margin-bottom:14px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase">Crypto (CCXT / Binance)</div>
-    <div class="watchlist-grid">
-      <div class="wl-item"><div class="ticker" style="color:var(--warn)">BTC/USDT</div><div class="wl-name">Bitcoin — Deepest liquidity</div></div>
-      <div class="wl-item"><div class="ticker" style="color:var(--warn)">ETH/USDT</div><div class="wl-name">Ethereum — 2nd most liquid</div></div>
-      <div class="wl-item"><div class="ticker" style="color:var(--warn)">SOL/USDT</div><div class="wl-name">Solana — High volatility MR</div></div>
-    </div>
-  </section>
-
-  <!-- ── Config ─────────────────────────────────────────────────────────── -->
-  <section class="section" id="config">
-    <div class="section-header">
-      <div class="section-icon si-blue">⚙️</div>
-      <div>
-        <div class="section-title">Configuration Reference</div>
-        <div class="section-sub">config.yaml defaults — all tunable without code changes</div>
-      </div>
-    </div>
-    <div class="cards cards-3">
-      <div class="card">
-        <h3 style="margin-bottom:12px;color:#fff">Risk Parameters</h3>
-        <ul class="kv-list">
-          <li><span class="k">max_position_pct</span><span class="v">0.01 (1%)</span></li>
-          <li><span class="k">max_daily_loss_pct</span><span class="v">0.02 (2%)</span></li>
-          <li><span class="k">max_open_positions</span><span class="v">3</span></li>
-          <li><span class="k">min_signal_score</span><span class="v">3 (of 6)</span></li>
-          <li><span class="k">reward_to_risk_min</span><span class="v">1.5</span></li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:12px;color:#fff">Strategy Settings</h3>
-        <ul class="kv-list">
-          <li><span class="k">rsi_period</span><span class="v">14</span></li>
-          <li><span class="k">rsi_oversold</span><span class="v">32</span></li>
-          <li><span class="k">bollinger_period</span><span class="v">20</span></li>
-          <li><span class="k">bollinger_std</span><span class="v">2.0 σ</span></li>
-          <li><span class="k">adx_trend_threshold</span><span class="v">25 (skip MR)</span></li>
-          <li><span class="k">adx_range_threshold</span><span class="v">20 (+1 signal)</span></li>
-          <li><span class="k">vwap_deviation_pct</span><span class="v">1.0%</span></li>
-          <li><span class="k">atr_stop_multiplier</span><span class="v">0.5×</span></li>
-          <li><span class="k">atr_trail_multiplier</span><span class="v">0.25×</span></li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:12px;color:#fff">Schedule Settings</h3>
-        <ul class="kv-list">
-          <li><span class="k">market_open_buffer</span><span class="v">15 min</span></li>
-          <li><span class="k">market_close_cutoff</span><span class="v">5 min before</span></li>
-          <li><span class="k">research_interval</span><span class="v">30 min</span></li>
-          <li><span class="k">crypto_24_7</span><span class="v">true</span></li>
-        </ul>
-        <h3 style="margin:14px 0 10px;color:#fff">Dependencies</h3>
-        <div class="tag-row">
-          <span class="tag tag-green">anthropic ≥ 0.34</span>
-          <span class="tag tag-blue">alpaca-py ≥ 0.28</span>
-          <span class="tag tag-orange">streamlit ≥ 1.35</span>
-          <span class="tag tag-purple">yfinance ≥ 0.2</span>
-          <span class="tag tag-yellow">plotly ≥ 5</span>
-          <span class="tag tag-blue">pandas ≥ 2.0</span>
-          <span class="tag tag-green">ccxt ≥ 4.3</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Environment Variables -->
-    <div style="margin-top:28px">
-      <div style="margin-bottom:14px;font-size:14px;font-weight:700;color:#fff">Required Environment Variables</div>
-      <table class="schedule-table">
-        <thead>
-          <tr>
-            <th>Variable</th>
-            <th>Used By</th>
-            <th>Description</th>
-            <th>Required?</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>ANTHROPIC_API_KEY</td>
-            <td>All Claude agents</td>
-            <td>Anthropic API key for TradingDecisionAgent + analysts</td>
-            <td><span class="tag tag-green" style="font-size:11px">Required</span></td>
-          </tr>
-          <tr>
-            <td>ALPACA_API_KEY</td>
-            <td>Data + Executor</td>
-            <td>Alpaca API key for data and trading</td>
-            <td><span class="tag tag-green" style="font-size:11px">Required</span></td>
-          </tr>
-          <tr>
-            <td>ALPACA_SECRET_KEY</td>
-            <td>Data + Executor</td>
-            <td>Alpaca secret key</td>
-            <td><span class="tag tag-green" style="font-size:11px">Required</span></td>
-          </tr>
-          <tr>
-            <td>ALPHAVANTAGE_API_KEY</td>
-            <td>MarketDataFetcher</td>
-            <td>Alpha Vantage for news sentiment</td>
-            <td><span class="tag tag-yellow" style="font-size:11px">Optional</span></td>
-          </tr>
-          <tr>
-            <td>PAPER_TRADING</td>
-            <td>Executor</td>
-            <td>Set to "false" + LIVE_TRADING_CONFIRMED="true" for live</td>
-            <td><span class="tag tag-yellow" style="font-size:11px">Defaults true</span></td>
-          </tr>
-          <tr>
-            <td>TELEGRAM_BOT_TOKEN</td>
-            <td>main.py</td>
-            <td>Telegram bot token for trade notifications</td>
-            <td><span class="tag tag-yellow" style="font-size:11px">Optional</span></td>
-          </tr>
-          <tr>
-            <td>TELEGRAM_CHAT_ID</td>
-            <td>main.py</td>
-            <td>Telegram chat ID to receive alerts</td>
-            <td><span class="tag tag-yellow" style="font-size:11px">Optional</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ── Streamlit Dashboard ─────────────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header">
-      <div class="section-icon si-blue">🖥️</div>
-      <div>
-        <div class="section-title">Streamlit Dashboard (dashboard.py)</div>
-        <div class="section-sub">4-tab monitoring interface — run with <code>streamlit run dashboard.py</code> from <code>flowtrader-dashboard/</code></div>
-      </div>
-    </div>
-    <div class="cards cards-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-blue">📈</div>
-          <div><h3>Tab 1: Market Overview</h3></div>
-        </div>
-        <ul>
-          <li>Live market snapshot across the full watchlist</li>
-          <li>Signal scores and indicator values per symbol</li>
-          <li>Best setups highlighted at top</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-green">💰</div>
-          <div><h3>Tab 2: Account Status</h3></div>
-        </div>
-        <ul>
-          <li>Portfolio value, buying power, cash</li>
-          <li>Open positions with unrealized P&amp;L</li>
-          <li>Day P&amp;L and daily loss limit progress</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-yellow">📓</div>
-          <div><h3>Tab 3: Trade Journal</h3></div>
-        </div>
-        <ul>
-          <li>Full trade log with signal details</li>
-          <li>Win rate, average R-multiple, P&amp;L charts</li>
-          <li>Filterable by date and action type</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-purple">🧠</div>
-          <div><h3>Tab 4: Research</h3></div>
-        </div>
-        <ul>
-          <li>Weekly Research Memo from ResearchAnalyst</li>
-          <li>Market regime, confidence score (1-10), and rationale</li>
-          <li>Top 3 opportunities for the week with signal notes</li>
-          <li>Sector focus — favour vs avoid</li>
-          <li>Watchlist add/remove recommendations + earnings avoidance</li>
-          <li>Risk warnings with severity levels</li>
-          <li>Full raw Claude analysis (expandable)</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-</div><!-- /page-wrap -->
-
-<div class="footer">
-  <div style="color:var(--accent);font-weight:700;margin-bottom:6px">⚡ FlowTrader v1 — System Design Dashboard</div>
-  <div>Claude-powered mean reversion bot · Alpaca Markets · GitHub Actions · Paper trading by default</div>
-  <div style="margin-top:8px">
-    <a href="https://github.com/FlomaticAuto/flowtrader" target="_blank">GitHub Repository</a>
-    &nbsp;·&nbsp;
-    <span>Updated 2026-05-03</span>
-  </div>
-</div>
-
-<script>
-  // Smooth nav highlight
-  const sections = document.querySelectorAll('[id]');
-  const navLinks = document.querySelectorAll('.nav a');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(l => l.style.color = '');
-        const active = document.querySelector(`.nav a[href="#${entry.target.id}"]`);
-        if (active) active.style.color = 'var(--accent)';
-      }
-    });
-  }, { rootMargin: '-30% 0px -60% 0px' });
-  sections.forEach(s => observer.observe(s));
-</script>
-</body>
-</html>
+          <p class="agent-desc">Pulls everything Claude needs for a trade decision into a single clean JSON snapshot

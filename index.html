@@ -657,7 +657,7 @@
         <rect x="50" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
         <text x="130" y="69" font-size="11" fill="#00e676" font-family="monospace" text-anchor="middle">Trading (every 30 min)</text>
         <rect x="220" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="300" y="69" font-size="11" fill="#00e676" font-family="monospace" text-anchor="middle">Analyst (17:30 EST daily)</text>
+        <text x="300" y="69" font-size="11" fill="#aa00ff" font-family="monospace" text-anchor="middle">Research (Sunday 18:00)</text>
         <rect x="390" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
         <text x="470" y="69" font-size="11" fill="#00b8d4" font-family="monospace" text-anchor="middle">Weekly Review (Sun)</text>
         <rect x="560" y="50" width="200" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
@@ -672,13 +672,13 @@
         <text x="50" y="164" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">ENTRY POINT</text>
         <text x="50" y="185" font-size="14" fill="#fff" font-family="monospace" font-weight="700">main.py</text>
         <text x="200" y="185" font-size="11" fill="#8b949e" font-family="monospace">Orchestrates all modes</text>
-        <text x="50" y="200" font-size="11" fill="#00e676" font-family="monospace">full | weekly-review | analyst-in | analyst-out | analyst-full | test</text>
+        <text x="50" y="200" font-size="11" fill="#00e676" font-family="monospace">full | weekly-review | research-analyst | test</text>
 
-        <!-- ── Analyst entry ──────────────────────────────────────────── -->
+        <!-- ── Research Analyst entry ──────────────────────────────────── -->
         <rect x="430" y="140" width="260" height="70" rx="10" fill="#161b22" stroke="#aa00ff" stroke-width="1.5"/>
-        <text x="450" y="164" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">ANALYST DISPATCHER</text>
-        <text x="450" y="185" font-size="13" fill="#fff" font-family="monospace" font-weight="700">run_analyst_full()</text>
-        <text x="450" y="200" font-size="11" fill="#aa00ff" font-family="monospace">calls InStrategyAnalyst + OutStrategyAnalyst</text>
+        <text x="450" y="164" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">RESEARCH ANALYST</text>
+        <text x="450" y="185" font-size="13" fill="#fff" font-family="monospace" font-weight="700">ResearchAnalyst</text>
+        <text x="450" y="200" font-size="11" fill="#aa00ff" font-family="monospace">agents/researcher.py · Sunday evenings</text>
 
         <!-- ── Data Fetcher ───────────────────────────────────────────── -->
         <rect x="30" y="270" width="200" height="80" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
@@ -708,31 +708,24 @@
         <text x="720" y="328" font-size="11" fill="#8b949e">journal/logger.py</text>
         <text x="720" y="343" font-size="11" fill="#ffd600">journal/trades.jsonl</text>
 
-        <!-- ── Analyst In ────────────────────────────────────────────── -->
-        <rect x="430" y="400" width="185" height="80" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
-        <text x="450" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">IN-STRATEGY ANALYST</text>
-        <text x="450" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">InStrategyAnalyst</text>
-        <text x="450" y="456" font-size="11" fill="#8b949e">agents/analyst_in.py</text>
-        <text x="450" y="471" font-size="11" fill="#aa00ff">Param tuning suggestions</text>
+        <!-- ── Weekly Memo output ─────────────────────────────────────── -->
+        <rect x="490" y="400" width="230" height="80" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
+        <text x="510" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">MEMO OUTPUT</text>
+        <text x="510" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">weekly_research_memo.json</text>
+        <text x="510" y="456" font-size="11" fill="#8b949e">journal/ directory</text>
+        <text x="510" y="471" font-size="11" fill="#aa00ff">Regime · Opportunities · Watchlist · Sectors</text>
 
-        <!-- ── Analyst Out ───────────────────────────────────────────── -->
-        <rect x="635" y="400" width="185" height="80" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
-        <text x="655" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">OUT-STRATEGY ANALYST</text>
-        <text x="655" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">OutStrategyAnalyst</text>
-        <text x="655" y="456" font-size="11" fill="#8b949e">agents/analyst_out.py</text>
-        <text x="655" y="471" font-size="11" fill="#aa00ff">Macro + strategic insights</text>
-
-        <!-- ── Suggestion Store ──────────────────────────────────────── -->
+        <!-- ── Research Memo persistence ─────────────────────────────── -->
         <rect x="530" y="500" width="190" height="50" rx="10" fill="#1c2128" stroke="#30363d" stroke-width="1.5"/>
         <text x="550" y="520" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">PERSISTENCE</text>
-        <text x="550" y="538" font-size="12" fill="#8b949e" font-family="monospace">SuggestionStore (JSONL)</text>
+        <text x="550" y="538" font-size="12" fill="#8b949e" font-family="monospace">weekly_research_memo.json + .md</text>
 
         <!-- ── Dashboard ─────────────────────────────────────────────── -->
         <rect x="840" y="400" width="175" height="80" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
         <text x="860" y="422" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DASHBOARD</text>
         <text x="860" y="441" font-size="13" fill="#fff" font-family="monospace" font-weight="700">dashboard.py</text>
         <text x="860" y="456" font-size="11" fill="#8b949e">Streamlit, 4 tabs</text>
-        <text x="860" y="471" font-size="11" fill="#00b8d4">Market/Account/Journal/Analyst</text>
+        <text x="860" y="471" font-size="11" fill="#00b8d4">Market/Account/Journal/Research</text>
 
         <!-- ── Arrows: main.py → Data Fetcher ─── -->
         <line x1="130" y1="210" x2="130" y2="270" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
@@ -750,22 +743,13 @@
         <!-- Order Executor → Trade Journal -->
         <line x1="670" y1="310" x2="700" y2="310" stroke="#ff6d00" stroke-width="1.5" marker-end="url(#arr-o)"/>
 
-        <!-- Analyst dispatcher → Analyst In -->
-        <line x1="490" y1="210" x2="510" y2="400" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
-        <!-- Analyst dispatcher → Analyst Out -->
-        <line x1="560" y1="210" x2="690" y2="400" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+        <!-- Research Analyst → Weekly Memo -->
+        <line x1="560" y1="210" x2="605" y2="400" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
 
-        <!-- Trade Journal → Analyst In (reads) -->
-        <line x1="760" y1="350" x2="600" y2="400" stroke="#ffd600" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr)"/>
-        <!-- Trade Journal → Analyst Out (reads) -->
-        <line x1="800" y1="350" x2="720" y2="400" stroke="#ffd600" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr)"/>
+        <!-- Weekly Memo → Memo persistence -->
+        <line x1="605" y1="480" x2="625" y2="500" stroke="#aa00ff" stroke-width="1.2" marker-end="url(#arr-p)"/>
 
-        <!-- Analyst In → Suggestion Store -->
-        <line x1="522" y1="480" x2="620" y2="500" stroke="#aa00ff" stroke-width="1.2" marker-end="url(#arr-p)"/>
-        <!-- Analyst Out → Suggestion Store -->
-        <line x1="680" y1="480" x2="670" y2="500" stroke="#aa00ff" stroke-width="1.2" marker-end="url(#arr-p)"/>
-
-        <!-- Dashboard → Suggestion Store (reads) -->
+        <!-- Dashboard → Memo persistence (reads) -->
         <line x1="890" y1="480" x2="730" y2="520" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
         <!-- Dashboard reads Trade Journal -->
         <line x1="900" y1="400" x2="900" y2="350" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3"/>
@@ -787,7 +771,7 @@
       <div class="section-icon si-green">🤖</div>
       <div>
         <div class="section-title">Agents</div>
-        <div class="section-sub">Six distinct agents handle research, decision, execution, and improvement</div>
+        <div class="section-sub">Four distinct agents handle data, decision, execution, and weekly research</div>
       </div>
     </div>
 
@@ -857,73 +841,80 @@
 
     </div>
 
-    <!-- Analyst Agents -->
-    <div style="margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">— Analyst Agents (run once daily at 17:30 EST) —</div>
+    <!-- Research Analyst -->
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">— Research Analyst (runs every Sunday evening) —</div>
     <div class="cards cards-2" style="margin-bottom:28px">
 
-      <!-- InStrategyAnalyst -->
+      <!-- ResearchAnalyst -->
       <div class="agent-card">
         <div class="agent-card-top">
           <div class="row">
             <div class="card-icon si-purple" style="font-size:22px">🔬</div>
             <div>
-              <h3>InStrategyAnalyst</h3>
-              <div class="sub">agents/analyst_in.py · claude-sonnet-4-6</div>
+              <h3>ResearchAnalyst</h3>
+              <div class="sub">agents/researcher.py · claude-sonnet-4-6 + Alpha Vantage</div>
             </div>
           </div>
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">Reviews the trade journal (last N days) and produces suggestions for tuning the <em>existing</em> mean reversion strategy. Does NOT suggest new strategies. Expert in Bollinger Band, RSI, VWAP, ADX, and ATR parameter calibration. Produces suggestions with current vs proposed rules and a proposed CLAUDE.md diff.</p>
+          <p class="agent-desc">Weekly market strategist that runs every Sunday evening. Scans a 30-symbol broader universe for mean reversion candidates, fetches VIX, all 11 sector ETF performances, the earnings calendar, and Alpaca market news. Sends everything to Claude to produce a structured JSON weekly memo with watchlist recommendations, sector focus, risk warnings, and a trading confidence score (1-10) for the coming week. The memo is stored at <code>journal/weekly_research_memo.json</code> and displayed in the dashboard's Research tab.</p>
           <div class="agent-label">Key Methods</div>
           <ul class="method-list">
-            <li>run(days=30) <span>→ list[str]  # suggestion IDs created</span></li>
-            <li>_build_prompt(entries, claude_md) <span>→ str</span></li>
-            <li>_call_claude(prompt) <span>→ str | None</span></li>
-            <li>_parse_suggestions(raw) <span>→ list[dict]</span></li>
+            <li>run_full_analysis(current_watchlist) <span>→ dict  # summary</span></li>
+            <li>get_vix_level() <span>→ dict  # VIX + risk_level</span></li>
+            <li>get_sector_performance() <span>→ list  # 11 sectors ranked</span></li>
+            <li>get_broader_universe_scan() <span>→ list  # top 10 candidates</span></li>
+            <li>get_earnings_calendar() <span>→ list  # 7-day lookahead</span></li>
+            <li>generate_weekly_memo(...) <span>→ dict  # Claude's structured memo</span></li>
+            <li>save_memo(memo) <span>→ (json_path, md_path)</span></li>
           </ul>
-          <div class="agent-label">Suggestion Categories</div>
+          <div class="agent-label">Broader Scan Universe (30 symbols)</div>
           <div class="tag-row">
-            <span class="tag tag-purple">rsi_threshold</span>
-            <span class="tag tag-purple">bollinger_params</span>
-            <span class="tag tag-purple">adx_filter</span>
-            <span class="tag tag-purple">atr_stop_multiplier</span>
-            <span class="tag tag-purple">signal_score_threshold</span>
-            <span class="tag tag-purple">vwap_deviation</span>
+            <span class="tag tag-blue">AAPL MSFT NVDA GOOGL META AMZN TSLA AMD</span>
+            <span class="tag tag-blue">JPM BAC GS MS V MA</span>
+            <span class="tag tag-blue">JNJ PFE UNH ABBV MRK</span>
+            <span class="tag tag-blue">WMT COST MCD NKE SBUX</span>
+            <span class="tag tag-blue">SPY QQQ IWM GLD SLV TLT</span>
+            <span class="tag tag-orange">COIN MSTR RIOT</span>
+          </div>
+          <div class="agent-label" style="margin-top:10px">Macro Data (Alpha Vantage)</div>
+          <div class="tag-row">
+            <span class="tag tag-purple">VIX fear gauge</span>
+            <span class="tag tag-blue">XLK XLF XLV XLE XLI</span>
+            <span class="tag tag-blue">XLY XLP XLU XLB XLRE XLC</span>
           </div>
         </div>
       </div>
 
-      <!-- OutStrategyAnalyst -->
+      <!-- Memo Output -->
       <div class="agent-card">
         <div class="agent-card-top">
           <div class="row">
-            <div class="card-icon si-purple" style="font-size:22px">🌍</div>
+            <div class="card-icon si-yellow" style="font-size:22px">📋</div>
             <div>
-              <h3>OutStrategyAnalyst</h3>
-              <div class="sub">agents/analyst_out.py · claude-sonnet-4-6 + yfinance</div>
+              <h3>Weekly Research Memo</h3>
+              <div class="sub">journal/weekly_research_memo.json · journal/weekly_research_memo.md</div>
             </div>
           </div>
         </div>
         <div class="agent-card-body">
-          <div class="agent-label">Purpose</div>
-          <p class="agent-desc">A senior market strategist who zooms out. Reads the journal <em>plus</em> live macro context — VIX, SPY trend, 5-sector ETF performance — and asks: does this strategy fit the current market regime? Suggests watchlist changes, new strategies to layer in, and when to pause.</p>
-          <div class="agent-label">Key Methods</div>
-          <ul class="method-list">
-            <li>run(days=30) <span>→ list[str]  # suggestion IDs created</span></li>
-            <li>_fetch_macro_context() <span>→ dict  # VIX, SPY, sectors</span></li>
-            <li>_build_prompt(entries, claude_md, macro) <span>→ str</span></li>
-            <li>_call_claude(prompt) <span>→ str | None</span></li>
+          <div class="agent-label">Output Structure</div>
+          <p class="agent-desc">The memo is a structured JSON file written every Sunday. The dashboard's Research tab reads it and renders each section. It expires after 7 days and shows a warning if stale.</p>
+          <ul class="kv-list">
+            <li><span class="k">market_regime</span><span class="v">TRENDING / RANGING / UNKNOWN</span></li>
+            <li><span class="k">confidence_score</span><span class="v">1–10 integer</span></li>
+            <li><span class="k">confidence_reason</span><span class="v">one-line rationale</span></li>
+            <li><span class="k">top_opportunities</span><span class="v">list of {symbol, reason, signal_strength}</span></li>
+            <li><span class="k">watchlist_changes</span><span class="v">{add, remove, avoid_earnings}</span></li>
+            <li><span class="k">sector_focus</span><span class="v">{favour, avoid}</span></li>
+            <li><span class="k">risk_warnings</span><span class="v">list of {severity, warning}</span></li>
+            <li><span class="k">generated_at / valid_until</span><span class="v">ISO timestamps</span></li>
           </ul>
-          <div class="agent-label">Macro Data Sources (yfinance)</div>
+          <div class="agent-label" style="margin-top:10px">Notification</div>
           <div class="tag-row">
-            <span class="tag tag-blue">^VIX (fear gauge)</span>
-            <span class="tag tag-blue">SPY 30d MA20</span>
-            <span class="tag tag-blue">XLK Technology</span>
-            <span class="tag tag-blue">XLE Energy</span>
-            <span class="tag tag-blue">XLF Financials</span>
-            <span class="tag tag-blue">XLV Healthcare</span>
-            <span class="tag tag-blue">XLI Industrials</span>
+            <span class="tag tag-green">Telegram summary on completion</span>
+            <span class="tag tag-yellow">Markdown copy at weekly_research_memo.md</span>
           </div>
         </div>
       </div>
@@ -974,26 +965,27 @@
           <div class="row">
             <div class="card-icon si-yellow" style="font-size:22px">📓</div>
             <div>
-              <h3>TradeJournal + SuggestionStore</h3>
-              <div class="sub">journal/logger.py · journal/suggestion_store.py</div>
+              <h3>TradeJournal</h3>
+              <div class="sub">journal/logger.py</div>
             </div>
           </div>
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc"><strong>TradeJournal</strong> writes every trading cycle — trade or skip — to an append-only JSONL file. Every entry includes full indicator context, Claude's reasoning, and execution result. <strong>SuggestionStore</strong> persists analyst suggestions with lifecycle management: pending → approved/archived/cancelled.</p>
-          <div class="agent-label">TradeJournal Methods</div>
+          <p class="agent-desc">Writes every trading cycle — trade or skip — to an append-only JSONL file. Every entry includes full indicator context, Claude's reasoning, and execution result. Also generates weekly performance summaries for the weekly review mode.</p>
+          <div class="agent-label">Key Methods</div>
           <ul class="method-list">
             <li>log_decision(decision, execution, snapshot, account) <span>→ dict</span></li>
             <li>get_entries(days=7) <span>→ list[dict]</span></li>
             <li>generate_performance_summary(days=7) <span>→ dict</span></li>
+            <li>write_weekly_summary(review_text, performance) <span>→ Path</span></li>
           </ul>
           <div class="agent-label">Files Written</div>
           <div class="tag-row">
             <span class="tag tag-yellow">journal/trades.jsonl</span>
-            <span class="tag tag-yellow">journal/suggestions_in.jsonl</span>
-            <span class="tag tag-yellow">journal/suggestions_out.jsonl</span>
             <span class="tag tag-yellow">journal/weekly_summary.md</span>
+            <span class="tag tag-yellow">journal/weekly_research_memo.json</span>
+            <span class="tag tag-yellow">journal/bot.log</span>
           </div>
         </div>
       </div>
@@ -1072,26 +1064,26 @@
 
     <div class="two-col">
       <div>
-        <div style="margin-bottom:14px;font-size:13px;font-weight:700;color:var(--accent4);">Daily Analyst Flow (17:30 EST)</div>
+        <div style="margin-bottom:14px;font-size:13px;font-weight:700;color:var(--accent4);">Weekly Research Flow (Sunday evening)</div>
         <div class="arch-wrap" style="padding:18px">
           <div class="flow-steps">
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">1</div><div class="step-name">Load Journal</div><div class="step-detail">Last 30 days of trades.jsonl</div></div></div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">1</div><div class="step-name">Macro Fetch</div><div class="step-detail">VIX, 11 sectors, earnings, news</div></div></div>
             <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">2</div><div class="step-name">Run Analysts</div><div class="step-detail">InStrategy + OutStrategy in sequence</div></div></div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">2</div><div class="step-name">Broad Scan</div><div class="step-detail">30-symbol RSI scan for candidates</div></div></div>
             <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">3</div><div class="step-name">Store Suggestions</div><div class="step-detail">Upsert pending by category</div></div></div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent4)">3</div><div class="step-name">Claude Memo</div><div class="step-detail">JSON memo + Telegram summary</div></div></div>
           </div>
         </div>
       </div>
       <div>
-        <div style="margin-bottom:14px;font-size:13px;font-weight:700;color:var(--accent2);">Analyst Interface Flow (Dashboard)</div>
+        <div style="margin-bottom:14px;font-size:13px;font-weight:700;color:var(--accent2);">Weekly Review Flow (Sunday 08:00 EST)</div>
         <div class="arch-wrap" style="padding:18px">
           <div class="flow-steps">
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">1</div><div class="step-name">View Suggestions</div><div class="step-detail">Filter by status/type</div></div></div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">1</div><div class="step-name">Load Journal</div><div class="step-detail">Last 7 days of trades.jsonl</div></div></div>
             <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">2</div><div class="step-name">Review &amp; Act</div><div class="step-detail">Approve / Archive / Cancel</div></div></div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">2</div><div class="step-name">Claude Review</div><div class="step-detail">Win rate, R-multiple, signal patterns</div></div></div>
             <div class="flow-arrow">→</div>
-            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">3</div><div class="step-name">CLAUDE.md Patch</div><div class="step-detail">Approved suggests update the rules file</div></div></div>
+            <div class="flow-step"><div class="flow-box"><div class="step-num" style="color:var(--accent2)">3</div><div class="step-name">Write Summary</div><div class="step-detail">Saved to journal/weekly_summary.md</div></div></div>
           </div>
         </div>
       </div>
@@ -1109,7 +1101,7 @@
     </div>
 
     <div class="highlight-box" style="margin-bottom:20px">
-      <strong style="color:var(--accent)">Minimum entry threshold: 3 points.</strong> This gates out weak setups and ensures multiple confirming indicators agree before capital is deployed. The threshold is itself a tunable parameter — the InStrategyAnalyst may recommend raising it to 4 during volatile regimes.
+      <strong style="color:var(--accent)">Minimum entry threshold: 3 points.</strong> This gates out weak setups and ensures multiple confirming indicators agree before capital is deployed. The threshold is tunable — the weekly research memo may recommend tightening it during high-volatility regimes.
     </div>
 
     <div class="signal-grid">
@@ -1320,16 +1312,16 @@
           <td>full</td>
         </tr>
         <tr>
-          <td>30 21 * * 1-5</td>
-          <td>17:30 EST</td>
-          <td><strong>Daily analyst review</strong> — InStrategy + OutStrategy analysts run on last 30 days</td>
-          <td>analyst-full</td>
-        </tr>
-        <tr>
           <td>0 12 * * 0</td>
           <td>Sunday 08:00</td>
           <td><strong>Weekly self-review</strong> — Claude reviews 7-day journal, writes performance summary</td>
           <td>weekly-review</td>
+        </tr>
+        <tr>
+          <td>0 22 * * 0</td>
+          <td>Sunday 18:00</td>
+          <td><strong>Research Analyst</strong> — VIX, 11 sectors, 30-symbol scan, earnings calendar, weekly memo</td>
+          <td>research-analyst</td>
         </tr>
       </tbody>
     </table>
@@ -1367,18 +1359,18 @@
       </div>
       <div>
         <div class="card" style="margin-bottom:14px">
-          <h3 style="margin-bottom:12px;color:#fff">suggestions_in / suggestions_out.jsonl</h3>
-          <p>One record per suggestion. Upserted by category — pending suggestions are updated in-place; actioned ones are kept forever.</p>
+          <h3 style="margin-bottom:12px;color:#fff">weekly_research_memo.json</h3>
+          <p>Written every Sunday by the ResearchAnalyst. Read by the dashboard's Research tab on every load. Expires after 7 days.</p>
           <ul class="kv-list">
-            <li><span class="k">id</span><span class="v">in-YYYYMMDD-NNN or out-...</span></li>
-            <li><span class="k">category</span><span class="v">rsi_threshold, adx_filter, ...</span></li>
-            <li><span class="k">status</span><span class="v">pending / approved / archived / cancelled</span></li>
-            <li><span class="k">title</span><span class="v">short description</span></li>
-            <li><span class="k">analysis</span><span class="v">full reasoning text</span></li>
-            <li><span class="k">current_rule / proposed_rule</span><span class="v">before/after strings</span></li>
-            <li><span class="k">proposed_claude_md_diff</span><span class="v">exact CLAUDE.md patch</span></li>
-            <li><span class="k">confidence</span><span class="v">HIGH / MEDIUM / LOW</span></li>
-            <li><span class="k">actioned_at</span><span class="v">ISO timestamp when actioned</span></li>
+            <li><span class="k">market_regime</span><span class="v">TRENDING / RANGING / UNKNOWN</span></li>
+            <li><span class="k">confidence_score</span><span class="v">1–10 integer</span></li>
+            <li><span class="k">confidence_reason</span><span class="v">one-line rationale</span></li>
+            <li><span class="k">top_opportunities</span><span class="v">list — {symbol, reason, signal_strength}</span></li>
+            <li><span class="k">watchlist_changes</span><span class="v">{add, remove, avoid_earnings}</span></li>
+            <li><span class="k">sector_focus</span><span class="v">{favour, avoid}</span></li>
+            <li><span class="k">risk_warnings</span><span class="v">list — {severity, warning}</span></li>
+            <li><span class="k">generated_at / valid_until</span><span class="v">ISO 8601 EST timestamps</span></li>
+            <li><span class="k">raw_analysis</span><span class="v">full Claude response text</span></li>
           </ul>
         </div>
       </div>
@@ -1533,7 +1525,7 @@
       <div class="section-icon si-blue">🖥️</div>
       <div>
         <div class="section-title">Streamlit Dashboard (dashboard.py)</div>
-        <div class="section-sub">4-tab monitoring interface — run with <code>streamlit run dashboard.py</code></div>
+        <div class="section-sub">4-tab monitoring interface — run with <code>streamlit run dashboard.py</code> from <code>flowtrader-dashboard/</code></div>
       </div>
     </div>
     <div class="cards cards-2">
@@ -1573,13 +1565,16 @@
       <div class="card">
         <div class="card-header">
           <div class="card-icon si-purple">🧠</div>
-          <div><h3>Tab 4: Analyst Suggestions</h3></div>
+          <div><h3>Tab 4: Research</h3></div>
         </div>
         <ul>
-          <li>In-strategy and out-strategy suggestion cards</li>
-          <li>Filter by status (pending/approved/archived)</li>
-          <li>One-click approve / archive / cancel actions</li>
-          <li>Run Now buttons to trigger analysts manually</li>
+          <li>Weekly Research Memo from ResearchAnalyst</li>
+          <li>Market regime, confidence score (1-10), and rationale</li>
+          <li>Top 3 opportunities for the week with signal notes</li>
+          <li>Sector focus — favour vs avoid</li>
+          <li>Watchlist add/remove recommendations + earnings avoidance</li>
+          <li>Risk warnings with severity levels</li>
+          <li>Full raw Claude analysis (expandable)</li>
         </ul>
       </div>
     </div>
@@ -1593,7 +1588,7 @@
   <div style="margin-top:8px">
     <a href="https://github.com/FlomaticAuto/flowtrader" target="_blank">GitHub Repository</a>
     &nbsp;·&nbsp;
-    <span>Generated 2026-05-03</span>
+    <span>Updated 2026-05-03</span>
   </div>
 </div>
 

@@ -24,13 +24,14 @@ SOURCE_FILES = [
     "requirements.txt",
     "agents/decision.py",
     "agents/executor.py",
-    "agents/analyst_in.py",
-    "agents/analyst_out.py",
+    "agents/researcher.py",
     "data/fetcher.py",
     "journal/logger.py",
-    "journal/suggestion_store.py",
     ".github/workflows/trading-bot.yml",
 ]
+
+# Extra files read from a separate path (e.g. the deployed dashboard repo)
+EXTRA_SOURCE_FILES: dict[str, str] = {}  # populated at runtime if FLOWTRADER_DASHBOARD_PATH is set
 
 SYSTEM_PROMPT = """You are a technical documentation expert maintaining a self-contained HTML \
 design dashboard for FlowTrader, an automated trading system.
@@ -55,6 +56,16 @@ def read_source_files(source_path: Path) -> dict[str, str]:
             files[rel] = p.read_text(encoding="utf-8")
         else:
             print(f"  [warn] {rel} not found", file=sys.stderr)
+
+    # Also read dashboard.py from the deployed dashboard repo if path is set
+    dashboard_path = os.environ.get("FLOWTRADER_DASHBOARD_PATH")
+    if dashboard_path:
+        for extra_rel in ["dashboard.py", "agents/researcher.py", "data/fetcher.py"]:
+            ep = Path(dashboard_path) / extra_rel
+            if ep.exists() and extra_rel not in files:
+                files[f"flowtrader-dashboard/{extra_rel}"] = ep.read_text(encoding="utf-8")
+
+    files.update(EXTRA_SOURCE_FILES)
     return files
 
 
@@ -70,7 +81,7 @@ def regenerate(files: dict, current_html: str) -> str:
     )
     resp = client.messages.create(
         model="claude-sonnet-4-6",
-        max_tokens=8192,
+        max_tokens=16000,
         system=SYSTEM_PROMPT,
         messages=[{
             "role": "user",
@@ -103,7 +114,7 @@ def main():
         return
 
     old_short = old_hash[:8] if old_hash else "none"
-    print(f"Changes detected ({old_short} → {new_hash[:8]}). Calling Claude...")
+    print(f"Changes detected ({old_short} -> {new_hash[:8]}). Calling Claude...")
 
     current_html = INDEX_FILE.read_text(encoding="utf-8")
     updated_html = regenerate(files, current_html)

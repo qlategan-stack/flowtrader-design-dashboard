@@ -25,8 +25,12 @@ SOURCE_FILES = [
     "agents/decision.py",
     "agents/executor.py",
     "agents/researcher.py",
+    "agents/analyst_in.py",
+    "agents/analyst_out.py",
     "data/fetcher.py",
+    "data/crypto_fetcher.py",
     "journal/logger.py",
+    "journal/suggestion_store.py",
     ".github/workflows/trading-bot.yml",
 ]
 
@@ -82,21 +86,35 @@ def regenerate(files: dict, current_html: str) -> str:
     files_block = "\n\n".join(
         f"=== {path} ===\n{content}" for path, content in files.items()
     )
-    resp = client.messages.create(
-        model="claude-sonnet-4-6",
-        max_tokens=16000,
-        system=SYSTEM_PROMPT,
-        messages=[{
-            "role": "user",
-            "content": (
-                f"CURRENT DASHBOARD HTML:\n{current_html}\n\n"
-                f"CURRENT SOURCE CODE:\n{files_block}\n\n"
-                "Update the dashboard to accurately reflect the current source. "
-                "Return the complete HTML."
-            ),
-        }],
+    user_content = (
+        f"CURRENT DASHBOARD HTML:\n{current_html}\n\n"
+        f"CURRENT SOURCE CODE:\n{files_block}\n\n"
+        "Update the dashboard to accurately reflect the current source. "
+        "Return the complete HTML."
     )
-    return resp.content[0].text
+    # Streaming required for long generations (>10 min budget per Anthropic SDK).
+    with client.messages.stream(
+        model="claude-sonnet-4-6",
+        max_tokens=48000,  # full dashboard HTML can exceed 30k tokens
+        system=SYSTEM_PROMPT,
+        messages=[{"role": "user", "content": user_content}],
+    ) as stream:
+        for _ in stream.text_stream:
+            pass
+        final = stream.get_final_message()
+
+    if final.stop_reason == "max_tokens":
+        raise RuntimeError(
+            "Claude hit max_tokens — output truncated. "
+            "Bump max_tokens or split the prompt."
+        )
+    text = final.content[0].text
+    if not text.rstrip().endswith("</html>"):
+        raise RuntimeError(
+            "Generated HTML does not end with </html> — likely truncated. "
+            "Refusing to overwrite index.html."
+        )
+    return text
 
 
 def main():

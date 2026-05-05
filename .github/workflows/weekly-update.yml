@@ -16,11 +16,17 @@ jobs:
       - name: Checkout dashboard repo
         uses: actions/checkout@v4
 
-      - name: Checkout FlowTrader source
+      - name: Checkout FlowTrader trading-bot source
         uses: actions/checkout@v4
         with:
-          repository: FlomaticAuto/flowtrader
+          repository: qlategan-stack/flowtrader
           path: flowtrader-source
+
+      - name: Checkout FlowTrader dashboard source
+        uses: actions/checkout@v4
+        with:
+          repository: qlategan-stack/flowtrader-dashboard
+          path: flowtrader-dashboard-source
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
@@ -35,6 +41,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           FLOWTRADER_SOURCE_PATH: flowtrader-source
+          FLOWTRADER_DASHBOARD_PATH: flowtrader-dashboard-source
         run: python scripts/update_dashboard.py
 
       - name: Commit and push if changed

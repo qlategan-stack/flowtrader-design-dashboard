@@ -124,17 +124,23 @@ def compute_hash(files: dict) -> str:
 
 
 # ── Version bump + footer stamp ──────────────────────────────────────────────
-VERSION_RE = re.compile(r"<h1>Flow<span>Trader</span>\s*v([\d.]+)</h1>")
-FOOTER_RE  = re.compile(r"<span>Updated\s+\d{4}-\d{2}-\d{2}</span>")
+# Match the literal v1, v1.0, v1.12 etc. AND the {{VERSION}} placeholder that
+# the system prompt instructs Claude to leave in place. Same for the footer
+# date.
+HERO_VERSION_RE   = re.compile(r"<h1>Flow<span>Trader</span>\s*(?:v[\d.]+|\{\{VERSION\}\})</h1>")
+ANY_VERSION_LABEL = re.compile(r"FlowTrader\s+(?:v[\d.]+|\{\{VERSION\}\})")
+EXISTING_VERSION  = re.compile(r"FlowTrader\s+v([\d.]+)")
+FOOTER_DATE_RE    = re.compile(r"<span>Updated\s+(?:\d{4}-\d{2}-\d{2}|\{\{UPDATED\}\})</span>")
 
 
 def current_version(html: str) -> str:
-    m = VERSION_RE.search(html)
+    """Read the version that's currently displayed on the page (any 'FlowTrader vX' instance)."""
+    m = EXISTING_VERSION.search(html)
     return m.group(1) if m else "1.0"
 
 
 def bump_version(v: str) -> str:
-    """v1.0 → v1.1, v1.1 → v1.2, ... — only minor bumps automatically."""
+    """v1 → v1.1, v1.1 → v1.2, ... — only minor bumps automatically."""
     parts = v.split(".")
     if len(parts) == 1:
         return f"{parts[0]}.1"
@@ -143,18 +149,19 @@ def bump_version(v: str) -> str:
 
 
 def stamp(html: str, new_version: str) -> str:
-    """Inject the new version into the title and today's date into the footer."""
+    """Inject the new version + today's date everywhere they appear on the page.
+
+    Three sites: the <h1> hero, the nav brand, and the footer brand. Each
+    site can be either a literal 'FlowTrader v1.2' or the '{{VERSION}}' /
+    '{{UPDATED}}' placeholder from the system prompt — handle both.
+    """
     today = date.today().isoformat()
 
-    # Title: replace any existing version, or insert one if missing.
-    if VERSION_RE.search(html):
-        html = VERSION_RE.sub(
-            f"<h1>Flow<span>Trader</span> v{new_version}</h1>", html
-        )
-
-    # Footer: refresh the "Updated YYYY-MM-DD" stamp.
-    if FOOTER_RE.search(html):
-        html = FOOTER_RE.sub(f"<span>Updated {today}</span>", html)
+    html = HERO_VERSION_RE.sub(
+        f"<h1>Flow<span>Trader</span> v{new_version}</h1>", html
+    )
+    html = ANY_VERSION_LABEL.sub(f"FlowTrader v{new_version}", html)
+    html = FOOTER_DATE_RE.sub(f"<span>Updated {today}</span>", html)
 
     return html
 

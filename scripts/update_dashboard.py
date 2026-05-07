@@ -1,41 +1,62 @@
 #!/usr/bin/env python3
 """
 update_dashboard.py
-Weekly auto-update for the FlowTrader design dashboard.
+Bi-weekly auto-update for the FlowTrader design dashboard.
 
 Reads FlowTrader source files, checks if anything changed via a SHA-256 hash,
 and uses Claude to regenerate index.html only when the source has changed.
+
+On every successful regeneration:
+  1. Archives the previous index.html to archive/index-v<old>.html
+  2. Bumps the dashboard version (v1.0 → v1.1 → v1.2 ...)
+  3. Stamps today's date into the footer
 """
 
 import hashlib
 import json
 import os
+import re
+import shutil
 import sys
+from datetime import date
 from pathlib import Path
 
 from anthropic import Anthropic
 
-HASH_FILE = Path(".dashboard-hash")
-INDEX_FILE = Path("index.html")
+HASH_FILE   = Path(".dashboard-hash")
+INDEX_FILE  = Path("index.html")
+ARCHIVE_DIR = Path("archive")
 
+# Source files read from the trading-bot repo (FLOWTRADER_SOURCE_PATH).
+# Add new entries here when the bot grows new top-level files; the hash will
+# pick up on changes and trigger a regeneration.
 SOURCE_FILES = [
     "main.py",
     "config.yaml",
     "requirements.txt",
+    "CLAUDE.md",
     "agents/decision.py",
     "agents/executor.py",
     "agents/researcher.py",
     "agents/analyst_in.py",
     "agents/analyst_out.py",
+    "agents/risk_manager.py",
     "data/fetcher.py",
     "data/crypto_fetcher.py",
     "journal/logger.py",
     "journal/suggestion_store.py",
+    "scripts/push_journal.py",
     ".github/workflows/trading-bot.yml",
 ]
 
-# Extra files read from a separate path (e.g. the deployed dashboard repo)
-EXTRA_SOURCE_FILES: dict[str, str] = {}  # populated at runtime if FLOWTRADER_DASHBOARD_PATH is set
+# Files read from the deployed dashboard repo (FLOWTRADER_DASHBOARD_PATH).
+DASHBOARD_FILES = [
+    "dashboard.py",
+    "data/fetcher.py",
+    "data/crypto_fetcher.py",
+    "journal/logger.py",
+    ".github/workflows/sync-journal.yml",
+]
 
 SYSTEM_PROMPT = """You are a technical documentation expert maintaining a self-contained HTML \
 design dashboard for FlowTrader, an automated trading system.
@@ -43,36 +64,57 @@ design dashboard for FlowTrader, an automated trading system.
 You will receive the current dashboard HTML and the current source code. Update the dashboard \
 HTML to accurately reflect the current state of the source code.
 
-Rules:
-- Preserve the visual design, dark terminal theme, CSS, and overall structure exactly
-- Only update content that has actually changed: agent descriptions, schedule tables, config \
-values, watchlist symbols, environment variables, signal scoring logic, strategy parameters, etc.
-- Do not add new sections unless a genuinely new major component exists in the source
-- Do not remove sections unless a component was completely removed
+Rules for what to PRESERVE (do not change):
+- The visual design, dark terminal theme, CSS, and overall page structure
+- The page navigation, hero, and footer layout
+- The {{VERSION}} placeholder string in the <h1> and the {{UPDATED}} placeholder in the footer \
+  if they exist — they will be filled in by the post-processor
+
+Rules for what to UPDATE:
+- Agent descriptions, class names, method signatures, and file paths when they have changed
+- Schedule cron tables when the workflow cron has changed
+- Config values (watchlist symbols, thresholds, position caps)
+- Environment variable names
+- Signal scoring logic and risk-rule descriptions
+- Strategy parameters (RSI bands, ADX threshold, ATR multipliers, exit rules, etc.)
+- Add new sections ONLY when a genuinely new major component exists (e.g. a new agent class, \
+  a new pipeline stage, a new top-level subsystem like Bybit integration). Match the existing \
+  card/section visual style exactly when adding.
+- Remove sections only when a component was completely removed from the source
+
+Output format:
 - Return ONLY the complete updated HTML — no explanation, no markdown fences, no preamble
 - CRITICAL: Your response must begin with the exact characters `<!DOCTYPE html>` — \
-nothing before it, not even a single space or newline. Any text before `<!DOCTYPE html>` \
-will corrupt the page."""
+  nothing before it, not even a single space or newline. Any text before `<!DOCTYPE html>` \
+  will corrupt the page."""
 
 
-def read_source_files(source_path: Path) -> dict[str, str]:
-    files = {}
+def read_source_files() -> dict[str, str]:
+    """Collect source files from the trading-bot and dashboard repos."""
+    files: dict[str, str] = {}
+
+    bot_path = Path(os.environ.get("FLOWTRADER_SOURCE_PATH", "flowtrader-source"))
+    if not bot_path.exists():
+        print(f"ERROR: trading-bot source path not found: {bot_path}", file=sys.stderr)
+        sys.exit(1)
+
     for rel in SOURCE_FILES:
-        p = source_path / rel
+        p = bot_path / rel
         if p.exists():
             files[rel] = p.read_text(encoding="utf-8")
         else:
-            print(f"  [warn] {rel} not found", file=sys.stderr)
+            print(f"  [warn] {rel} not found in trading-bot", file=sys.stderr)
 
-    # Also read dashboard.py from the deployed dashboard repo if path is set
-    dashboard_path = os.environ.get("FLOWTRADER_DASHBOARD_PATH")
-    if dashboard_path:
-        for extra_rel in ["dashboard.py", "agents/researcher.py", "data/fetcher.py"]:
-            ep = Path(dashboard_path) / extra_rel
-            if ep.exists() and extra_rel not in files:
-                files[f"flowtrader-dashboard/{extra_rel}"] = ep.read_text(encoding="utf-8")
+    dash_path_env = os.environ.get("FLOWTRADER_DASHBOARD_PATH")
+    if dash_path_env:
+        dash_path = Path(dash_path_env)
+        for rel in DASHBOARD_FILES:
+            p = dash_path / rel
+            if p.exists():
+                files[f"flowtrader-dashboard/{rel}"] = p.read_text(encoding="utf-8")
+            else:
+                print(f"  [warn] flowtrader-dashboard/{rel} not found", file=sys.stderr)
 
-    files.update(EXTRA_SOURCE_FILES)
     return files
 
 
@@ -81,6 +123,43 @@ def compute_hash(files: dict) -> str:
     return hashlib.sha256(combined.encode()).hexdigest()
 
 
+# ── Version bump + footer stamp ──────────────────────────────────────────────
+VERSION_RE = re.compile(r"<h1>Flow<span>Trader</span>\s*v([\d.]+)</h1>")
+FOOTER_RE  = re.compile(r"<span>Updated\s+\d{4}-\d{2}-\d{2}</span>")
+
+
+def current_version(html: str) -> str:
+    m = VERSION_RE.search(html)
+    return m.group(1) if m else "1.0"
+
+
+def bump_version(v: str) -> str:
+    """v1.0 → v1.1, v1.1 → v1.2, ... — only minor bumps automatically."""
+    parts = v.split(".")
+    if len(parts) == 1:
+        return f"{parts[0]}.1"
+    parts[-1] = str(int(parts[-1]) + 1)
+    return ".".join(parts)
+
+
+def stamp(html: str, new_version: str) -> str:
+    """Inject the new version into the title and today's date into the footer."""
+    today = date.today().isoformat()
+
+    # Title: replace any existing version, or insert one if missing.
+    if VERSION_RE.search(html):
+        html = VERSION_RE.sub(
+            f"<h1>Flow<span>Trader</span> v{new_version}</h1>", html
+        )
+
+    # Footer: refresh the "Updated YYYY-MM-DD" stamp.
+    if FOOTER_RE.search(html):
+        html = FOOTER_RE.sub(f"<span>Updated {today}</span>", html)
+
+    return html
+
+
+# ── Generation ───────────────────────────────────────────────────────────────
 def regenerate(files: dict, current_html: str) -> str:
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
     files_block = "\n\n".join(
@@ -92,10 +171,9 @@ def regenerate(files: dict, current_html: str) -> str:
         "Update the dashboard to accurately reflect the current source. "
         "Return the complete HTML."
     )
-    # Streaming required for long generations (>10 min budget per Anthropic SDK).
     with client.messages.stream(
         model="claude-sonnet-4-6",
-        max_tokens=48000,  # full dashboard HTML can exceed 30k tokens
+        max_tokens=48000,
         system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": user_content}],
     ) as stream:
@@ -117,20 +195,32 @@ def regenerate(files: dict, current_html: str) -> str:
     return text
 
 
-def main():
-    source_path = Path(os.environ.get("FLOWTRADER_SOURCE_PATH", "flowtrader-source"))
-    if not source_path.exists():
-        print(f"ERROR: source path not found: {source_path}", file=sys.stderr)
-        sys.exit(1)
+# ── Archive previous version ─────────────────────────────────────────────────
+def archive_previous(current_html: str, old_version: str) -> Path:
+    ARCHIVE_DIR.mkdir(exist_ok=True)
+    dest = ARCHIVE_DIR / f"index-v{old_version}.html"
+    # If a file already exists for this version, suffix with the date so we
+    # never silently overwrite an archive entry.
+    if dest.exists():
+        dest = ARCHIVE_DIR / f"index-v{old_version}-{date.today().isoformat()}.html"
+    dest.write_text(current_html, encoding="utf-8")
+    return dest
 
-    print(f"Reading source files from {source_path}...")
-    files = read_source_files(source_path)
+
+def main():
+    print("Reading source files...")
+    files = read_source_files()
     print(f"  Read {len(files)} file(s)")
 
     new_hash = compute_hash(files)
     old_hash = HASH_FILE.read_text().strip() if HASH_FILE.exists() else None
 
-    if new_hash == old_hash:
+    # Allow a manual force-regenerate via env var so the user can bump the
+    # version even when the source hash is unchanged (e.g. fixing a typo
+    # spotted in the dashboard itself).
+    forced = os.environ.get("FLOWTRADER_FORCE_REGEN", "").lower() in ("1", "true", "yes")
+
+    if new_hash == old_hash and not forced:
         print("No changes detected — dashboard is up to date.")
         return
 
@@ -138,11 +228,19 @@ def main():
     print(f"Changes detected ({old_short} -> {new_hash[:8]}). Calling Claude...")
 
     current_html = INDEX_FILE.read_text(encoding="utf-8")
+    old_version  = current_version(current_html)
+    new_version  = bump_version(old_version)
+    print(f"Version: v{old_version} -> v{new_version}")
+
     updated_html = regenerate(files, current_html)
+    updated_html = stamp(updated_html, new_version)
+
+    archive_path = archive_previous(current_html, old_version)
+    print(f"Archived previous version to {archive_path}")
 
     INDEX_FILE.write_text(updated_html, encoding="utf-8")
     HASH_FILE.write_text(new_hash)
-    print("Dashboard updated.")
+    print(f"Dashboard updated to v{new_version}.")
 
 
 if __name__ == "__main__":

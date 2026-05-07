@@ -1,9 +1,8 @@
-name: Bi-weekly Dashboard Update
+name: Weekly Dashboard Update
 
 on:
   schedule:
-    - cron: '0 9 * * 1'   # Mondays  09:00 UTC
-    - cron: '0 9 * * 4'   # Thursdays 09:00 UTC
+    - cron: '0 9 * * 1'   # Mondays 09:00 UTC
   workflow_dispatch:
     inputs:
       force:

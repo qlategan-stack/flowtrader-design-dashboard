@@ -542,7 +542,7 @@
 <!-- ── Nav ──────────────────────────────────────────────────────────────── -->
 <nav class="nav">
   <div class="nav-inner">
-    <div class="nav-brand">⚡ FlowTrader v1.5</div>
+    <div class="nav-brand">⚡ FlowTrader v1.4</div>
     <a href="#overview">Overview</a>
     <a href="#architecture">Architecture</a>
     <a href="#agents">Agents</a>
@@ -562,7 +562,7 @@
   <!-- ── Hero ──────────────────────────────────────────────────────────── -->
   <div class="hero" id="overview">
     <div class="hero-badge">📈 System Design Dashboard</div>
-    <h1>Flow<span>Trader</span> v1.5</h1>
+    <h1>Flow<span>Trader</span> v1.4</h1>
     <p class="tagline">A Claude-powered mean reversion + momentum trading bot. Disciplined. Capital-preserving. Runs autonomously on GitHub Actions — paper trading by default.</p>
     <div class="hero-pills">
       <span class="pill pill-green">🔁 Mean Reversion + Momentum Strategy</span>
@@ -591,11 +591,10 @@
         <p>Two entry paths: mean reversion (buys oversold assets expecting a return to MA20) and momentum (buys confirmed uptrends expecting continuation). A per-symbol regime router selects the active path.</p>
         <ul>
           <li><strong>Indicators:</strong> Bollinger Bands, RSI, VWAP, ADX, ATR, MA20/MA50</li>
-          <li><strong>MR signal gate:</strong> score ≥ profile min_signal_score (default 2/6 per CLAUDE.md medium_safety)</li>
+          <li><strong>MR signal gate:</strong> score ≥ profile min_signal_score (default 3/6)</li>
           <li><strong>Momentum gate:</strong> directional uptrend trigger required</li>
           <li><strong>MR target exit:</strong> 20-day moving average</li>
           <li><strong>Momentum target:</strong> 2× ATR from entry (1:2 R:R)</li>
-          <li><strong>Signal composition rule:</strong> at least 1 classical oversold signal required (RSI&lt;35/&lt;45, BelowBB, BelowMA20&gt;1%)</li>
         </ul>
       </div>
       <div class="card">
@@ -622,7 +621,6 @@
           <li><strong>Live gate:</strong> PAPER_TRADING=false + LIVE_TRADING_CONFIRMED=true</li>
           <li><strong>Notifications:</strong> Telegram alerts on every trade + idle heartbeat</li>
           <li><strong>Risk profiles:</strong> high_safety / medium_safety / low_safety (switchable from dashboard)</li>
-          <li><strong>Trading window:</strong> 08:00–20:00 EST Mon–Fri (both equities and crypto gated)</li>
         </ul>
       </div>
     </div>
@@ -638,7 +636,7 @@
       </div>
     </div>
     <div class="arch-wrap">
-      <svg viewBox="0 0 1100 660" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:640px">
+      <svg viewBox="0 0 1100 640" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:640px">
         <defs>
           <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
             <polygon points="0 0, 8 3, 0 6" fill="#30363d"/>
@@ -663,22 +661,22 @@
         <!-- ── GitHub Actions (top bar) ──────────────────────────────── -->
         <rect x="30" y="20" width="1040" height="70" rx="10" fill="#1c2128" stroke="#30363d" stroke-width="1.5"/>
         <text x="50" y="43" font-size="11" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">GITHUB ACTIONS</text>
-        <rect x="50" y="50" width="160" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="130" y="69" font-size="10" fill="#00e676" font-family="monospace" text-anchor="middle">Trading (08:00–20:00 EST M–F)</text>
-        <rect x="220" y="50" width="170" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="305" y="69" font-size="10" fill="#aa00ff" font-family="monospace" text-anchor="middle">Research (Sun+Wed 18:00)</text>
-        <rect x="400" y="50" width="165" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="482" y="69" font-size="10" fill="#00b8d4" font-family="monospace" text-anchor="middle">Weekly Review (Sun 08:00)</text>
-        <rect x="575" y="50" width="175" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="662" y="69" font-size="10" fill="#ffd600" font-family="monospace" text-anchor="middle">Daily Analyst (17:30 EST)</text>
-        <rect x="760" y="50" width="185" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
-        <text x="852" y="69" font-size="10" fill="#8b949e" font-family="monospace" text-anchor="middle">Staleness Check (:15/hr)</text>
+        <rect x="50" y="50" width="155" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="127" y="69" font-size="10" fill="#00e676" font-family="monospace" text-anchor="middle">Trading (30 min, M–F)</text>
+        <rect x="215" y="50" width="170" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="300" y="69" font-size="10" fill="#aa00ff" font-family="monospace" text-anchor="middle">Research (Sun+Wed 18:00)</text>
+        <rect x="395" y="50" width="165" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="477" y="69" font-size="10" fill="#00b8d4" font-family="monospace" text-anchor="middle">Weekly Review (Sun 08:00)</text>
+        <rect x="570" y="50" width="175" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="657" y="69" font-size="10" fill="#ffd600" font-family="monospace" text-anchor="middle">Daily Analyst (17:30 EST)</text>
+        <rect x="755" y="50" width="175" height="28" rx="6" fill="#0d1117" stroke="#30363d"/>
+        <text x="842" y="69" font-size="10" fill="#8b949e" font-family="monospace" text-anchor="middle">Staleness Check (:15/hr)</text>
 
         <!-- Arrows down from crons -->
-        <line x1="130" y1="78" x2="130" y2="140" stroke="#00e676" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
-        <line x1="305" y1="78" x2="305" y2="140" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
-        <line x1="482" y1="78" x2="482" y2="140" stroke="#00b8d4" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-b)"/>
-        <line x1="662" y1="78" x2="662" y2="140" stroke="#ffd600" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-y)"/>
+        <line x1="127" y1="78" x2="127" y2="140" stroke="#00e676" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+        <line x1="300" y1="78" x2="300" y2="140" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+        <line x1="477" y1="78" x2="477" y2="140" stroke="#00b8d4" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-b)"/>
+        <line x1="657" y1="78" x2="657" y2="140" stroke="#ffd600" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-y)"/>
 
         <!-- ── main.py ──────────────────────────────────────────────── -->
         <rect x="30" y="140" width="390" height="70" rx="10" fill="#161b22" stroke="#00e676" stroke-width="1.5"/>
@@ -705,19 +703,18 @@
         <text x="50" y="343" font-size="11" fill="#00b8d4">Alpaca + Alpha Vantage</text>
 
         <!-- ── Crypto Fetcher ────────────────────────────────────────── -->
-        <rect x="30" y="370" width="200" height="100" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1"/>
+        <rect x="30" y="370" width="200" height="90" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1"/>
         <text x="50" y="392" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">CRYPTO DATA</text>
         <text x="50" y="411" font-size="12" fill="#fff" font-family="monospace" font-weight="700">BybitFetcher / BinanceFetcher</text>
         <text x="50" y="427" font-size="10" fill="#00b8d4">data/crypto_fetcher.py</text>
-        <text x="50" y="442" font-size="10" fill="#00b8d4">Bot: Binance→Bybit→ccxt</text>
-        <text x="50" y="457" font-size="10" fill="#00b8d4">Dash: CB→Kraken→Binance→Bybit→ccxt</text>
-        <text x="50" y="465" font-size="10" fill="#8b949e">12h window gate (config.yaml)</text>
+        <text x="50" y="441" font-size="10" fill="#00b8d4">Bot: Binance→Bybit→ccxt</text>
+        <text x="50" y="455" font-size="10" fill="#00b8d4">Dash: CB→Kraken→Binance→Bybit→ccxt</text>
 
         <!-- ── Strategy Engine ────────────────────────────────────────── -->
-        <rect x="30" y="490" width="200" height="70" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1"/>
-        <text x="50" y="512" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">STRATEGY ENGINE</text>
-        <text x="50" y="531" font-size="13" fill="#fff" font-family="monospace" font-weight="700">StrategyEngine</text>
-        <text x="50" y="546" font-size="10" fill="#aa00ff">strategies/engine.py + momentum.py</text>
+        <rect x="30" y="480" width="200" height="70" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1"/>
+        <text x="50" y="502" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">STRATEGY ENGINE</text>
+        <text x="50" y="521" font-size="13" fill="#fff" font-family="monospace" font-weight="700">StrategyEngine</text>
+        <text x="50" y="536" font-size="10" fill="#aa00ff">strategies/engine.py + momentum.py</text>
 
         <!-- ── Decision Agent ────────────────────────────────────────── -->
         <rect x="250" y="270" width="210" height="80" rx="10" fill="#1c2128" stroke="#00e676" stroke-width="1.5"/>
@@ -747,19 +744,13 @@
         <text x="718" y="428" font-size="11" fill="#ffd600">journal/suggestion_store.py</text>
 
         <!-- ── Weekly Memo output ─────────────────────────────────────── -->
-        <rect x="440" y="440" width="240" height="70" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
-        <text x="458" y="462" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">MEMO OUTPUT</text>
-        <text x="458" y="481" font-size="13" fill="#fff" font-family="monospace" font-weight="700">weekly_research_memo.json</text>
-        <text x="458" y="498" font-size="11" fill="#aa00ff">Regime · Crypto Outlook · Opportunities · Watchlist</text>
-
-        <!-- ── Cooldown / Throttle store ─────────────────────────────── -->
-        <rect x="250" y="390" width="200" height="60" rx="10" fill="#1c2128" stroke="#ff6d00" stroke-width="1"/>
-        <text x="268" y="410" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">COOLDOWN STORE</text>
-        <text x="268" y="428" font-size="11" fill="#fff" font-family="monospace">already_held_cooldown.json</text>
-        <text x="268" y="441" font-size="10" fill="#ff6d00">H-2/M-2 audit fixes · main.py</text>
+        <rect x="440" y="430" width="240" height="70" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1.5"/>
+        <text x="458" y="452" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">MEMO OUTPUT</text>
+        <text x="458" y="471" font-size="13" fill="#fff" font-family="monospace" font-weight="700">weekly_research_memo.json</text>
+        <text x="458" y="488" font-size="11" fill="#aa00ff">Regime · Crypto Outlook · Opportunities · Watchlist</text>
 
         <!-- ── Dashboard ─────────────────────────────────────────────── -->
-        <rect x="910" y="270" width="185" height="150" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
+        <rect x="910" y="270" width="185" height="130" rx="10" fill="#1c2128" stroke="#00b8d4" stroke-width="1.5"/>
         <text x="928" y="292" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">DASHBOARD</text>
         <text x="928" y="311" font-size="13" fill="#fff" font-family="monospace" font-weight="700">dashboard.py</text>
         <text x="928" y="328" font-size="11" fill="#8b949e">Streamlit, 8 pages</text>
@@ -767,20 +758,19 @@
         <text x="928" y="358" font-size="11" fill="#00b8d4">Journal/Trades/Research</text>
         <text x="928" y="373" font-size="11" fill="#00b8d4">Analyst/Learn</text>
         <text x="928" y="388" font-size="10" fill="#8b949e">Math strategies + Risk profile</text>
-        <text x="928" y="403" font-size="10" fill="#8b949e">5-min auto-refresh (REFRESH_SEC=300)</text>
-        <text x="928" y="413" font-size="10" fill="#8b949e">Norton SSL patch (2026-05-20)</text>
+        <text x="928" y="396" font-size="10" fill="#8b949e">Norton SSL patch (2026-05-20)</text>
 
         <!-- ── Risk Profile ──────────────────────────────────────────── -->
-        <rect x="910" y="440" width="185" height="55" rx="10" fill="#1c2128" stroke="#00e676" stroke-width="1"/>
-        <text x="928" y="460" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">RISK PROFILE</text>
-        <text x="928" y="478" font-size="12" fill="#fff" font-family="monospace" font-weight="700">risk_profile.json</text>
-        <text x="928" y="490" font-size="10" fill="#00e676" font-family="monospace">journal/ · written by dashboard</text>
+        <rect x="910" y="420" width="185" height="55" rx="10" fill="#1c2128" stroke="#00e676" stroke-width="1"/>
+        <text x="928" y="440" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">RISK PROFILE</text>
+        <text x="928" y="458" font-size="12" fill="#fff" font-family="monospace" font-weight="700">risk_profile.json</text>
+        <text x="928" y="470" font-size="10" fill="#00e676" font-family="monospace">journal/ · written by dashboard</text>
 
         <!-- ── Math Strategies ───────────────────────────────────────── -->
-        <rect x="910" y="510" width="185" height="55" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1"/>
-        <text x="928" y="530" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">MATH STRATEGIES</text>
-        <text x="928" y="548" font-size="12" fill="#fff" font-family="monospace" font-weight="700">math_strategies.json</text>
-        <text x="928" y="560" font-size="10" fill="#aa00ff" font-family="monospace">journal/ · toggled by dashboard</text>
+        <rect x="910" y="490" width="185" height="55" rx="10" fill="#1c2128" stroke="#aa00ff" stroke-width="1"/>
+        <text x="928" y="510" font-size="10" fill="#8b949e" font-family="monospace" font-weight="700" letter-spacing="1">MATH STRATEGIES</text>
+        <text x="928" y="528" font-size="12" fill="#fff" font-family="monospace" font-weight="700">math_strategies.json</text>
+        <text x="928" y="540" font-size="10" fill="#aa00ff" font-family="monospace">journal/ · toggled by dashboard</text>
 
         <!-- ── Arrows: main.py → Data Fetcher ─── -->
         <line x1="130" y1="210" x2="130" y2="270" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
@@ -802,32 +792,29 @@
         <line x1="130" y1="350" x2="130" y2="370" stroke="#00b8d4" stroke-width="1.2" marker-end="url(#arr-b)"/>
 
         <!-- Strategy Engine ↑ Data Fetcher -->
-        <line x1="130" y1="490" x2="130" y2="470" stroke="#aa00ff" stroke-width="1.2" marker-end="url(#arr-p)"/>
-
-        <!-- main.py → Cooldown store -->
-        <line x1="230" y1="380" x2="250" y2="415" stroke="#ff6d00" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr-o)"/>
+        <line x1="130" y1="480" x2="130" y2="460" stroke="#aa00ff" stroke-width="1.2" marker-end="url(#arr-p)"/>
 
         <!-- Research Analyst → Memo -->
-        <line x1="555" y1="210" x2="560" y2="440" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
+        <line x1="555" y1="210" x2="560" y2="430" stroke="#aa00ff" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-p)"/>
 
         <!-- Analyst → Suggestion Store -->
         <line x1="805" y1="210" x2="800" y2="370" stroke="#ffd600" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-y)"/>
 
         <!-- Dashboard reads Journal -->
-        <line x1="1002" y1="420" x2="1002" y2="440" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <line x1="1002" y1="400" x2="1002" y2="420" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3"/>
 
         <!-- Dashboard → risk profile -->
-        <line x1="910" y1="467" x2="900" y2="467" stroke="#00e676" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-g)"/>
+        <line x1="910" y1="447" x2="900" y2="447" stroke="#00e676" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-g)"/>
 
         <!-- Dashboard reads Memo -->
-        <line x1="910" y1="370" x2="800" y2="460" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
+        <line x1="910" y1="350" x2="800" y2="440" stroke="#00b8d4" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#arr-b)"/>
 
         <!-- Legend -->
-        <text x="30" y="590" font-size="10" fill="#8b949e" font-family="monospace">Legend:</text>
-        <line x1="30" y1="603" x2="60" y2="603" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
-        <text x="66" y="607" font-size="10" fill="#8b949e" font-family="monospace">calls</text>
-        <line x1="30" y1="618" x2="60" y2="618" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
-        <text x="66" y="622" font-size="10" fill="#8b949e" font-family="monospace">async / reads</text>
+        <text x="30" y="575" font-size="10" fill="#8b949e" font-family="monospace">Legend:</text>
+        <line x1="30" y1="588" x2="60" y2="588" stroke="#30363d" stroke-width="1.5" marker-end="url(#arr)"/>
+        <text x="66" y="592" font-size="10" fill="#8b949e" font-family="monospace">calls</text>
+        <line x1="30" y1="603" x2="60" y2="603" stroke="#30363d" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+        <text x="66" y="607" font-size="10" fill="#8b949e" font-family="monospace">async / reads</text>
       </svg>
     </div>
   </section>
@@ -843,7 +830,7 @@
     </div>
 
     <!-- Trading Loop Agents -->
-    <div style="margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">— Trading Loop Agents (run every 30 min within 08:00–20:00 EST window, Mon–Fri) —</div>
+    <div style="margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">— Trading Loop Agents (run every 30 min during market hours) —</div>
     <div class="cards cards-2" style="margin-bottom:28px">
 
       <!-- TradingDecisionAgent -->
@@ -859,7 +846,7 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">The brain of the system. Receives a full market snapshot (prices, indicators, news sentiment, account status) and uses the Claude claude-sonnet-4-6 model to output a structured JSON trade decision. The system prompt is loaded from <code>CLAUDE.md</code>, which encodes all hard rules and signal scoring definitions. Also loads the latest weekly research memo from <code>journal/weekly_research_memo.json</code> and injects a research context block into every prompt — including separate equity and crypto regime blocks, mean reversion active flags, flagged opportunities, earnings avoidance, and risk warnings. Loads the active risk profile via <code>load_risk_profile()</code> and gates entries on <code>min_signal_score</code> (per-class: <code>equity_min_signal_score</code> for US equities, <code>min_signal_score</code> for crypto — M-1 audit 2026-05-26 experiment). Understands two strategy modes (MEAN_REVERSION and MOMENTUM) and uses the per-symbol <code>strategy_mode</code> chosen by the regime router. Includes Anthropic API error classification (<code>_classify_api_error</code>) and retry logic (3 attempts, 5s backoff for connection errors, 30s for rate limits, no retry on auth/credit errors — H-4 audit 2026-05-25). Rate-limited Telegram alert on first failure per error kind via <code>journal/last_api_alert.json</code>.</p>
+          <p class="agent-desc">The brain of the system. Receives a full market snapshot (prices, indicators, news sentiment, account status) and uses the Claude claude-sonnet-4-6 model to output a structured JSON trade decision. The system prompt is loaded from <code>CLAUDE.md</code>, which encodes all hard rules and signal scoring definitions. Also loads the latest weekly research memo from <code>journal/weekly_research_memo.json</code> and injects a research context block into every prompt — including separate equity and crypto regime blocks, mean reversion active flags, flagged opportunities, earnings avoidance, and risk warnings. Loads the active risk profile via <code>load_risk_profile()</code> and gates entries on <code>min_signal_score</code>. Understands two strategy modes (MEAN_REVERSION and MOMENTUM) and uses the per-symbol <code>strategy_mode</code> chosen by the regime router to select the correct bracket levels. Includes Anthropic API error classification (<code>_classify_api_error</code>) and Telegram rate-limited alert on first failure per error kind via <code>journal/last_api_alert.json</code>.</p>
           <div class="agent-label">Key Methods</div>
           <ul class="method-list">
             <li>analyze_market(market_snapshot, account_snapshot) <span>→ dict</span></li>
@@ -867,7 +854,7 @@
             <li>run_weekly_review(entries) <span>→ str</span></li>
             <li>_build_research_context() <span>→ str  # injects equity + crypto memo into prompt</span></li>
             <li>_load_research_memo() <span>→ dict  # loads weekly_research_memo.json</span></li>
-            <li>_build_analysis_prompt(snapshot, account) <span>→ str  # includes MEAN_REVERSION + MOMENTUM paths, per-class score thresholds</span></li>
+            <li>_build_analysis_prompt(snapshot, account) <span>→ str  # includes MEAN_REVERSION + MOMENTUM paths</span></li>
             <li>_parse_decision(raw_text) <span>→ dict  # code-fence → brace-counting → full JSON → SKIP</span></li>
           </ul>
           <div class="agent-label">Output Format</div>
@@ -879,7 +866,7 @@
           </div>
           <div class="agent-label" style="margin-top:8px">Strategy Mode Prompt</div>
           <div class="tag-row">
-            <span class="tag tag-green">MEAN_REVERSION: oversold + ADX&lt;25 → target MA20; needs ≥1 classical oversold signal</span>
+            <span class="tag tag-green">MEAN_REVERSION: oversold + ADX&lt;25 → target MA20</span>
             <span class="tag tag-orange">MOMENTUM: uptrend confirmed + ADX&gt;25 OK → target 2×ATR</span>
           </div>
         </div>
@@ -898,13 +885,12 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">Validates every trade decision against hard guardrails before submitting to Alpaca (equities) or Bybit/Binance (crypto). Routes orders based on whether the symbol contains a "/" (crypto) or not (equity). For crypto orders, prefers <code>BinanceFetcher</code> when <code>BINANCE_API_KEY</code> is set, else falls back to <code>BybitFetcher</code>. Fetches live exchange balance to determine buying power and position count. Acts as a final safety layer — even if Claude returns a BUY, the executor will reject if any guardrail fails. Defaults to paper trading (Alpaca) and testnet (crypto). Reads the active risk profile from <code>journal/risk_profile.json</code>. A hard absolute cap of <strong>10% of account</strong> applies regardless of profile settings. Enforces a no-adds rule for equities (3-layer check: account snapshot, live Alpaca positions, open bracket orders) and for crypto (balance + journal lookback). Also enforces an R:R gate of minimum 1.5:1 at order time. An emergency stop (config.yaml <code>risk.max_open_positions=0</code>) halts all new entries while allowing exits.</p>
+          <p class="agent-desc">Validates every trade decision against hard guardrails before submitting to Alpaca (equities) or Bybit/Binance (crypto). Routes orders based on whether the symbol contains a "/" (crypto) or not (equity). For crypto orders, prefers <code>BinanceFetcher</code> when <code>BINANCE_API_KEY</code> is set, else falls back to <code>BybitFetcher</code>. Fetches live exchange balance to determine buying power and position count. Acts as a final safety layer — even if Claude returns a BUY, the executor will reject if any guardrail fails. Defaults to paper trading (Alpaca) and testnet (crypto). Reads the active risk profile from <code>journal/risk_profile.json</code>. A hard absolute cap of <strong>10% of account</strong> applies regardless of profile settings. Enforces a no-adds rule for equities: if the bot already holds a position in a symbol (or has an open bracket order), a new BUY is rejected. Also enforces an R:R gate of minimum 1.5:1 at order time.</p>
           <div class="agent-label">Key Methods</div>
           <ul class="method-list">
             <li>validate_order(symbol, side, qty, entry, stop, acct_val, positions, day_pl, existing_qty, take_profit) <span>→ (bool, str)</span></li>
             <li>calculate_quantity(account_value, entry_price, stop_loss, risk_pct) <span>→ int</span></li>
             <li>place_order(decision, account) <span>→ dict  # routes equity or crypto</span></li>
-            <li>_wait_for_terminal_status(order_id, max_wait_secs) <span>→ order  # polls until filled/cancelled</span></li>
           </ul>
           <div class="agent-label">Crypto Routing</div>
           <div class="tag-row">
@@ -913,19 +899,18 @@
           </div>
           <div class="agent-label" style="margin-top:8px">Risk Profile Settings (via load_risk_profile)</div>
           <div class="tag-row">
-            <span class="tag tag-green">high_safety: 3 pos, 2% loss, 1% risk/trade, 10% max pos, MR score ≥3 crypto / ≥2 equity</span>
-            <span class="tag tag-yellow">medium_safety: 7 pos, 4% loss, 1.5% risk/trade, 10% max pos, MR score ≥2 crypto / ≥1 equity</span>
+            <span class="tag tag-green">high_safety: 3 pos, 2% loss, 1% risk/trade, 10% max pos</span>
+            <span class="tag tag-yellow">medium_safety: 5 pos, 4% loss, 1.5% risk/trade, 10% max pos</span>
             <span class="tag tag-orange">low_safety: 8 pos, 6% loss, 2% risk/trade, 5% max pos (always_max_position)</span>
           </div>
           <div class="agent-label" style="margin-top:8px">Guardrails Enforced</div>
           <div class="tag-row">
-            <span class="tag tag-green">Profile max positions (combined equity + crypto — H-3)</span>
+            <span class="tag tag-green">Profile max positions</span>
             <span class="tag tag-blue">Profile daily loss limit</span>
-            <span class="tag tag-orange">No-adds (equity: 3-layer; crypto: balance + journal — C-3/C-4)</span>
+            <span class="tag tag-orange">No-adds (no stacking on existing equity position or open bracket order)</span>
             <span class="tag tag-purple">Stop loss required for entries</span>
             <span class="tag tag-yellow">10% hard absolute position cap (all profiles)</span>
             <span class="tag tag-blue">R:R ≥ 1.5 gate (in-20260511-002)</span>
-            <span class="tag tag-green">Emergency stop (config.yaml risk.max_open_positions=0)</span>
           </div>
         </div>
       </div>
@@ -949,7 +934,7 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">Weekly market strategist that runs every Sunday and Wednesday evening. Scans a broad universe for mean reversion candidates, fetches VIX (via yfinance), all 11 sector ETF performances (via Alpha Vantage), the earnings calendar, and Alpaca market news. Also fetches crypto-specific macro data: Fear &amp; Greed Index (alternative.me) and BTC dominance / total market cap (CoinGecko). Runs a per-pair live indicator snapshot over the crypto watchlist via BybitFetcher. Sends everything to Claude to produce a structured JSON weekly memo including a dedicated <code>crypto_outlook</code> block. The memo is stored at <code>journal/weekly_research_memo.json</code> and a Markdown copy at <code>journal/weekly_research_memo.md</code>. A mid-week staleness check (<code>research-analyst-if-stale</code> mode) can trigger an out-of-cycle refresh based on VIX drift ≥15%, VIX regime band crossing, FOMC/CPI calendar events, or missing memo — subject to a 6-hour cooldown enforced by <code>journal/memo_refresh_log.json</code>. The Trading Decision Agent reads this memo at every session. On API failure, confidence defaults to 5 (neutral) with a <code>failure_kind: api_error</code> tag so the decision agent emits a "research unavailable" notice instead of penalising sizing (M-4 audit 2026-05-26).</p>
+          <p class="agent-desc">Weekly market strategist that runs every Sunday and Wednesday evening. Scans a broad universe for mean reversion candidates, fetches VIX (via yfinance), all 11 sector ETF performances (via Alpha Vantage), the earnings calendar, and Alpaca market news. Also fetches crypto-specific macro data: Fear &amp; Greed Index (alternative.me) and BTC dominance / total market cap (CoinGecko). Runs a per-pair live indicator snapshot over the crypto watchlist via BybitFetcher. Sends everything to Claude to produce a structured JSON weekly memo including a dedicated <code>crypto_outlook</code> block. The memo is stored at <code>journal/weekly_research_memo.json</code> and a Markdown copy at <code>journal/weekly_research_memo.md</code>. A mid-week staleness check (<code>research-analyst-if-stale</code> mode) can trigger an out-of-cycle refresh based on VIX drift ≥15%, VIX regime band crossing, FOMC/CPI calendar events, or missing memo — subject to a 6-hour cooldown enforced by <code>journal/memo_refresh_log.json</code>. The Trading Decision Agent reads this memo at every session.</p>
           <div class="agent-label">Key Methods</div>
           <ul class="method-list">
             <li>run_full_analysis(current_watchlist, crypto_watchlist) <span>→ dict  # summary</span></li>
@@ -1011,12 +996,11 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Output Structure</div>
-          <p class="agent-desc">The memo is a structured JSON file written every Sunday and Wednesday (and on mid-week staleness triggers). The dashboard's Research page reads it and renders each section. It expires after 7 days and shows a warning if stale. The Trading Decision Agent also reads it every session to inform its decisions — including the dedicated <code>crypto_outlook</code> block that drives the crypto mean-reversion gate. On API failure, <code>failure_kind: api_error</code> is set and confidence defaults to 5 so the decision agent treats it as a "research unavailable" notice rather than a low-confidence signal.</p>
+          <p class="agent-desc">The memo is a structured JSON file written every Sunday and Wednesday (and on mid-week staleness triggers). The dashboard's Research page reads it and renders each section. It expires after 7 days and shows a warning if stale. The Trading Decision Agent also reads it every session to inform its decisions — including the dedicated <code>crypto_outlook</code> block that drives the crypto mean-reversion gate.</p>
           <ul class="kv-list">
             <li><span class="k">market_regime</span><span class="v">dict: {trend_or_range, mean_reversion_active, vix_level, vix_position_sizing_guidance, …}</span></li>
-            <li><span class="k">confidence_score</span><span class="v">1–10 integer (5 = neutral fallback on API error)</span></li>
+            <li><span class="k">confidence_score</span><span class="v">1–10 integer</span></li>
             <li><span class="k">confidence_reason</span><span class="v">one-line rationale</span></li>
-            <li><span class="k">failure_kind</span><span class="v">"api_error" when memo generation failed technically</span></li>
             <li><span class="k">top_opportunities</span><span class="v">list of {symbol, rank, rationale, direction, signal_strength}</span></li>
             <li><span class="k">watchlist_changes</span><span class="v">{add, remove, avoid_earnings}</span></li>
             <li><span class="k">sector_focus</span><span class="v">{best_mean_reversion_sectors, worst_mean_reversion_sectors}</span></li>
@@ -1053,13 +1037,13 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">Reviews the trade journal and produces parameter-tuning suggestions <em>within</em> the existing mean reversion strategy. Focuses on RSI thresholds, Bollinger Band settings, ADX filter, VWAP deviation, ATR multipliers, signal weighting, exit rules, and position sizing. Requires at least 10 journal entries. Suggestions are stored in <code>journal/suggestions_in.jsonl</code> and rendered in the dashboard. Uses SuggestionStore upsert — only one pending suggestion per category at a time. Strips verbose reasoning fields from entries before sending to Claude to stay within rate limits. Uses shared <code>agents._claude_retry.call_with_retry</code> for 429 rate-limit handling (M-3 audit 2026-05-26).</p>
+          <p class="agent-desc">Reviews the trade journal and produces parameter-tuning suggestions <em>within</em> the existing mean reversion strategy. Focuses on RSI thresholds, Bollinger Band settings, ADX filter, VWAP deviation, ATR multipliers, signal weighting, exit rules, and position sizing. Requires at least 10 journal entries. Suggestions are stored in <code>journal/suggestions_in.jsonl</code> and rendered in the dashboard. Uses SuggestionStore upsert — only one pending suggestion per category at a time. Strips verbose reasoning fields from entries before sending to Claude to stay within rate limits.</p>
           <div class="agent-label">Key Methods</div>
           <ul class="method-list">
             <li>run(days=30) <span>→ list[str]  # suggestion IDs created/updated</span></li>
             <li>_build_prompt(entries, claude_md, days) <span>→ str</span></li>
             <li>_parse_suggestions(raw) <span>→ list[dict]</span></li>
-            <li>_call_claude(prompt) <span>→ str  # uses call_with_retry for 429 backoff</span></li>
+            <li>_call_claude(prompt) <span>→ str</span></li>
             <li>_generate_id() <span>→ str  # in-YYYYMMDD-NNN</span></li>
           </ul>
           <div class="agent-label">Suggestion Categories</div>
@@ -1091,13 +1075,13 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">Reviews the trade journal alongside live macro market context (VIX, SPY vs MA20, sector 5-day performance via yfinance) and produces <em>strategic</em> suggestions that go beyond parameter tuning — regime fit, new complementary strategies, behavioral patterns, watchlist suitability, and risk framework improvements. Does NOT suggest mean reversion parameter changes (that is InStrategyAnalyst's domain). Suggestions stored in <code>journal/suggestions_out.jsonl</code>. Also strips verbose prose fields from entries to stay within token-per-minute limits. Uses shared <code>agents._claude_retry.call_with_retry</code> for 429 handling (M-3 audit 2026-05-26).</p>
+          <p class="agent-desc">Reviews the trade journal alongside live macro market context (VIX, SPY vs MA20, sector 5-day performance via yfinance) and produces <em>strategic</em> suggestions that go beyond parameter tuning — regime fit, new complementary strategies, behavioral patterns, watchlist suitability, and risk framework improvements. Does NOT suggest mean reversion parameter changes (that is InStrategyAnalyst's domain). Suggestions stored in <code>journal/suggestions_out.jsonl</code>. Also strips verbose prose fields from entries to stay within token-per-minute limits.</p>
           <div class="agent-label">Key Methods</div>
           <ul class="method-list">
             <li>run(days=30) <span>→ list[str]  # suggestion IDs</span></li>
             <li>_fetch_macro_context() <span>→ dict  # VIX, SPY/MA20, sector perf (XLK XLE XLF XLV XLI)</span></li>
             <li>_build_prompt(entries, claude_md, macro, days) <span>→ str</span></li>
-            <li>_call_claude(prompt) <span>→ str | None  # uses call_with_retry</span></li>
+            <li>_call_claude(prompt) <span>→ str | None</span></li>
             <li>_generate_id() <span>→ str  # out-YYYYMMDD-NNN</span></li>
           </ul>
           <div class="agent-label">Macro Context Fetched</div>
@@ -1139,7 +1123,7 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">Purpose</div>
-          <p class="agent-desc">Pulls everything Claude needs for a trade decision into a single clean JSON snapshot. <code>MarketDataFetcher</code> handles equities via Alpaca and news sentiment via Alpha Vantage (with keyword-based Alpaca headline fallback). <code>BybitFetcher</code> handles crypto market data via a fallback chain. The <strong>bot version</strong> uses <strong>Binance → Bybit REST → ccxt</strong>. The <strong>dashboard version</strong> uses <strong>Coinbase → Kraken → Binance → Bybit REST → ccxt</strong> (Coinbase first for US-hosted Streamlit Cloud). Both produce identical indicator schemas. The <code>StrategyEngine</code> (strategies/engine.py) enriches each symbol with optional math signals and the <code>strategies/momentum.py</code> module applies directional gating and selects the strategy_mode per symbol. Proactive exit checking runs before new entries via <code>check_exits()</code> in main.py. Live intraday price overrides daily-bar <code>current_price</code> and re-evaluates BelowMA20 and BelowLowerBB signals on the fly. Both equities and crypto are gated to the 12-hour trading window (08:00–20:00 EST) — crypto no longer runs 24/7. An SSL compatibility patch (<code>_NortonCompatAdapter</code>) is applied in main.py and researcher.py on startup.</p>
+          <p class="agent-desc">Pulls everything Claude needs for a trade decision into a single clean JSON snapshot. <code>MarketDataFetcher</code> handles equities via Alpaca and news sentiment via Alpha Vantage (with keyword-based Alpaca headline fallback). <code>BybitFetcher</code> handles crypto market data via a fallback chain. The <strong>bot version</strong> uses <strong>Binance → Bybit REST → ccxt</strong>. The <strong>dashboard version</strong> uses <strong>Coinbase → Kraken → Binance → Bybit REST → ccxt</strong> (Coinbase first for US-hosted Streamlit Cloud). Both produce identical indicator schemas so the decision agent treats equities and crypto uniformly. The <code>StrategyEngine</code> (strategies/engine.py) enriches each symbol with optional math signals and the <code>strategies/momentum.py</code> module applies directional gating and selects the strategy_mode per symbol. Proactive exit checking runs before new entries via <code>check_exits()</code> in main.py. Live intraday price overrides daily-bar <code>current_price</code> and re-evaluates BelowMA20 and BelowLowerBB signals on the fly. An SSL compatibility patch (<code>_NortonCompatAdapter</code>) is applied in main.py on startup to fix Norton Antivirus TLS inspection breaking HTTPS on Windows (root-caused 2026-05-20).</p>
           <div class="agent-label">MarketDataFetcher Key Methods</div>
           <ul class="method-list">
             <li>get_account_snapshot() <span>→ dict  # balance, positions, P&amp;L</span></li>
@@ -1160,7 +1144,7 @@
           </ul>
           <div class="agent-label">BinanceFetcher Key Methods</div>
           <ul class="method-list">
-            <li>get_balance() <span>→ dict  # Binance spot USDT + coin positions (batch tickers); filters fiat/testnet junk (_FIAT_SKIP, _TESTNET_JUNK)</span></li>
+            <li>get_balance() <span>→ dict  # Binance spot USDT + coin positions (batch tickers)</span></li>
             <li>place_order(symbol, side, usdt_amount, ...) <span>→ dict  # quoteOrderQty BUY + STOP_LOSS_LIMIT</span></li>
           </ul>
           <div class="agent-label">Computed Indicators</div>
@@ -1201,7 +1185,7 @@
         </div>
         <div class="agent-card-body">
           <div class="agent-label">TradeJournal Purpose</div>
-          <p class="agent-desc">Writes every trading cycle — trade or skip — to an append-only JSONL file. Every entry includes full indicator context, Claude's reasoning, execution result (normalized to canonical statuses via <code>_normalize_execution_status</code> — H-6 audit 2026-05-26), and a structured <code>skip_kind</code> field for machine-readable SKIP categorisation (L-4 audit 2026-05-26). Also generates weekly performance summaries for the weekly review mode.</p>
+          <p class="agent-desc">Writes every trading cycle — trade or skip — to an append-only JSONL file. Every entry includes full indicator context, Claude's reasoning, and execution result. Also generates weekly performance summaries for the weekly review mode.</p>
           <div class="agent-label">TradeJournal Key Methods</div>
           <ul class="method-list">
             <li>log_decision(decision, execution, snapshot, account) <span>→ dict</span></li>
@@ -1223,7 +1207,6 @@
             <span class="tag tag-yellow">journal/math_strategies.json</span>
             <span class="tag tag-yellow">journal/last_api_alert.json</span>
             <span class="tag tag-yellow">journal/memo_refresh_log.json</span>
-            <span class="tag tag-yellow">journal/already_held_cooldown.json</span>
           </div>
         </div>
       </div>
@@ -1284,75 +1267,13 @@
     </div>
   </section>
 
-  <!-- ── Main.py Audit Fixes ──────────────────────────────────────────────────── -->
-  <section class="section">
-    <div class="section-header">
-      <div class="section-icon si-orange">🔧</div>
-      <div>
-        <div class="section-title">Audit Fixes &amp; Guardrail Enhancements (main.py)</div>
-        <div class="section-sub">Structural fixes added to the main trading loop from audits 2026-05-25/26</div>
-      </div>
-    </div>
-    <div class="cards cards-2">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-orange">🔒</div>
-          <div><h3>Already-Held Cooldown (H-2)</h3><div class="file-path">main.py · journal/already_held_cooldown.json</div></div>
-        </div>
-        <p>When the executor rejects a BUY with "Already hold …", the signal kept re-firing every 30 minutes because nothing suppressed the symbol between cycles. The file-based cooldown store records which symbols are on cooldown and filters them from the market snapshot before Claude sees them.</p>
-        <ul>
-          <li><strong>Cooldown cycles:</strong> <code>ALREADY_HELD_COOLDOWN_CYCLES</code> env var (default 3 cycles ≈ 1.5h)</li>
-          <li><strong>Live position check:</strong> <code>_compute_held_symbols()</code> uses live Alpaca + crypto balance as authoritative source (not just counter)</li>
-          <li><strong>Functions:</strong> <code>_load_cooldown()</code>, <code>_save_cooldown()</code>, <code>_tick_cooldown()</code>, <code>_add_cooldown()</code>, <code>_apply_cooldown_filter()</code></li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-orange">📊</div>
-          <div><h3>Per-Symbol Daily BUY Cap (M-2)</h3><div class="file-path">main.py</div></div>
-        </div>
-        <p>ETH/USDT was 40% of all 30-day BUY entries because a hot signal kept re-firing every cycle. A per-symbol daily cap spreads entries across the watchlist instead of concentrating on one symbol.</p>
-        <ul>
-          <li><strong>Cap:</strong> <code>MAX_BUYS_PER_SYMBOL_PER_DAY</code> env var (default 2 per day)</li>
-          <li><strong>Function:</strong> <code>_symbols_at_daily_buy_cap()</code> scans trades.jsonl for today's BUY attempts</li>
-          <li><strong>Combined:</strong> <code>_suppress = _held | _throttled</code> applied before every Claude call</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-blue">🧮</div>
-          <div><h3>Combined Position Count (H-3)</h3><div class="file-path">main.py · agents/executor.py</div></div>
-        </div>
-        <p>The executor's max_open_positions gate was seeing equity-only counts, so equity=3 + crypto=4 read as "3/5 used" and the bot could exceed the hard cap. The account is now augmented with combined venue counts.</p>
-        <ul>
-          <li><strong>Function:</strong> <code>_augment_account_with_combined_positions(account, crypto_balance)</code></li>
-          <li><strong>Fields added:</strong> <code>equity_positions</code>, <code>crypto_positions</code>, <code>open_positions</code> (sum)</li>
-          <li><strong>Config update:</strong> medium_safety max_open_positions raised 5→7 (5 equity + 2 crypto slots)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-icon si-green">📝</div>
-          <div><h3>Structured SKIP Categories (L-4)</h3><div class="file-path">main.py · journal/logger.py</div></div>
-        </div>
-        <p>24 consecutive SKIPs were all identical free-text "no qualifying setup" entries with no signal context. Machine-readable SKIP categories are now assigned and logged alongside the free-text reason.</p>
-        <ul>
-          <li><strong>Categories:</strong> OFF_WINDOW, MEMO_PAUSED, RR_BELOW_MIN, DIRECTIONAL_GATE, TRENDING_REGIME, LOW_SCORE, NO_CANDIDATE, API_ERROR, OTHER</li>
-          <li><strong>Function:</strong> <code>_classify_skip(decision, best_candidate, min_score)</code></li>
-          <li><strong>Journal field:</strong> <code>skip_kind</code> added to every SKIP entry</li>
-          <li><strong>Best-candidate detail:</strong> M-1 fix — best candidate info appended to SKIPPED execution reason</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
   <!-- ── Data Flow ───────────────────────────────────────────────────────── -->
   <section class="section" id="data-flow">
     <div class="section-header">
       <div class="section-icon si-blue">🔄</div>
       <div>
         <div class="section-title">Trading Cycle Data Flow</div>
-        <div class="section-sub">Every 30 minutes within the 08:00–20:00 EST window, Mon–Fri — from data fetch to journal entry</div>
+        <div class="section-sub">Every 30 minutes during market hours — from data fetch to journal entry</div>
       </div>
     </div>
     <div class="arch-wrap" style="margin-bottom:24px">
@@ -1368,8 +1289,8 @@
         <div class="flow-step">
           <div class="flow-box">
             <div class="step-num" style="color:var(--danger)">Step 2</div>
-            <div class="step-name">Loss Limit + Window Check</div>
-            <div class="step-detail">Abort if day P&amp;L ≤ −(profile %) OR outside 08:00–20:00 EST window</div>
+            <div class="step-name">Loss Limit Check</div>
+            <div class="step-detail">Abort if day P&amp;L ≤ −(profile %) of portfolio</div>
           </div>
         </div>
         <div class="flow-arrow">→</div>
@@ -1377,7 +1298,7 @@
           <div class="flow-box">
             <div class="step-num" style="color:var(--accent2)">Step 3</div>
             <div class="step-name">Build Snapshot</div>
-            <div class="step-detail">Equities (if market open) + crypto (if in window) + regime router</div>
+            <div class="step-detail">Equities (if market open) + crypto (always 24/7) + regime router</div>
           </div>
         </div>
         <div class="flow-arrow">→</div>
@@ -1386,14 +1307,6 @@
             <div class="step-num" style="color:var(--accent3)">Step 3a</div>
             <div class="step-name">Exit Check</div>
             <div class="step-detail">check_exits() — closes MR positions whose thesis played out; skips MOMENTUM positions</div>
-          </div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box">
-            <div class="step-num" style="color:var(--accent3)">Step 3b</div>
-            <div class="step-name">Held/Throttle Filter</div>
-            <div class="step-detail">H-2/M-2: suppress held symbols + daily-capped symbols from snapshot</div>
           </div>
         </div>
         <div class="flow-arrow">→</div>
@@ -1417,7 +1330,7 @@
           <div class="flow-box">
             <div class="step-num" style="color:var(--warn)">Step 6</div>
             <div class="step-name">Journal Entry</div>
-            <div class="step-detail">Log full decision + skip_kind + execution to trades.jsonl</div>
+            <div class="step-detail">Log full decision + execution to trades.jsonl</div>
           </div>
         </div>
         <div class="flow-arrow">→</div>
@@ -1477,12 +1390,12 @@
       <div class="section-icon si-green">📊</div>
       <div>
         <div class="section-title">Signal Scoring System</div>
-        <div class="section-sub">A mean reversion trade requires at least 2 points out of a possible 6 (medium_safety CLAUDE.md default — profile-dependent)</div>
+        <div class="section-sub">A mean reversion trade requires at least 3 points out of a possible 6 (high_safety default — profile-dependent)</div>
       </div>
     </div>
 
     <div class="highlight-box" style="margin-bottom:20px">
-      <strong style="color:var(--accent)">Minimum entry threshold: profile-dependent and per-class (M-1 audit 2026-05-26).</strong> CLAUDE.md is currently set to medium_safety defaults: 1.5% risk/trade, 7 max positions, 2-signal minimum for crypto, 1-signal minimum for US equities. The threshold also varies by risk profile: high_safety=3 crypto/2 equity, medium_safety=2 crypto/1 equity, low_safety=1 both. Additionally, at least 1 point must come from the classical oversold group {RSI&lt;35, RSI&lt;45, BelowBB, BelowMA20&gt;1%} — signals composed entirely of regime/math signals do not qualify. Note: the bot's <code>data/fetcher.py</code> uses RSI&lt;35/&lt;45 and MA20 deviation thresholds with no VWAP. The dashboard's <code>flowtrader-dashboard/data/fetcher.py</code> uses RSI&lt;32/&lt;40 and VWAP matching CLAUDE.md. A <strong>momentum score</strong> (0–4+) is computed separately by <code>strategies/momentum.py</code> and does not count toward the mean reversion score.
+      <strong style="color:var(--accent)">Minimum entry threshold: profile-dependent (default 3 points).</strong> This gates out weak setups and ensures multiple confirming indicators agree before capital is deployed. The threshold varies by risk profile: high_safety=3, medium_safety=2, low_safety=1. The InStrategyAnalyst reviews signal scoring effectiveness daily. Note: the bot's <code>data/fetcher.py</code> uses RSI&lt;35/&lt;45 and MA20 deviation thresholds with no VWAP (slightly different from CLAUDE.md's RSI&lt;32/&lt;40 and VWAP thresholds). The dashboard's <code>flowtrader-dashboard/data/fetcher.py</code> uses RSI&lt;32/&lt;40 and VWAP matching CLAUDE.md. A <strong>momentum score</strong> (0–4+) is computed separately by <code>strategies/momentum.py</code> and does not count toward the mean reversion score. CLAUDE.md is currently set to medium_safety defaults (1.5% risk/trade, 5 max positions, 2-signal minimum, ADX&gt;30 trend filter).
     </div>
 
     <div style="margin-bottom:12px;font-size:13px;font-weight:700;color:var(--text);">Mean Reversion Signal Score (CLAUDE.md / dashboard fetcher)</div>
@@ -1509,7 +1422,7 @@
       </div>
       <div class="signal-item">
         <div class="signal-pts pts-1">+1</div>
-        <div class="signal-text"><strong>ADX &lt; 25 (Ranging)</strong><span>Market regime confirmed non-trending (bot fetcher)</span></div>
+        <div class="signal-text"><strong>Positive News Sentiment</strong><span>Alpha Vantage / keyword score &gt; 0.15 (equities only)</span></div>
       </div>
       <div class="signal-item">
         <div class="signal-pts pts-1">+1</div>
@@ -1538,7 +1451,7 @@
     </div>
 
     <div class="warn-box" style="margin-top:20px">
-      <strong style="color:var(--warn)">Trend Filter (HARD BLOCK for Mean Reversion):</strong> If ADX &gt; 25 (bot fetcher) / ADX &gt; 30 (CLAUDE.md), mean reversion signals are <em>entirely skipped</em> — the trend filter overrides all MR signal scoring. However, when the regime router selects MOMENTUM mode, ADX &gt; 25 is a <em>positive</em> signal (trend strength). Mean reversion in a trending market is the primary cause of strategy losses. This threshold is the primary target for InStrategyAnalyst tuning suggestions. <strong>Signal Composition Rule (Rule 10 in CLAUDE.md):</strong> Of the 2+ signals required for MR entry under medium_safety, at least 1 must come from the classical oversold group — regime/math-only qualifying scores are rejected as SKIP.
+      <strong style="color:var(--warn)">Trend Filter (HARD BLOCK for Mean Reversion):</strong> If ADX &gt; 25 (bot fetcher) / ADX &gt; 25 (CLAUDE.md), mean reversion signals are <em>entirely skipped</em> — the trend filter overrides all MR signal scoring. However, when the regime router selects MOMENTUM mode, ADX &gt; 25 is a <em>positive</em> signal (trend strength). Mean reversion in a trending market is the primary cause of strategy losses. This threshold is the primary target for InStrategyAnalyst tuning suggestions.
     </div>
   </section>
 
@@ -1558,11 +1471,11 @@
       </div>
       <div class="rule-item">
         <div class="rule-num">2</div>
-        <div class="rule-body"><strong>Daily Loss Limit: profile-dependent (default −4% medium_safety)</strong><span>If day P&amp;L hits the profile loss limit, stop all trading. The bot shuts down until the next trading day. high_safety=2%, medium_safety=4%, low_safety=6%.</span></div>
+        <div class="rule-body"><strong>Daily Loss Limit: profile-dependent (default −2%)</strong><span>If day P&amp;L hits the profile loss limit, stop all trading. The bot shuts down until the next trading day. high_safety=2%, medium_safety=4%, low_safety=6%.</span></div>
       </div>
       <div class="rule-item">
         <div class="rule-num">3</div>
-        <div class="rule-body"><strong>Max Open Positions: profile-dependent (default 7 medium_safety)</strong><span>Never hold more than the profile maximum simultaneous positions (combined equity + crypto — H-3 fix). Enforced by OrderExecutor before order submission. high_safety=3, medium_safety=7 (5 equity + 2 crypto), low_safety=8.</span></div>
+        <div class="rule-body"><strong>Max Open Positions: profile-dependent (default 3)</strong><span>Never hold more than the profile maximum simultaneous positions. Enforced by OrderExecutor before order submission (separately for equity and crypto). high_safety=3, medium_safety=5, low_safety=8.</span></div>
       </div>
       <div class="rule-item">
         <div class="rule-num">4</div>
@@ -1570,15 +1483,15 @@
       </div>
       <div class="rule-item">
         <div class="rule-num">5</div>
-        <div class="rule-body"><strong>Trading Window: 08:00–20:00 EST Mon–Fri only</strong><span>No new entries outside the 12-hour window. Both equities AND crypto respect this gate. Equity open buffer (09:30+15 min) applies within the window. Entry cutoff 15 min before window end. Existing bracket orders remain active on the exchange 24/7.</span></div>
+        <div class="rule-body"><strong>Time Gate: No new equity entries after 14:55 EST</strong><span>No overnight holds on equities. All equity positions closed before market close. Crypto runs 24/7. Momentum trades have a 5-day time stop.</span></div>
       </div>
       <div class="rule-item">
         <div class="rule-num">6</div>
-        <div class="rule-body"><strong>Trend Filter: ADX &gt; 25 → Skip MR (ADX &gt; 30 per CLAUDE.md)</strong><span>If ADX &gt; 25 (bot) / ADX &gt; 30 (CLAUDE.md) on any symbol, do NOT take mean reversion signals on that symbol. Momentum mode is the exception — ADX &gt; 25 confirms trend strength for momentum entries.</span></div>
+        <div class="rule-body"><strong>Trend Filter: ADX &gt; 25 → Skip MR (ADX &gt; 30 per CLAUDE.md)</strong><span>If ADX &gt; 25 (bot) / ADX &gt; 30 (CLAUDE.md) on any symbol, do NOT take mean reversion signals on that symbol. (Momentum mode is the exception — ADX &gt; 25 confirms trend strength for momentum entries.)</span></div>
       </div>
       <div class="rule-item">
         <div class="rule-num">7</div>
-        <div class="rule-body"><strong>Signal Threshold: profile-dependent and per-class (M-1)</strong><span>Require at least the profile's min_signal_score before entering. Crypto uses <code>min_signal_score</code>; US equities use <code>equity_min_signal_score</code> (1 lower). Momentum requires at least one directional uptrend trigger.</span></div>
+        <div class="rule-body"><strong>Signal Threshold: profile-dependent (default 2 of 6 per CLAUDE.md)</strong><span>Require at least the profile's min_signal_score before entering a mean reversion trade. Momentum requires at least one directional uptrend trigger. Single-indicator setups are noise, not edge.</span></div>
       </div>
       <div class="rule-item">
         <div class="rule-num">8</div>
@@ -1590,23 +1503,15 @@
       </div>
       <div class="rule-item">
         <div class="rule-num">10</div>
-        <div class="rule-body"><strong>Signal Composition: ≥1 classical oversold signal required</strong><span>Of the 2+ signals required to enter (medium_safety), at least 1 must come from {RSI&lt;35, RSI&lt;45, BelowBB, BelowMA20&gt;1%}. Regime/math-only qualifying scores are SKIPped with reason "No classical oversold signal in qualifying score".</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">11</div>
         <div class="rule-body"><strong>News Filter: Skip Earnings ±48h</strong><span>If a symbol has earnings announced within 48 hours, skip it. Earnings crush mean reversion edge.</span></div>
       </div>
       <div class="rule-item">
-        <div class="rule-num">12</div>
+        <div class="rule-num">11</div>
         <div class="rule-body"><strong>Paper First — Always</strong><span>Default is paper trading (Alpaca sandbox) and testnet for crypto. Two env flags must both be explicitly set to enable live equity trading.</span></div>
       </div>
       <div class="rule-item">
-        <div class="rule-num">13</div>
-        <div class="rule-body"><strong>No-Adds Rule (Equities + Crypto)</strong><span>The bot never stacks a BUY onto an existing position or open bracket order. Equity: 3-layer check (account, live Alpaca positions, open orders). Crypto: balance check + 3-day journal lookback (C-3 fix, audit 2026-05-25). Close before re-entering.</span></div>
-      </div>
-      <div class="rule-item">
-        <div class="rule-num">14</div>
-        <div class="rule-body"><strong>Emergency Stop: config.yaml risk.max_open_positions=0</strong><span>Setting <code>risk.max_open_positions=0</code> in config.yaml is a hard kill-switch that halts all new entries while allowing exits. Overrides the active profile. Set to a positive value or delete the field to resume.</span></div>
+        <div class="rule-num">12</div>
+        <div class="rule-body"><strong>No-Adds Rule (Equities)</strong><span>The bot never stacks a BUY onto an existing equity position or open bracket order. Adding cancels Alpaca bracket stop-loss protection. Close before re-entering.</span></div>
       </div>
     </div>
   </section>
@@ -1698,33 +1603,15 @@
       </thead>
       <tbody>
         <tr>
-          <td>0 12 * * 1-5</td>
-          <td>08:00 EST</td>
-          <td>Trading window opens — pre-market + crypto scan starts</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 12 * * 1-5</td>
-          <td>08:30 EST</td>
-          <td>Pre-market scan (crypto only until 09:45)</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 13 * * 1-5</td>
-          <td>09:00 EST</td>
-          <td>Pre-market scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
           <td>30 13 * * 1-5</td>
           <td>09:30 EST</td>
-          <td>Equity market open (equity active after 09:45 buffer)</td>
+          <td>Market open — first scan (after 15 min buffer)</td>
           <td>full</td>
         </tr>
         <tr>
           <td>0 14 * * 1-5</td>
           <td>10:00 EST</td>
-          <td>Regular scan (equity + crypto)</td>
+          <td>Regular scan</td>
           <td>full</td>
         </tr>
         <tr>
@@ -1778,74 +1665,20 @@
         <tr>
           <td>30 18 * * 1-5</td>
           <td>14:30 EST</td>
-          <td>Regular scan</td>
+          <td>Last scan before 14:55 time gate</td>
           <td>full</td>
         </tr>
         <tr>
-          <td>0 19 * * 1-5</td>
-          <td>15:00 EST</td>
-          <td>Regular scan (equity close at 16:00, crypto continues)</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 19 * * 1-5</td>
-          <td>15:30 EST</td>
-          <td>Post-equity / crypto-only scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 20 * * 1-5</td>
-          <td>16:00 EST</td>
-          <td>Post-equity / crypto-only scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 20 * * 1-5</td>
-          <td>16:30 EST</td>
-          <td>Post-equity / crypto-only scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 21 * * 1-5</td>
-          <td>17:00 EST</td>
-          <td>Post-equity / crypto-only scan</td>
-          <td>full</td>
+          <td>15 14-19 * * 1-5</td>
+          <td>10:15–15:15 EST (hourly)</td>
+          <td><strong>Memo staleness check</strong> — lightweight VIX fetch; fires full research-analyst only if VIX drifted ≥15%, regime crossed, or FOMC/CPI today. 6-hour cooldown enforced.</td>
+          <td>research-analyst-if-stale</td>
         </tr>
         <tr>
           <td>30 21 * * 1-5</td>
           <td>17:30 EST</td>
           <td><strong>Daily Analyst</strong> — InStrategyAnalyst + OutStrategyAnalyst review journal, generate suggestions</td>
           <td>analyst-full</td>
-        </tr>
-        <tr>
-          <td>0 22 * * 1-5</td>
-          <td>18:00 EST</td>
-          <td>Post-equity / crypto-only scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 22 * * 1-5</td>
-          <td>18:30 EST</td>
-          <td>Post-equity / crypto-only scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>0 23 * * 1-5</td>
-          <td>19:00 EST</td>
-          <td>Post-equity / crypto-only scan</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>30 23 * * 1-5</td>
-          <td>19:30 EST</td>
-          <td>Last scan (19:45 entry cutoff handled in code)</td>
-          <td>full</td>
-        </tr>
-        <tr>
-          <td>15 12-23 * * 1-5</td>
-          <td>08:15–19:15 EST (hourly)</td>
-          <td><strong>Memo staleness check</strong> — lightweight VIX fetch; fires full research-analyst only if VIX drifted ≥15%, regime crossed, or FOMC/CPI today. 6-hour cooldown enforced.</td>
-          <td>research-analyst-if-stale</td>
         </tr>
         <tr>
           <td>0 12 * * 0</td>
@@ -1868,7 +1701,7 @@
       </tbody>
     </table>
     <div class="highlight-box" style="margin-top:18px">
-      <strong>Journal persistence:</strong> GitHub Actions caches the <code>journal/</code> directory between runs using two jobs — <code>trade</code> and <code>analyst</code>. Each run restores the prior cache and saves an updated one, so all JSONL files (trades, suggestions, memo, balance snapshot) accumulate across runs even though Actions environments are ephemeral. The active risk profile (<code>journal/risk_profile.json</code>) is fetched from the <code>flowtrader-dashboard</code> repo at the start of each bot run using a <code>DASHBOARD_READ_TOKEN</code> secret. Journal entries are synced to the dashboard repo at run end via <code>DASHBOARD_PUSH_TOKEN</code> using <code>scripts/ci_sync_journal.py</code>. The Bybit balance snapshot is written by a local Windows Task Scheduler job (<code>flowtrader-dashboard/scripts/push_bybit_balance.py</code>) rather than the CI workflow — the CI bybit snapshot step was disabled 2026-05-11 to avoid merge conflicts. Bot logs rotate at 10 MB with 5 backups to prevent bloat (added 2026-05-23). Secrets are redacted from bot.log by <code>_SecretRedactingFilter</code> (Telegram tokens, API keys in query strings, Bearer headers) — the filter is attached to all logger instances including third-party libraries.
+      <strong>Journal persistence:</strong> GitHub Actions caches the <code>journal/</code> directory between runs using two jobs — <code>trade</code> and <code>analyst</code>. Each run restores the prior cache and saves an updated one, so all JSONL files (trades, suggestions, memo, balance snapshot) accumulate across runs even though Actions environments are ephemeral. The active risk profile (<code>journal/risk_profile.json</code>) is fetched from the <code>flowtrader-dashboard</code> repo at the start of each bot run using a <code>DASHBOARD_READ_TOKEN</code> secret. Journal entries are synced to the dashboard repo at run end via <code>DASHBOARD_PUSH_TOKEN</code> using <code>scripts/ci_sync_journal.py</code>. The Bybit balance snapshot is written by a local Windows Task Scheduler job (<code>flowtrader-dashboard/scripts/push_bybit_balance.py</code>) rather than the CI workflow — the CI bybit snapshot step was disabled 2026-05-11 to avoid merge conflicts. Bot logs rotate at 10 MB with 5 backups to prevent bloat (added 2026-05-23).
     </div>
   </section>
 
@@ -1885,7 +1718,7 @@
       <div>
         <div class="card" style="margin-bottom:14px">
           <h3 style="margin-bottom:12px;color:#fff">trades.jsonl — Trade Journal</h3>
-          <p>Append-only. One JSON record per trading cycle. Never overwritten. Execution status normalized to canonical vocabulary (H-6 audit 2026-05-26).</p>
+          <p>Append-only. One JSON record per trading cycle. Never overwritten.</p>
           <ul class="kv-list">
             <li><span class="k">timestamp</span><span class="v">ISO 8601 EST</span></li>
             <li><span class="k">action</span><span class="v">BUY / SELL / HOLD / SKIP</span></li>
@@ -1893,8 +1726,7 @@
             <li><span class="k">signal_score</span><span class="v">0–6 integer</span></li>
             <li><span class="k">signals_fired</span><span class="v">["RSI&lt;32", "BelowBB", ...]</span></li>
             <li><span class="k">entry_price / stop_loss / take_profit</span><span class="v">floats</span></li>
-            <li><span class="k">execution_status</span><span class="v">FILLED / PARTIAL / SUBMITTED / CANCELLED / REJECTED / SKIPPED / ERROR / SIMULATED</span></li>
-            <li><span class="k">skip_kind</span><span class="v">OFF_WINDOW / MEMO_PAUSED / RR_BELOW_MIN / DIRECTIONAL_GATE / TRENDING_REGIME / LOW_SCORE / NO_CANDIDATE / API_ERROR / OTHER (null for non-SKIP rows)</span></li>
+            <li><span class="k">execution_status</span><span class="v">SUBMITTED / REJECTED / SKIPPED / SIMULATED</span></li>
             <li><span class="k">reasoning</span><span class="v">Claude's plain-language explanation</span></li>
             <li><span class="k">account_value / day_pl</span><span class="v">at time of decision</span></li>
             <li><span class="k">paper_trade</span><span class="v">true / false</span></li>
@@ -1919,11 +1751,11 @@
       <div>
         <div class="card" style="margin-bottom:14px">
           <h3 style="margin-bottom:12px;color:#fff">weekly_research_memo.json</h3>
-          <p>Written every Sunday and Wednesday (plus mid-week staleness refreshes) by the ResearchAnalyst. Read by the dashboard's Research page on every load, and injected into every Claude decision prompt. Expires after 7 days. The <code>market_regime</code> dict includes a <code>vix_level</code> field used by the staleness check. On API failure, <code>failure_kind: api_error</code> is set and confidence defaults to 5 (neutral) so the decision agent doesn't penalise sizing for a technical outage.</p>
+          <p>Written every Sunday and Wednesday (plus mid-week staleness refreshes) by the ResearchAnalyst. Read by the dashboard's Research page on every load, and injected into every Claude decision prompt. Expires after 7 days. The <code>market_regime</code> dict includes a <code>vix_level</code> field used by the staleness check.</p>
           <ul class="kv-list">
             <li><span class="k">market_regime</span><span class="v">dict: {trend_or_range, mean_reversion_active, vix_level, vix_interpretation, …}</span></li>
-            <li><span class="k">confidence_score</span><span class="v">1–10 integer (5 neutral fallback on API error)</span></li>
-            <li><span class="k">failure_kind</span><span class="v">"api_error" when memo generation failed technically</span></li>
+            <li><span class="k">confidence_score</span><span class="v">1–10 integer</span></li>
+            <li><span class="k">confidence_reason</span><span class="v">one-line rationale</span></li>
             <li><span class="k">top_opportunities</span><span class="v">list — {symbol, rank, rationale, direction, signal_strength}</span></li>
             <li><span class="k">watchlist_changes</span><span class="v">{add, remove, avoid_earnings}</span></li>
             <li><span class="k">sector_focus</span><span class="v">{best_mean_reversion_sectors, worst_mean_reversion_sectors}</span></li>
@@ -1953,15 +1785,8 @@
           </ul>
         </div>
         <div class="card" style="margin-bottom:14px">
-          <h3 style="margin-bottom:12px;color:#fff">already_held_cooldown.json</h3>
-          <p>Written by <code>_save_cooldown()</code> in main.py. Records which symbols are on cooldown (cycles remaining) after an "Already hold" executor rejection. Filtered from the market snapshot before each Claude call. Ticked down each session and cleared when count reaches 0.</p>
-          <ul class="kv-list">
-            <li><span class="k">{symbol}</span><span class="v">int: cycles remaining (default 3)</span></li>
-          </ul>
-        </div>
-        <div class="card" style="margin-bottom:14px">
           <h3 style="margin-bottom:12px;color:#fff">memo_refresh_log.json</h3>
-          <p>Written by <code>record_refresh()</code> in researcher.py after each Research Analyst run. Enforces the 6-hour cooldown on the staleness check.</p>
+          <p>Written by <code>record_refresh()</code> in researcher.py after each Research Analyst run (scheduled or stale-triggered). Enforces the 6-hour cooldown on the staleness check to prevent re-run spam.</p>
           <ul class="kv-list">
             <li><span class="k">timestamp</span><span class="v">ISO 8601 UTC — time of last refresh</span></li>
             <li><span class="k">reason</span><span class="v">e.g. "scheduled" / "VIX drift 18%" / "FOMC event today"</span></li>
@@ -1969,7 +1794,7 @@
         </div>
         <div class="card">
           <h3 style="margin-bottom:12px;color:#fff">math_strategies.json</h3>
-          <p>Written by the Streamlit dashboard sidebar when the user toggles mathematical strategy overlays. Fetched by the bot each run. Controls which advanced signal enrichments are active.</p>
+          <p>Written by the Streamlit dashboard sidebar when the user toggles mathematical strategy overlays. Fetched by the bot each run. Controls which advanced signal enrichments (Hurst, wavelet, entropy, Lévy, RMT, TDA, etc.) are active.</p>
           <ul class="kv-list">
             <li><span class="k">strategies</span><span class="v">{strategy_key: {enabled: bool}}</span></li>
             <li><span class="k">updated_at</span><span class="v">ISO 8601 UTC timestamp</span></li>
@@ -1985,7 +1810,7 @@
       <div class="section-icon si-orange">📋</div>
       <div>
         <div class="section-title">Watchlist</div>
-        <div class="section-sub">Scanned within the 08:00–20:00 EST window — equities gated to exchange hours (09:45–16:00), crypto active for full window</div>
+        <div class="section-sub">Scanned every 30 minutes — equities during market hours, crypto 24/7</div>
       </div>
     </div>
     <div style="margin-bottom:14px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase">US Equities &amp; ETFs — via Alpaca</div>
@@ -2004,7 +1829,7 @@
       <div class="wl-item"><div class="ticker">USO</div><div class="wl-name">Oil ETF — Commodity MR</div></div>
       <div class="wl-item"><div class="ticker">TLT</div><div class="wl-name">20yr Treasury — Rate signal</div></div>
     </div>
-    <div style="margin-bottom:14px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase">Crypto — via Bybit/Binance (testnet by default) · Gated to 08:00–20:00 EST window</div>
+    <div style="margin-bottom:14px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:1px;text-transform:uppercase">Crypto — via Bybit/Binance (testnet by default)</div>
     <div class="watchlist-grid">
       <div class="wl-item"><div class="ticker" style="color:var(--warn)">BTC/USDT</div><div class="wl-name">Bitcoin — Deepest liquidity</div></div>
       <div class="wl-item"><div class="ticker" style="color:var(--warn)">ETH/USDT</div><div class="wl-name">Ethereum — 2nd most liquid</div></div>
@@ -2036,34 +1861,31 @@
           <li><span class="k">high_safety — daily_loss</span><span class="v">2%</span></li>
           <li><span class="k">high_safety — risk/trade</span><span class="v">1%</span></li>
           <li><span class="k">high_safety — max_pos_pct</span><span class="v">10%</span></li>
-          <li><span class="k">high_safety — crypto min_score</span><span class="v">3/6</span></li>
-          <li><span class="k">high_safety — equity min_score</span><span class="v">2/6 (M-1)</span></li>
-          <li><span class="k">medium_safety — max_pos</span><span class="v">7 (5 equity + 2 crypto, H-1 fix)</span></li>
+          <li><span class="k">high_safety — min_score</span><span class="v">3/6</span></li>
+          <li><span class="k">medium_safety — max_pos</span><span class="v">5</span></li>
           <li><span class="k">medium_safety — daily_loss</span><span class="v">4%</span></li>
           <li><span class="k">medium_safety — risk/trade</span><span class="v">1.5%</span></li>
           <li><span class="k">medium_safety — max_pos_pct</span><span class="v">10%</span></li>
-          <li><span class="k">medium_safety — crypto min_score</span><span class="v">2/6</span></li>
-          <li><span class="k">medium_safety — equity min_score</span><span class="v">1/6 (M-1)</span></li>
+          <li><span class="k">medium_safety — min_score</span><span class="v">2/6</span></li>
           <li><span class="k">low_safety — max_pos</span><span class="v">8</span></li>
           <li><span class="k">low_safety — daily_loss</span><span class="v">6%</span></li>
           <li><span class="k">low_safety — risk/trade</span><span class="v">2%</span></li>
           <li><span class="k">low_safety — max_pos_pct</span><span class="v">5% (always_max_position)</span></li>
-          <li><span class="k">low_safety — min_score</span><span class="v">1/6 (both classes)</span></li>
+          <li><span class="k">low_safety — min_score</span><span class="v">1/6</span></li>
           <li><span class="k">HARD absolute cap</span><span class="v">10% per order (all profiles)</span></li>
-          <li><span class="k">Emergency stop</span><span class="v">config.yaml risk.max_open_positions=0</span></li>
         </ul>
       </div>
       <div class="card">
         <h3 style="margin-bottom:12px;color:#fff">Strategy Settings</h3>
         <ul class="kv-list">
           <li><span class="k">rsi_period</span><span class="v">14</span></li>
-          <li><span class="k">rsi_oversold (CLAUDE.md)</span><span class="v">32 (bot: 35)</span></li>
+          <li><span class="k">rsi_oversold (CLAUDE.md)</span><span class="v">32</span></li>
           <li><span class="k">rsi_overbought</span><span class="v">68</span></li>
           <li><span class="k">bollinger_period</span><span class="v">20</span></li>
           <li><span class="k">bollinger_std</span><span class="v">2.0 σ</span></li>
           <li><span class="k">adx_trend_threshold</span><span class="v">25 (skip MR, bot) / 30 (CLAUDE.md)</span></li>
-          <li><span class="k">adx_range_threshold</span><span class="v">20 (+1 signal, dashboard) / 25 (bot)</span></li>
-          <li><span class="k">vwap_deviation_pct</span><span class="v">1.0% (dashboard fetcher only)</span></li>
+          <li><span class="k">adx_range_threshold</span><span class="v">20 (+1 signal, dashboard)</span></li>
+          <li><span class="k">vwap_deviation_pct</span><span class="v">1.0% (dashboard fetcher)</span></li>
           <li><span class="k">atr_stop_multiplier (MR)</span><span class="v">0.5×</span></li>
           <li><span class="k">atr_stop_multiplier (Momentum)</span><span class="v">1.0× (or 5-day low)</span></li>
           <li><span class="k">atr_trail_multiplier</span><span class="v">0.25×</span></li>
@@ -2075,17 +1897,13 @@
         </ul>
       </div>
       <div class="card">
-        <h3 style="margin-bottom:12px;color:#fff">Schedule &amp; Window Settings</h3>
+        <h3 style="margin-bottom:12px;color:#fff">Schedule Settings</h3>
         <ul class="kv-list">
-          <li><span class="k">window_start_hour</span><span class="v">8 (08:00 EST)</span></li>
-          <li><span class="k">window_end_hour</span><span class="v">20 (20:00 EST)</span></li>
-          <li><span class="k">window_entry_cutoff_minutes</span><span class="v">15 (19:45 EST)</span></li>
-          <li><span class="k">market_open_buffer_minutes</span><span class="v">15 (equity: trades from 09:45)</span></li>
-          <li><span class="k">crypto_24_7</span><span class="v">false (crypto now respects 12h window)</span></li>
-          <li><span class="k">already_held_cooldown_cycles</span><span class="v">3 (env: ALREADY_HELD_COOLDOWN_CYCLES)</span></li>
-          <li><span class="k">max_buys_per_symbol_per_day</span><span class="v">2 (env: MAX_BUYS_PER_SYMBOL_PER_DAY)</span></li>
+          <li><span class="k">market_open_buffer</span><span class="v">15 min</span></li>
+          <li><span class="k">market_close_cutoff</span><span class="v">14:55 EST</span></li>
+          <li><span class="k">research_interval</span><span class="v">30 min</span></li>
+          <li><span class="k">crypto_24_7</span><span class="v">true</span></li>
           <li><span class="k">bot.log max size</span><span class="v">10 MB × 5 backups (RotatingFileHandler)</span></li>
-          <li><span class="k">dashboard auto-refresh</span><span class="v">300s (REFRESH_SEC=300, was 60s)</span></li>
         </ul>
         <h3 style="margin:14px 0 10px;color:#fff">Dependencies</h3>
         <div class="tag-row">
@@ -2102,8 +1920,6 @@
           <span class="tag tag-orange">numpy ≥ 1.26</span>
           <span class="tag tag-purple">pyyaml ≥ 6.0.1</span>
           <span class="tag tag-blue">aiohttp ≥ 3.9</span>
-          <span class="tag tag-green">python-dotenv ≥ 1.0</span>
-          <span class="tag tag-blue">python-dateutil ≥ 2.8.2</span>
         </div>
       </div>
     </div>
@@ -2194,18 +2010,6 @@
             <td><span class="tag tag-yellow" style="font-size:11px">Defaults false</span></td>
           </tr>
           <tr>
-            <td>ALREADY_HELD_COOLDOWN_CYCLES</td>
-            <td>main.py</td>
-            <td>Number of cycles a symbol is suppressed after "Already hold" rejection (default 3 ≈ 1.5h). H-2 fix.</td>
-            <td><span class="tag tag-yellow" style="font-size:11px">Defaults 3</span></td>
-          </tr>
-          <tr>
-            <td>MAX_BUYS_PER_SYMBOL_PER_DAY</td>
-            <td>main.py</td>
-            <td>Max BUY attempts per symbol per calendar day to prevent concentration on one hot symbol (default 2). M-2 fix.</td>
-            <td><span class="tag tag-yellow" style="font-size:11px">Defaults 2</span></td>
-          </tr>
-          <tr>
             <td>DASHBOARD_READ_TOKEN</td>
             <td>GitHub Actions (trade job)</td>
             <td>GitHub PAT to fetch risk_profile.json from flowtrader-dashboard repo at the start of each bot run</td>
@@ -2283,7 +2087,6 @@
           <li>Market data source label showing active fallback (Coinbase / Kraken / Binance / Bybit / ccxt)</li>
           <li>Ticker reference key for all symbols</li>
           <li>Signal score bar chart across all watchlist symbols</li>
-          <li>Auto-refresh at REFRESH_SEC=300 (5 min, was 60s — reduced API call volume)</li>
         </ul>
       </div>
       <div class="card">
@@ -2343,7 +2146,6 @@
           <li>Sector focus — favour vs avoid with conditions</li>
           <li>Risk warnings sorted by severity (CRITICAL → HIGH → MEDIUM → LOW)</li>
           <li>Reload memo button for immediate refresh after CI sync</li>
-          <li>Memo cached for 10 min (load_research_memo TTL=600)</li>
         </ul>
       </div>
       <div class="card">
@@ -2385,7 +2187,7 @@
           <li>Risk Profile selector (high_safety / medium_safety / low_safety) — writes to GitHub via API and takes effect on next bot run</li>
           <li>Profile limits expander showing all parameters for the selected profile</li>
           <li>🔬 Math Strategies section — per-strategy toggles (Wavelet, Hurst, Entropy, Lévy, Transfer Entropy, RMT, Wasserstein, TDA) written to GitHub and picked up on next bot run</li>
-          <li>Auto-refresh toggle (5 minute countdown, REFRESH_SEC=300)</li>
+          <li>Auto-refresh toggle (60 second countdown)</li>
           <li>Bot status caption + build tag</li>
         </ul>
       </div>
@@ -2428,12 +2230,12 @@
 </div><!-- /page-wrap -->
 
 <div class="footer">
-  <div style="color:var(--accent);font-weight:700;margin-bottom:6px">⚡ FlowTrader v1.5 — System Design Dashboard</div>
+  <div style="color:var(--accent);font-weight:700;margin-bottom:6px">⚡ FlowTrader v1.4 — System Design Dashboard</div>
   <div>Claude-powered mean reversion + momentum bot · Alpaca + Bybit/Binance Markets · GitHub Actions · Paper trading by default</div>
   <div style="margin-top:8px">
     <a href="https://github.com/qlategan-stack/flowtrader" target="_blank">GitHub Repository</a>
     &nbsp;·&nbsp;
-    <span>Updated 2026-06-01</span>
+    <span>Updated 2026-05-25</span>
   </div>
 </div>
 
